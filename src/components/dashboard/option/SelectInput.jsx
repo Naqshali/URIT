@@ -1,6 +1,7 @@
 export default function SelectInput({
   label,
-  defaultSelect,
+  defaultValue,
+  name,
   data = [],
   handler,
 }) {
@@ -18,7 +19,7 @@ export default function SelectInput({
               <div className="filter-option">
                 <div className="filter-option-inner">
                   <div className="filter-option-inner-inner">
-                    {defaultSelect.option}
+                    {defaultValue === "" ? "Select" : defaultValue}
                   </div>
                 </div>
               </div>
@@ -35,10 +36,15 @@ export default function SelectInput({
                   {data?.map((item, i) => (
                     <li key={i} className="selected active">
                       <a
-                        onClick={() => handler(item.option, item.value)}
+                        onClick={(e) =>
+                          handler(e, {
+                            option: item.option,
+                            value: item.value,
+                            name: name,
+                          })
+                        }
                         className={`dropdown-item ${
-                          defaultSelect.value !== null &&
-                          item.value === defaultSelect.value
+                          defaultValue !== null && item.value === defaultValue
                             ? "active selected"
                             : ""
                         }`}

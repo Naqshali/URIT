@@ -21,11 +21,13 @@ export default function ProfileDetails() {
     introduce_yourself: "",
   });
 
-  const handleInputChange = () => {
-    const { name, value } = e.target;
-    setUserObj({
-      ...userObj,
-      [name]: type === "checkbox" ? checked : value,
+  const handleInputChange = (e, selectField) => {
+    const field = selectField || e.target;
+    const { name, value } = field;
+
+    setProfileObj({
+      ...profileObj,
+      [name]: value,
     });
   };
 
@@ -200,20 +202,10 @@ export default function ProfileDetails() {
               </div>
               <div className="col-sm-6">
                 <div className="mb20">
-                  <label className="heading-color ff-heading fw500 mb10">
-                    Hourly Rate
-                  </label>
-                  <select className="form-control" onChange={handleInputChange}>
-                    <option value="" disabled>
-                      Select an option
-                    </option>
-                    <option value="option1">Option 1</option>
-                    <option value="option2">Option 2</option>
-                    <option value="option3">Option 3</option>
-                  </select>
-                  {/* <SelectInput
+                  <SelectInput
                     label="Hourly Rate"
-                    defaultSelect={getHourly}
+                    defaultValue={profileObj.hour_rate}
+                    name="hour_rate"
                     data={[
                       { option: "$50", value: "50" },
                       { option: "$60", value: "60" },
@@ -223,10 +215,10 @@ export default function ProfileDetails() {
                       { option: "$100", value: "100" },
                     ]}
                     handler={handleInputChange}
-                  /> */}
+                  />
                 </div>
               </div>
-              <div className="col-sm-6">
+              {/* <div className="col-sm-6">
                 <div className="mb20">
                   <SelectInput
                     label="Gender"
@@ -400,7 +392,7 @@ export default function ProfileDetails() {
                     handler={lanLevelHandler}
                   />
                 </div>
-              </div>
+              </div> */}
               <div className="col-md-12">
                 <div className="mb10">
                   <label className="heading-color ff-heading fw500 mb10">
