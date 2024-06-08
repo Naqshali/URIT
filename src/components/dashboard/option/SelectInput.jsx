@@ -2,6 +2,7 @@ export default function SelectInput({
   label,
   defaultValue,
   name,
+  index,
   data = [],
   handler,
 }) {
@@ -41,6 +42,7 @@ export default function SelectInput({
                             option: item.option,
                             value: item.value,
                             name: name,
+                            index: index,
                           })
                         }
                         className={`dropdown-item ${

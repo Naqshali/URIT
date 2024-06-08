@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://157.175.45.1:8085/', // Your API base URL
+  baseURL: 'http://157.175.52.228:8085/', // Your API base URL
 });
 
 // Request interceptor

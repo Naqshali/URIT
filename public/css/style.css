@@ -12574,3 +12574,21 @@ column-gap: 20px;
 .text-center{
   text-align: center;
 }
+
+.plus-minus-icon {
+  border: none;
+  border-radius: 10px;
+  background: #0047ab;
+  color: #fff;
+  padding: 10px 17px;
+}
+
+.skill-plus-minus-icon {
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.ml-4 {
+  margin-left: 4px;
+}

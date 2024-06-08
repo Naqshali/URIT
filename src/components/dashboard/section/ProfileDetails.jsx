@@ -1,24 +1,25 @@
 "use client";
 import React, { useState } from "react";
 import SelectInput from "../option/SelectInput";
-import Link from "next/link";
 import Image from "next/image";
+import profileStore from "@/store/myprofile/profile";
 
 export default function ProfileDetails() {
+  const { saveProfileDetails } = profileStore();
   const [profileObj, setProfileObj] = useState({
     username: "",
     email: "",
     phone_number: "",
-    tagline: "",
-    hour_rate: "",
+    tagLine: "",
+    hourlyRate: "",
     gender: "",
     specialization: "",
     type: "",
     country: "",
     city: "",
     language: "",
-    language_levels: "",
-    introduce_yourself: "",
+    languageLevel: "",
+    description: "",
   });
 
   const handleInputChange = (e, selectField) => {
@@ -31,71 +32,16 @@ export default function ProfileDetails() {
     });
   };
 
-  const [getHourly, setHourly] = useState({
-    option: "Select",
-    value: null,
-  });
-  const [getGender, setGender] = useState({
-    option: "Select",
-    value: null,
-  });
-  const [getSpecialization, setSpecialization] = useState({
-    option: "Select",
-    value: null,
-  });
-  const [getType, setType] = useState({
-    option: "Select",
-    value: null,
-  });
-  const [getCountry, setCountry] = useState({
-    option: "Select",
-    value: null,
-  });
-  const [getCity, setCity] = useState({
-    option: "Select",
-    value: null,
-  });
-  const [getLanguage, setLanguage] = useState({
-    option: "Select",
-    value: null,
-  });
-  const [getLanLevel, setLanLevel] = useState({
-    option: "Select",
-    value: null,
-  });
+  const onSubmitForm = async (e) => {
+    await saveProfileDetails(profileObj);
+  };
+
   const [selectedImage, setSelectedImage] = useState(null);
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     console.log(event);
     setSelectedImage(URL.createObjectURL(file));
-  };
-
-  // handlers
-  const hourlyHandler = (option, value) => {
-    setHourly({ option, value });
-  };
-  const genderHandler = (option, value) => {
-    setGender({ option, value });
-  };
-
-  const specializationHandler = (option, value) => {
-    setSpecialization({ option, value });
-  };
-  const typeHandler = (option, value) => {
-    setType({ option, value });
-  };
-  const countryHandler = (option, value) => {
-    setCountry({ option, value });
-  };
-  const cityHandler = (option, value) => {
-    setCity({ option, value });
-  };
-  const languageHandler = (option, value) => {
-    setLanguage({ option, value });
-  };
-  const lanLevelHandler = (option, value) => {
-    setLanLevel({ option, value });
   };
 
   return (
@@ -146,7 +92,7 @@ export default function ProfileDetails() {
           </div>
         </div>
         <div className="col-lg-7">
-          <form className="form-style1">
+          <form className="form-style1" autoComplete="off">
             <div className="row">
               <div className="col-sm-6">
                 <div className="mb20">
@@ -190,12 +136,12 @@ export default function ProfileDetails() {
               <div className="col-sm-6">
                 <div className="mb20">
                   <label className="heading-color ff-heading fw500 mb10">
-                    Tagline
+                    tagLine
                   </label>
                   <input
                     type="text"
                     className="form-control"
-                    name="tagline"
+                    name="tagLine"
                     onChange={handleInputChange}
                   />
                 </div>
@@ -204,8 +150,8 @@ export default function ProfileDetails() {
                 <div className="mb20">
                   <SelectInput
                     label="Hourly Rate"
-                    defaultValue={profileObj.hour_rate}
-                    name="hour_rate"
+                    defaultValue={profileObj.hourlyRate}
+                    name="hourlyRate"
                     data={[
                       { option: "$50", value: "50" },
                       { option: "$60", value: "60" },
@@ -218,11 +164,12 @@ export default function ProfileDetails() {
                   />
                 </div>
               </div>
-              {/* <div className="col-sm-6">
+              <div className="col-sm-6">
                 <div className="mb20">
                   <SelectInput
                     label="Gender"
-                    defaultSelect={getGender}
+                    defaultValue={profileObj.gender}
+                    name="gender"
                     data={[
                       { option: "Male", value: "male" },
                       {
@@ -231,7 +178,7 @@ export default function ProfileDetails() {
                       },
                       { option: "Other", value: "other" },
                     ]}
-                    handler={genderHandler}
+                    handler={handleInputChange}
                   />
                 </div>
               </div>
@@ -239,7 +186,8 @@ export default function ProfileDetails() {
                 <div className="mb20">
                   <SelectInput
                     label="Specialization"
-                    defaultSelect={getSpecialization}
+                    defaultValue={profileObj.specialization}
+                    name="specialization"
                     data={[
                       { option: "Male", value: "male" },
                       {
@@ -248,7 +196,7 @@ export default function ProfileDetails() {
                       },
                       { option: "Other", value: "other" },
                     ]}
-                    handler={specializationHandler}
+                    handler={handleInputChange}
                   />
                 </div>
               </div>
@@ -256,7 +204,8 @@ export default function ProfileDetails() {
                 <div className="mb20">
                   <SelectInput
                     label="Type"
-                    defaultSelect={getType}
+                    defaultValue={profileObj.type}
+                    name="type"
                     data={[
                       {
                         option: "Type 1",
@@ -271,7 +220,7 @@ export default function ProfileDetails() {
                         value: "type-3",
                       },
                     ]}
-                    handler={typeHandler}
+                    handler={handleInputChange}
                   />
                 </div>
               </div>
@@ -279,7 +228,8 @@ export default function ProfileDetails() {
                 <div className="mb20">
                   <SelectInput
                     label="Country"
-                    defaultSelect={getCountry}
+                    defaultValue={profileObj.country}
+                    name="country"
                     data={[
                       {
                         option: "United States",
@@ -303,7 +253,7 @@ export default function ProfileDetails() {
                       },
                       { option: "Japan", value: "japan" },
                     ]}
-                    handler={countryHandler}
+                    handler={handleInputChange}
                   />
                 </div>
               </div>
@@ -311,7 +261,8 @@ export default function ProfileDetails() {
                 <div className="mb20">
                   <SelectInput
                     label="City"
-                    defaultSelect={getCity}
+                    defaultValue={profileObj.city}
+                    name="country"
                     data={[
                       {
                         option: "New York",
@@ -335,7 +286,7 @@ export default function ProfileDetails() {
                       },
                       { option: "Tokyo", value: "tokyo" },
                     ]}
-                    handler={cityHandler}
+                    handler={handleInputChange}
                   />
                 </div>
               </div>
@@ -343,7 +294,8 @@ export default function ProfileDetails() {
                 <div className="mb20">
                   <SelectInput
                     label="Language"
-                    defaultSelect={getLanguage}
+                    defaultValue={profileObj.language}
+                    name="language"
                     data={[
                       {
                         option: "English",
@@ -362,7 +314,7 @@ export default function ProfileDetails() {
                         value: "japanese",
                       },
                     ]}
-                    handler={languageHandler}
+                    handler={handleInputChange}
                   />
                 </div>
               </div>
@@ -370,7 +322,8 @@ export default function ProfileDetails() {
                 <div className="mb20">
                   <SelectInput
                     label="Languages Level"
-                    defaultSelect={getLanLevel}
+                    defaultValue={profileObj.languageLevel}
+                    name="languageLevel"
                     data={[
                       {
                         option: "Beginner",
@@ -389,24 +342,35 @@ export default function ProfileDetails() {
                         value: "fluent",
                       },
                     ]}
-                    handler={lanLevelHandler}
+                    handler={handleInputChange}
                   />
                 </div>
-              </div> */}
+              </div>
               <div className="col-md-12">
                 <div className="mb10">
                   <label className="heading-color ff-heading fw500 mb10">
                     Introduce Yourself
                   </label>
-                  <textarea cols={30} rows={6} placeholder="Description" />
+                  <textarea
+                    cols={30}
+                    rows={6}
+                    placeholder="Description"
+                    name="description"
+                    value={profileObj.description}
+                    onChange={handleInputChange}
+                  />
                 </div>
               </div>
               <div className="col-md-12">
                 <div className="text-start">
-                  <Link className="ud-btn btn-thm" href="/contact">
+                  <button
+                    type="button"
+                    className="ud-btn btn-thm"
+                    onClick={() => onSubmitForm()}
+                  >
                     Save
                     <i className="fal fa-arrow-right-long" />
-                  </Link>
+                  </button>
                 </div>
               </div>
             </div>
