@@ -151,8 +151,8 @@ export default function ProjectDetail1() {
                       <hr className="opacity-100 mb60" />
                       <h4 className="mb30">Project Proposals (3)</h4>
                       <div className="row">
-                        {projectProposal1.slice(0, 3).map((item,i) => (
-                          <div key={ i } className="col-md-6 col-lg-12">
+                        {projectProposal1.slice(0, 3).map((item, i) => (
+                          <div key={i} className="col-md-6 col-lg-12">
                             <ProjectProposalCard1 data={item} />
                           </div>
                         ))}

@@ -75,7 +75,7 @@ export default function ManageServiceInfo() {
                         </tr>
                       </thead>
                       <tbody className="t-body">
-                        {manageService.map((item,i) => (
+                        {manageService.map((item, i) => (
                           <ManageServiceCard1 key={i} data={item} />
                         ))}
                       </tbody>
@@ -97,7 +97,7 @@ export default function ManageServiceInfo() {
                         </tr>
                       </thead>
                       <tbody className="t-body">
-                        {manageService.slice(0, 4).map((item,i) => (
+                        {manageService.slice(0, 4).map((item, i) => (
                           <ManageServiceCard1 key={i} data={item} />
                         ))}
                       </tbody>
@@ -119,7 +119,7 @@ export default function ManageServiceInfo() {
                         </tr>
                       </thead>
                       <tbody className="t-body">
-                        {manageService.slice(0, 3).map((item,i) => (
+                        {manageService.slice(0, 3).map((item, i) => (
                           <ManageServiceCard1 key={i} data={item} />
                         ))}
                       </tbody>
@@ -141,7 +141,7 @@ export default function ManageServiceInfo() {
                         </tr>
                       </thead>
                       <tbody className="t-body">
-                        {manageService.slice(0, 4).map((item,i) => (
+                        {manageService.slice(0, 4).map((item, i) => (
                           <ManageServiceCard1 key={i} data={item} />
                         ))}
                       </tbody>
@@ -163,7 +163,7 @@ export default function ManageServiceInfo() {
                         </tr>
                       </thead>
                       <tbody className="t-body">
-                        {manageService.slice(0, 5).map((item,i) => (
+                        {manageService.slice(0, 5).map((item, i) => (
                           <ManageServiceCard1 key={i} data={item} />
                         ))}
                       </tbody>

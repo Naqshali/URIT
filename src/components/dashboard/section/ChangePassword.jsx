@@ -1,6 +1,30 @@
-import Link from "next/link";
+"use client";
+import { useEffect, useState } from "react";
+import profileStore from "@/store/myprofile/profile";
 
 export default function ChangePassword() {
+  const { changePassword } = profileStore();
+
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+
+  useEffect(() => {
+    const isSame = newPassword === confirmNewPassword;
+    console.log("isSame", isSame);
+  }, [newPassword, confirmNewPassword]);
+
+  const handleNewPassword = (e) => {
+    setNewPassword(e.target.value);
+  };
+
+  const handleConfirmNewPassword = (e) => {
+    setConfirmNewPassword(e.target.value);
+  };
+
+  const onSubmitForm = async () => {
+    await changePassword({ newPassword: newPassword });
+  };
+
   return (
     <>
       <div className="ps-widget bgc-white bdrs4 p30 mb30 overflow-hidden position-relative">
@@ -34,6 +58,8 @@ export default function ChangePassword() {
                       type="text"
                       className="form-control"
                       placeholder="********"
+                      value={newPassword}
+                      onChange={handleNewPassword}
                     />
                   </div>
                 </div>
@@ -46,15 +72,21 @@ export default function ChangePassword() {
                       type="text"
                       className="form-control"
                       placeholder="********"
+                      value={confirmNewPassword}
+                      onChange={handleConfirmNewPassword}
                     />
                   </div>
                 </div>
                 <div className="col-md-12">
                   <div className="text-start">
-                    <Link className="ud-btn btn-thm" href="/contact">
+                    <button
+                      type="button"
+                      className="ud-btn btn-thm"
+                      onClick={() => onSubmitForm()}
+                    >
                       Change Password
                       <i className="fal fa-arrow-right-long" />
-                    </Link>
+                    </button>
                   </div>
                 </div>
               </div>

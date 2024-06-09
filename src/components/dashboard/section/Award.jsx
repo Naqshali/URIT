@@ -1,13 +1,17 @@
 "use client";
 import { Tooltip } from "react-tooltip";
+import AwardsModal from "@/components/dashboard/modal/Awards";
 
 export default function Award() {
+  const awardsAdded = () => {
+    console.log("yeessss");
+  };
   return (
     <>
       <div className="ps-widget bgc-white bdrs4 p30 mb30 overflow-hidden position-relative">
         <div className="bdrb1 pb15 mb30 d-sm-flex justify-content-between">
           <h5 className="list-title">Awards</h5>
-          <a className="add-more-btn text-thm">
+          <a data-bs-toggle="modal" data-bs-target="#awardsModal">
             <i className="icon far fa-plus mr10" />
             Add Awards
           </a>
@@ -75,6 +79,7 @@ export default function Award() {
           </div>
         </div>
       </div>
+      <AwardsModal awardsAdded={awardsAdded} />
     </>
   );
 }

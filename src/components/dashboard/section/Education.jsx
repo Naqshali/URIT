@@ -1,15 +1,19 @@
 "use client";
 import { Tooltip } from "react-tooltip";
+import EducationModal from "@/components/dashboard/modal/Education";
 
 export default function Education() {
+  const educationAdded = () => {
+    console.log("yesss");
+  };
   return (
     <>
       <div className="ps-widget bgc-white bdrs4 p30 mb30 overflow-hidden position-relative">
         <div className="bdrb1 pb15 mb30 d-sm-flex justify-content-between">
           <h5 className="list-title">Education</h5>
-          <a className="add-more-btn text-thm">
+          <a data-bs-toggle="modal" data-bs-target="#educationModal">
             <i className="icon far fa-plus mr10" />
-            Add Aducation
+            Add Education
           </a>
         </div>
         <div className="position-relative">
@@ -77,6 +81,7 @@ export default function Education() {
           </div>
         </div>
       </div>
+      <EducationModal educationAdded={educationAdded} />
     </>
   );
 }

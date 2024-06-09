@@ -1,13 +1,17 @@
 "use client";
 import { Tooltip } from "react-tooltip";
+import WorkExperienceModal from "@/components/dashboard/modal/WorkExperiance";
 
 export default function WorkExperience() {
+  const workExperianceAdded = () => {
+    console.log("Added");
+  };
   return (
     <>
       <div className="ps-widget bgc-white bdrs4 p30 mb30 overflow-hidden position-relative">
         <div className="bdrb1 pb15 mb30 d-sm-flex justify-content-between">
           <h5 className="list-title">Work &amp; Experience</h5>
-          <a className="add-more-btn text-thm">
+          <a data-bs-toggle="modal" data-bs-target="#workExperianceModal">
             <i className="icon far fa-plus mr10" />
             Add Experience
           </a>
@@ -77,6 +81,7 @@ export default function WorkExperience() {
           </div>
         </div>
       </div>
+      <WorkExperienceModal workExperianceAdded={workExperianceAdded} />
     </>
   );
 }

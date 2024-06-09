@@ -193,8 +193,8 @@ export default function ProjectDetail3() {
                       <div className="px30 bdr1 pt30 pb-0 mb30 bg-white bdrs12 wow fadeInUp default-box-shadow1">
                         <h4 className="mb30">Project Proposals (3)</h4>
                         <div className="row">
-                          {projectProposal1.slice(0, 3).map((item,i) => (
-                            <div key={ i } className="col-md-6 col-lg-12">
+                          {projectProposal1.slice(0, 3).map((item, i) => (
+                            <div key={i} className="col-md-6 col-lg-12">
                               <ProjectProposalCard1 data={item} />
                             </div>
                           ))}
