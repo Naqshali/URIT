@@ -3,12 +3,10 @@ import Link from "next/link";
 import { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import userTypeStore from "@/store/global";
 import signUpStore from "@/store/signUp";
 
 export default function page() {
-  const { setUserType } = userTypeStore();
-  const { signUpUser, signUp } = signUpStore();
+  const { signUp } = signUpStore();
   const [userObj, setUserObj] = useState({
     username: "",
     password: "",
@@ -19,16 +17,11 @@ export default function page() {
 
   const router = useRouter();
 
-  useEffect(() => {
-    console.log("signUpUseaaaar", signUpUser);
-  }, [signUpUser]);
-
   const setAccType = (param) => {
     setUserObj({
       ...userObj,
       userType: param,
     });
-    setUserType(param);
   };
 
   const handleInputChange = (e) => {
@@ -77,7 +70,7 @@ export default function page() {
                     <button
                       className="ud-btn btn-thm default-box-shadow2"
                       type="button"
-                      onClick={() => setAccType("client")}
+                      onClick={() => setAccType("CLIENT")}
                     >
                       As a Client <i className="fal fa-arrow-right-long" />
                     </button>
@@ -88,7 +81,7 @@ export default function page() {
                     <button
                       className="ud-btn btn-thm2 default-box-shadow2"
                       type="button"
-                      onClick={() => setAccType("service_provider")}
+                      onClick={() => setAccType("SERVICE_PROVIDER")}
                     >
                       As a Service Provider
                       <i className="fal fa-arrow-right-long" />

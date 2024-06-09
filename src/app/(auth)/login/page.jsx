@@ -2,8 +2,10 @@
 import Link from "next/link";
 import { useState } from "react";
 import signUpStore from "@/store/signUp";
+import { useRouter } from "next/navigation";
 
 export default function page() {
+  const router = useRouter();
   const { login } = signUpStore();
   const [loginUserObj, setLoginUserObj] = useState({
     email: "",
@@ -20,8 +22,10 @@ export default function page() {
   };
 
   const loginAccount = async () => {
-    console.log("loginUserObj", loginUserObj);
-    await login();
+    const result = await login(loginUserObj);
+    if (result) {
+      router.push("/");
+    }
   };
 
   return (

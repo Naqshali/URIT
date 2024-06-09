@@ -803,7 +803,7 @@ h2 {
 .user_setting .dropdown-menu .dropdown-item.active span,
 .user_setting .dropdown-menu .dropdown-item:hover,
 .user_setting .dropdown-menu .dropdown-item:hover span {
-  background-color: #222222;
+  background-color: #0047AB;
   color: #ffffff;
 }
 
@@ -811,7 +811,7 @@ h2 {
 .dashboard_sidebar_list .sidebar_list_item a:active,
 .dashboard_sidebar_list .sidebar_list_item a:focus,
 .dashboard_sidebar_list .sidebar_list_item a.-is-active {
-  background-color: #222222;
+  background-color: #0047AB;
   color: #ffffff;
 }
 
@@ -12614,4 +12614,18 @@ column-gap: 20px;
 
 .remove-account:hover {
   background-color: #ff4d4d;
+}
+
+.display-flex-center {
+  display: flex;
+  align-items: center;
+}
+
+.custom-toastr{
+  svg {
+    fill: #0047AB;
+  }
+  .Toastify__progress-bar--success{
+    background-color: #0047AB;
+  }
 }

@@ -4,19 +4,19 @@ import { isActiveNavigation } from "@/utils/isActiveNavigation";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import userTypeStore from "@/store/global";
+import signUpStore from "@/store/signUp";
 
 export default function Navigation() {
   const path = usePathname();
-  const { userType } = userTypeStore();
+  const { loggedInUser } = signUpStore();
 
   const showNavigationItem = (navItem) => {
     return (
-      (userType === "client" && navItem.key !== "projects") ||
-      (userType === "service_provider" &&
+      (loggedInUser?.userType === "CLIENT" && navItem.key !== "projects") ||
+      (loggedInUser?.userType === "SERVICE_PROVIDER" &&
         navItem.key !== "services" &&
         navItem.key !== "freelancers") ||
-      userType === ""
+      loggedInUser === null
     );
   };
 

@@ -5,10 +5,11 @@ import Image from "next/image";
 import Navigation from "./Navigation";
 import useStickyMenu from "@/hook/useStickyMenu";
 import MobileNavigation1 from "./MobileNavigation1";
+import signUpStore from "@/store/signUp";
 
 export default function Header1() {
   const sticky = useStickyMenu(50);
-
+  const { loggedInUser } = signUpStore();
   return (
     <>
       <header
@@ -54,15 +55,27 @@ export default function Header1() {
                   >
                     {/* <span className="flaticon-loupe" /> */}
                   </a>
-                  <Link className={`login-info mr15-lg mr30`} href="/login">
-                    Sign in
-                  </Link>
-                  <Link
-                    className="ud-btn btn-white add-joining"
-                    href="/register"
-                  >
-                    Join
-                  </Link>
+                  {!loggedInUser && (
+                    <span className="display-flex-center">
+                      <Link className={`login-info mr15-lg mr30`} href="/login">
+                        Sign in
+                      </Link>
+                      <Link
+                        className="ud-btn btn-white add-joining"
+                        href="/register"
+                      >
+                        Join
+                      </Link>
+                    </span>
+                  )}
+                  {loggedInUser && (
+                    <Link
+                      className={`login-info mr15-lg mr30`}
+                      href="/my-profile"
+                    >
+                      {loggedInUser.name}
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>

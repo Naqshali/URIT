@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SelectInput from "../option/SelectInput";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import profileStore from "@/store/myprofile/profile";
 
-export default function EducationModal({ educationAdded }) {
-  const { saveEducation } = profileStore();
+export default function EducationModal({ educationAdded, mode }) {
+  const { education, getEducation, saveEducation } = profileStore();
   const [educationObj, setEducationObj] = useState({
     degree: "",
     institution: "",
@@ -13,6 +13,20 @@ export default function EducationModal({ educationAdded }) {
     startYear: "",
     endYear: "",
   });
+
+  useEffect(() => {
+    const fetchEducation = async () => {
+      await getEducation();
+    };
+    fetchEducation();
+  }, []);
+
+  useEffect(() => {
+    if (education) {
+      console.log("education", education);
+      setEducationObj(education);
+    }
+  }, [education]);
 
   const handleInputChange = (e, selectField) => {
     const field = selectField || e.target;

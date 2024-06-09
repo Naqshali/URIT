@@ -4,11 +4,11 @@ import SelectInput from "../option/SelectInput";
 import profileStore from "@/store/myprofile/profile";
 
 export default function Skill() {
-  const { saveSkills } = profileStore();
+  const { updateSkills } = profileStore();
   const [skills, setSkills] = useState([
     {
-      skill: "",
-      point: "",
+      name: "",
+      points: "",
     },
   ]);
 
@@ -23,8 +23,8 @@ export default function Skill() {
 
   const addNewSkill = () => {
     const newSkill = {
-      skill: "",
-      point: "",
+      name: "",
+      points: "",
     };
     setSkills([...skills, newSkill]);
   };
@@ -36,7 +36,8 @@ export default function Skill() {
   };
 
   const onSubmitForm = async () => {
-    await saveSkills(skills);
+    const result = await updateSkills(skills);
+    console.log("result", result);
   };
 
   return (
@@ -54,8 +55,8 @@ export default function Skill() {
                     <div className="mb20">
                       <SelectInput
                         label={"Skill " + (ind + 1)}
-                        defaultValue={item.skill}
-                        name="skill"
+                        defaultValue={item.name}
+                        name="name"
                         index={ind}
                         data={[
                           {
@@ -75,8 +76,8 @@ export default function Skill() {
                     <div className="mb20">
                       <SelectInput
                         label="Point"
-                        defaultValue={item.point}
-                        name="point"
+                        defaultValue={item.points}
+                        name="points"
                         index={ind}
                         data={[
                           {

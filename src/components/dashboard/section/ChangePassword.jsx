@@ -10,7 +10,6 @@ export default function ChangePassword() {
 
   useEffect(() => {
     const isSame = newPassword === confirmNewPassword;
-    console.log("isSame", isSame);
   }, [newPassword, confirmNewPassword]);
 
   const handleNewPassword = (e) => {

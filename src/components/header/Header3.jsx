@@ -5,9 +5,11 @@ import MobileNavigation2 from "./MobileNavigation2";
 import Navigation from "./Navigation";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import signUpStore from "@/store/signUp";
 
 export default function Header3() {
   const path = usePathname();
+  const { loggedInUser } = signUpStore();
   return (
     <>
       <header className="header-nav nav-innerpage-style main-menu  ">
@@ -47,17 +49,32 @@ export default function Header3() {
                     <span className="d-none d-xl-inline-block">Become a</span>{" "}
                     Seller
                   </Link> */}
-                  <Link
-                    className={`login-info mr15-lg mr30 ${
-                      path === "/login" ? "ui-active" : ""
-                    }`}
-                    href="/login"
-                  >
-                    Sign in
-                  </Link>
-                  <Link className="ud-btn btn-thm add-joining" href="/register">
-                    Join
-                  </Link>
+                  {!loggedInUser && (
+                    <span className="display-flex-center">
+                      <Link
+                        className={`login-info mr15-lg mr30 ${
+                          path === "/login" ? "ui-active" : ""
+                        }`}
+                        href="/login"
+                      >
+                        Sign in
+                      </Link>
+                      <Link
+                        className="ud-btn btn-thm add-joining"
+                        href="/register"
+                      >
+                        Join
+                      </Link>
+                    </span>
+                  )}
+                  {loggedInUser && (
+                    <Link
+                      className={`login-info mr15-lg mr30`}
+                      href="/my-profile"
+                    >
+                      {loggedInUser.name}
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>

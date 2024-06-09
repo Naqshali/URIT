@@ -1,8 +1,10 @@
 "use client";
 import { Tooltip } from "react-tooltip";
 import EducationModal from "@/components/dashboard/modal/Education";
+import { useState } from "react";
 
 export default function Education() {
+  const [mode, setMode] = useState("add");
   const educationAdded = () => {
     console.log("yesss");
   };
@@ -11,7 +13,11 @@ export default function Education() {
       <div className="ps-widget bgc-white bdrs4 p30 mb30 overflow-hidden position-relative">
         <div className="bdrb1 pb15 mb30 d-sm-flex justify-content-between">
           <h5 className="list-title">Education</h5>
-          <a data-bs-toggle="modal" data-bs-target="#educationModal">
+          <a
+            onClick={() => setMode("add")}
+            data-bs-toggle="modal"
+            data-bs-target="#educationModal"
+          >
             <i className="icon far fa-plus mr10" />
             Add Education
           </a>
@@ -22,8 +28,19 @@ export default function Education() {
             <div className="wrapper mb40 position-relative">
               <div className="del-edit">
                 <div className="d-flex">
-                  <a className="icon me-2" id="edit">
-                    <Tooltip anchorSelect="#edit" className="ui-tooltip">
+                  <a
+                    className="icon me-2"
+                    id="edit"
+                    onClick={() => setMode("edit")}
+                    data-bs-toggle="modal"
+                    data-bs-target="#educationModal"
+                  >
+                    <Tooltip
+                      anchorSelect="#edit"
+                      className="ui-tooltip"
+                      data-bs-toggle="modal"
+                      data-bs-target="#educationModal"
+                    >
                       Edit
                     </Tooltip>
                     <span className="flaticon-pencil" />
@@ -81,7 +98,7 @@ export default function Education() {
           </div>
         </div>
       </div>
-      <EducationModal educationAdded={educationAdded} />
+      <EducationModal educationAdded={educationAdded} mode={mode} />
     </>
   );
 }

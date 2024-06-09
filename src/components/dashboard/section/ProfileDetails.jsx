@@ -1,16 +1,18 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SelectInput from "../option/SelectInput";
 import Image from "next/image";
 import profileStore from "@/store/myprofile/profile";
+import Toastr from "@/components/toastr/toastr";
 
 export default function ProfileDetails() {
-  const { saveProfileDetails } = profileStore();
+  const { profileDetails, getProfileDetails, updateProfileDetails } =
+    profileStore();
   const [profileObj, setProfileObj] = useState({
     username: "",
     email: "",
     phone_number: "",
-    tagLine: "",
+    tagline: "",
     hourlyRate: "",
     gender: "",
     specialization: "",
@@ -21,6 +23,22 @@ export default function ProfileDetails() {
     languageLevel: "",
     description: "",
   });
+
+  const [showToastr, setShowToastr] = useState(false);
+
+  useEffect(() => {
+    const fetchProfileDetails = async () => {
+      await getProfileDetails();
+    };
+    fetchProfileDetails();
+  }, []);
+
+  useEffect(() => {
+    if (profileDetails) {
+      console.log("profileDetails sss", profileDetails);
+      setProfileObj(profileDetails);
+    }
+  }, [profileDetails]);
 
   const handleInputChange = (e, selectField) => {
     const field = selectField || e.target;
@@ -33,7 +51,11 @@ export default function ProfileDetails() {
   };
 
   const onSubmitForm = async (e) => {
-    await saveProfileDetails(profileObj);
+    const result = await updateProfileDetails(profileObj);
+    if (result) {
+      console.log("ree", result);
+      setShowToastr(result);
+    }
   };
 
   const [selectedImage, setSelectedImage] = useState(null);
@@ -103,6 +125,7 @@ export default function ProfileDetails() {
                     type="text"
                     className="form-control"
                     name="username"
+                    value={profileObj.username}
                     onChange={handleInputChange}
                   />
                 </div>
@@ -116,6 +139,7 @@ export default function ProfileDetails() {
                     type="email"
                     className="form-control"
                     name="email"
+                    value={profileObj.email}
                     onChange={handleInputChange}
                   />
                 </div>
@@ -129,6 +153,7 @@ export default function ProfileDetails() {
                     type="text"
                     className="form-control"
                     name="phone_number"
+                    value={profileObj.phone_number}
                     onChange={handleInputChange}
                   />
                 </div>
@@ -136,12 +161,13 @@ export default function ProfileDetails() {
               <div className="col-sm-6">
                 <div className="mb20">
                   <label className="heading-color ff-heading fw500 mb10">
-                    tagLine
+                    Tag Line
                   </label>
                   <input
                     type="text"
                     className="form-control"
-                    name="tagLine"
+                    name="tagline"
+                    value={profileObj.tagline}
                     onChange={handleInputChange}
                   />
                 </div>
@@ -377,6 +403,7 @@ export default function ProfileDetails() {
           </form>
         </div>
       </div>
+      <Toastr showToastr={showToastr} />
     </>
   );
 }

@@ -2,21 +2,21 @@
 import { dasboardNavigation } from "@/data/dashboard";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import userTypeStore from "@/store/global";
+import signUpStore from "@/store/signUp";
 
 export default function DashboardSidebar() {
   const path = usePathname();
-  const { userType } = userTypeStore();
+  const { loggedInUser } = signUpStore();
 
   const showNavigationItem = (navItem) => {
     return (
-      (userType === "client" &&
+      (loggedInUser?.userType === "CLIENT" &&
         navItem.key !== "add_services" &&
         navItem.key !== "manage_services") ||
-      (userType === "service_provider" &&
+      (loggedInUser?.userType === "SERVICE_PROVIDER" &&
         navItem.key !== "create_project" &&
         navItem.key !== "manage_project") ||
-      userType === ""
+      loggedInUser === null
     );
   };
 
