@@ -5,13 +5,11 @@ export const decodeJWT = (token)=>{
     try {
         token = token.split(" ")[1]
         const decodedToken = decode(token);
-        console.log("Aaa",decodedToken)
         const type = decodedToken.payload.resource_access["urit-service-provider"] || decodedToken.payload.resource_access["urit-client"]
         const userData = {
             name:decodedToken.payload.name,
             userType:type.roles[0]
         }
-        console.log("Aaa",userData)
         return userData
     } catch (error) {
         return null
@@ -33,3 +31,10 @@ export const dateFormat = (date) =>{
     if(!date) return
     return moment(date).format('D MMMM YYYY');
 }
+
+export const transformMetaData = (array, valueKey) => {
+    return array.map(item => ({
+        option: item.id,
+        value: item[valueKey]
+    }));
+};

@@ -51,7 +51,7 @@ const listingStore = create((set) => ({
           return { getDesginTool: [...state.getDesginTool, payload] };
         } else {
           const deleted = state.getDesginTool.filter(
-            (item) => item !== payload,
+            (item) => item !== payload
           );
           return { getDesginTool: deleted };
         }
@@ -98,7 +98,7 @@ const listingStore = create((set) => ({
           };
         } else {
           const deleted = state.getProjectType.filter(
-            (item) => item !== payload,
+            (item) => item !== payload
           );
           return { getProjectType: deleted };
         }
@@ -116,7 +116,7 @@ const listingStore = create((set) => ({
           };
         } else {
           const deleted = state.getEnglishLevel.filter(
-            (item) => item !== payload,
+            (item) => item !== payload
           );
           return { getEnglishLevel: deleted };
         }
@@ -150,7 +150,7 @@ const listingStore = create((set) => ({
           };
         } else {
           const deleted = state.getNoOfEmployee.filter(
-            (item) => item !== payload,
+            (item) => item !== payload
           );
           return { getNoOfEmployee: deleted };
         }

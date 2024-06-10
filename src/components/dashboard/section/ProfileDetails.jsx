@@ -4,10 +4,12 @@ import SelectInput from "../option/SelectInput";
 import Image from "next/image";
 import profileStore from "@/store/myprofile/profile";
 import Toastr from "@/components/toastr/toastr";
+import { localMetaData } from "@/utils/localMetaData";
 
-export default function ProfileDetails() {
+export default function ProfileDetails({ meta }) {
   const { profileDetails, getProfileDetails, updateProfileDetails } =
     profileStore();
+
   const [profileObj, setProfileObj] = useState({
     username: "",
     email: "",
@@ -15,8 +17,6 @@ export default function ProfileDetails() {
     tagLine: "",
     hourlyRate: "",
     gender: "",
-    specialization: "",
-    type: "",
     country: "",
     city: "",
     language: "",
@@ -27,6 +27,7 @@ export default function ProfileDetails() {
   const [showToastr, setShowToastr] = useState(false);
 
   useEffect(() => {
+    console.log(meta);
     fetchProfileDetails();
   }, []);
 
@@ -173,19 +174,15 @@ export default function ProfileDetails() {
               </div>
               <div className="col-sm-6">
                 <div className="mb20">
-                  <SelectInput
-                    label="Hourly Rate"
-                    defaultValue={profileObj.hourlyRate}
+                  <label className="heading-color ff-heading fw500 mb10">
+                    Hourly Rate
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
                     name="hourlyRate"
-                    data={[
-                      { option: "$50", value: "50" },
-                      { option: "$60", value: "60" },
-                      { option: "$70", value: "70" },
-                      { option: "$80", value: "80" },
-                      { option: "$90", value: "90" },
-                      { option: "$100", value: "100" },
-                    ]}
-                    handler={handleInputChange}
+                    value={profileObj.hourlyRate}
+                    onChange={handleInputChange}
                   />
                 </div>
               </div>
@@ -195,56 +192,7 @@ export default function ProfileDetails() {
                     label="Gender"
                     defaultValue={profileObj.gender}
                     name="gender"
-                    data={[
-                      { option: "Male", value: "male" },
-                      {
-                        option: "Female",
-                        value: "female",
-                      },
-                      { option: "Other", value: "other" },
-                    ]}
-                    handler={handleInputChange}
-                  />
-                </div>
-              </div>
-              <div className="col-sm-6">
-                <div className="mb20">
-                  <SelectInput
-                    label="Specialization"
-                    defaultValue={profileObj.specialization}
-                    name="specialization"
-                    data={[
-                      { option: "Male", value: "male" },
-                      {
-                        option: "Female",
-                        value: "female",
-                      },
-                      { option: "Other", value: "other" },
-                    ]}
-                    handler={handleInputChange}
-                  />
-                </div>
-              </div>
-              <div className="col-sm-6">
-                <div className="mb20">
-                  <SelectInput
-                    label="Type"
-                    defaultValue={profileObj.type}
-                    name="type"
-                    data={[
-                      {
-                        option: "Type 1",
-                        value: "type-1",
-                      },
-                      {
-                        option: "Type 2",
-                        value: "type-2",
-                      },
-                      {
-                        option: "Type 3",
-                        value: "type-3",
-                      },
-                    ]}
+                    data={localMetaData.genders}
                     handler={handleInputChange}
                   />
                 </div>
@@ -255,63 +203,21 @@ export default function ProfileDetails() {
                     label="Country"
                     defaultValue={profileObj.country}
                     name="country"
-                    data={[
-                      {
-                        option: "United States",
-                        value: "usa",
-                      },
-                      {
-                        option: "Canada",
-                        value: "canada",
-                      },
-                      {
-                        option: "United Kingdom",
-                        value: "uk",
-                      },
-                      {
-                        option: "Australia",
-                        value: "australia",
-                      },
-                      {
-                        option: "Germany",
-                        value: "germany",
-                      },
-                      { option: "Japan", value: "japan" },
-                    ]}
+                    data={meta.countries}
                     handler={handleInputChange}
                   />
                 </div>
               </div>
               <div className="col-sm-6">
                 <div className="mb20">
-                  <SelectInput
-                    label="City"
-                    defaultValue={profileObj.city}
-                    name="country"
-                    data={[
-                      {
-                        option: "New York",
-                        value: "new-york",
-                      },
-                      {
-                        option: "Toronto",
-                        value: "toronto",
-                      },
-                      {
-                        option: "London",
-                        value: "london",
-                      },
-                      {
-                        option: "Sydney",
-                        value: "sydney",
-                      },
-                      {
-                        option: "Berlin",
-                        value: "berlin",
-                      },
-                      { option: "Tokyo", value: "tokyo" },
-                    ]}
-                    handler={handleInputChange}
+                  <label className="heading-color ff-heading fw500 mb10">
+                    City
+                  </label>
+                  <input
+                    className="form-control"
+                    name="city"
+                    value={profileObj.city}
+                    onChange={handleInputChange}
                   />
                 </div>
               </div>
@@ -321,24 +227,7 @@ export default function ProfileDetails() {
                     label="Language"
                     defaultValue={profileObj.language}
                     name="language"
-                    data={[
-                      {
-                        option: "English",
-                        value: "english",
-                      },
-                      {
-                        option: "French",
-                        value: "french",
-                      },
-                      {
-                        option: "German",
-                        value: "german",
-                      },
-                      {
-                        option: "Japanese",
-                        value: "japanese",
-                      },
-                    ]}
+                    data={meta.languages}
                     handler={handleInputChange}
                   />
                 </div>
@@ -349,24 +238,7 @@ export default function ProfileDetails() {
                     label="Languages Level"
                     defaultValue={profileObj.languageLevel}
                     name="languageLevel"
-                    data={[
-                      {
-                        option: "Beginner",
-                        value: "beginner",
-                      },
-                      {
-                        option: "Intermediate",
-                        value: "intermediate",
-                      },
-                      {
-                        option: "Advanced",
-                        value: "advanced",
-                      },
-                      {
-                        option: "Fluent",
-                        value: "fluent",
-                      },
-                    ]}
+                    data={localMetaData.languageLevels}
                     handler={handleInputChange}
                   />
                 </div>

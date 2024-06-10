@@ -1,23 +1,24 @@
-import axios from 'axios';
-import signUpStore from '@/store/signUp';
+import axios from "axios";
+import signUpStore from "@/store/signUp";
 
 const axiosInstance = axios.create({
-  baseURL: 'http://157.175.52.228:80/', // Your API base URL
+  baseURL: "http://157.175.52.228:80/", // Your API base URL
 });
 
 // Request interceptor
 axiosInstance.interceptors.request.use(
   (config) => {
     // Modify request config, such as adding headers or logging
-    const user = signUpStore.getState().loggedInUser
-    if(user){
-      config.headers.Authorization = user.token
+    const user = signUpStore.getState().loggedInUser;
+    if (user) {
+      config.headers.Authorization = user.token;
     }
     return config;
   },
   (error) => {
     // Handle request errors
-    return Promise.reject(error);
+    return error;
+    // return Promise.reject(error);
   }
 );
 
@@ -29,7 +30,8 @@ axiosInstance.interceptors.response.use(
   },
   (error) => {
     // Handle response errors
-    return Promise.reject(error);
+    return error;
+    // return Promise.reject(error);
   }
 );
 

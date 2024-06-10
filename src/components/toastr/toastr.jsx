@@ -11,7 +11,7 @@ export default function Toastr({ showToastr }) {
 
   const openToastr = () => {
     toast.success(showToastr.description, {
-      autoClose: 3000,
+      autoClose: 2000,
       className: "custom-toastr",
       hideProgressBar: false,
       closeOnClick: true,

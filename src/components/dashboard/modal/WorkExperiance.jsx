@@ -8,7 +8,7 @@ export default function workExperianceModal({
   editRecord,
   workExperianceAdded,
 }) {
-  const { saveWorkExperiance } = profileStore();
+  const { saveWorkExperiance, updateWorkExperiance } = profileStore();
   const [showToastr, setShowToastr] = useState(false);
   const [workExperianceObj, setWorkExperianceObj] = useState({
     designation: "",
@@ -52,7 +52,7 @@ export default function workExperianceModal({
 
   const onCloseModal = () => {
     resetForm();
-    awardsAdded();
+    workExperianceAdded();
   };
 
   const onSubmitForm = async () => {

@@ -1,12 +1,15 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
-import signUpStore from "@/store/signUp";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import signUpStore from "@/store/signUp";
+import globalStore from "@/store/global";
 
 export default function page() {
   const router = useRouter();
   const { login } = signUpStore();
+  const { getMetaData } = globalStore();
+
   const [loginUserObj, setLoginUserObj] = useState({
     email: "",
     password: "",
@@ -26,6 +29,7 @@ export default function page() {
     if (result) {
       router.push("/");
     }
+    await getMetaData();
   };
 
   return (

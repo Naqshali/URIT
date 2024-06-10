@@ -1,21 +1,26 @@
 "use client";
 import { Tooltip } from "react-tooltip";
 import EducationModal from "@/components/dashboard/modal/Education";
+import DeleteModal from "@/components/dashboard/modal/DeleteModal";
+import MyModal from "@/components/dashboard/modal/test";
 import { useEffect, useState } from "react";
 import profileStore from "@/store/myprofile/profile";
 import { dateFormat } from "@/utils/global";
+import Toastr from "@/components/toastr/toastr";
 
-export default function Education() {
-  const { education, getEducation } = profileStore();
+export default function Education({ meta }) {
+  const { education, getEducation, deleteEducation } = profileStore();
   const [educationList, setEducationList] = useState([]);
   const [editRecord, setEditRecord] = useState(null);
+  const [showToastr, setShowToastr] = useState(false);
+  const [deletedRecordId, setDeleteRecordId] = useState(null);
 
   useEffect(() => {
     fetchEducation();
   }, []);
 
   useEffect(() => {
-    if (education && education.length) {
+    if (education) {
       setEducationList(education);
     }
   }, [education]);
@@ -32,6 +37,17 @@ export default function Education() {
     setEditRecord(null);
     if (added) {
       await fetchEducation();
+    }
+  };
+
+  const deleteEducationRecord = async (action) => {
+    if (action) {
+      const result = await deleteEducation(deletedRecordId);
+      if (result) {
+        setShowToastr(result);
+        setDeleteRecordId(null);
+        await fetchEducation();
+      }
     }
   };
 
@@ -69,7 +85,13 @@ export default function Education() {
                       </Tooltip>
                       <span className="flaticon-pencil" />
                     </a>
-                    <a className="icon" id="delete">
+                    <a
+                      className="icon"
+                      id="delete"
+                      data-bs-toggle="modal"
+                      data-bs-target="#deleteModal"
+                      onClick={() => setDeleteRecordId(item.id)}
+                    >
                       <Tooltip anchorSelect="#delete" className="ui-tooltip">
                         Delete
                       </Tooltip>
@@ -84,13 +106,21 @@ export default function Education() {
                 <h6 className="text-thm">{item.institution}</h6>
                 <p>{item.description}</p>
               </div>
-              {/* <div className="m-circle before-none text-thm">Y</div> */}
             </div>
           ))}
         </div>
         {educationList.length === 0 && <div>No Edcucation found</div>}
       </div>
-      <EducationModal editRecord={editRecord} educationAdded={educationAdded} />
+      <EducationModal
+        editRecord={editRecord}
+        educationAdded={educationAdded}
+        meta={meta}
+      />
+      {showToastr && <Toastr showToastr={showToastr} />}
+      {deletedRecordId && (
+        <DeleteModal action={deleteEducationRecord} name="education" />
+      )}
+      <MyModal></MyModal>
     </>
   );
 }

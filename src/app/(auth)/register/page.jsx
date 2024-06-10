@@ -4,9 +4,13 @@ import { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import signUpStore from "@/store/signUp";
+import globalStore from "@/store/global";
 
 export default function page() {
+  const router = useRouter();
   const { signUp } = signUpStore();
+  const { getMetaData } = globalStore();
+
   const [userObj, setUserObj] = useState({
     username: "",
     password: "",
@@ -14,8 +18,6 @@ export default function page() {
     userType: "",
     email: "",
   });
-
-  const router = useRouter();
 
   const setAccType = (param) => {
     setUserObj({
@@ -33,9 +35,11 @@ export default function page() {
   };
 
   const createAccount = async () => {
-    console.log("User Date", userObj);
-    await signUp(userObj);
-    router.push("/");
+    const result = await signUp(loginUserObj);
+    if (result) {
+      router.push("/");
+    }
+    await getMetaData();
   };
 
   return (

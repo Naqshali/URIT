@@ -8,16 +8,13 @@ import BottomToTop from "@/components/button/BottomToTop";
 import SearchModal1 from "@/components/modal/SearchModal1";
 import { usePathname } from "next/navigation";
 import Header3 from "@/components/header/Header3";
-import {
-  header1,
-  header3,
-  sidebarEnable,
-} from "@/data/header";
+import { header1, header3, sidebarEnable } from "@/data/header";
 
 import toggleStore from "@/store/toggleStore";
 import { footer } from "@/data/footer";
 import "react-tooltip/dist/react-tooltip.css";
 import "react-toastify/dist/ReactToastify.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 import NavSidebar from "@/components/sidebar/NavSidebar";
 
 if (typeof window !== "undefined") {
@@ -61,11 +58,11 @@ export default function RootLayout({ children }) {
             {header1.find(
               (elm) => elm?.split("/")[1] == path?.split("/")[1]
             ) && <Header1 />}
-           
+
             {header3.find(
               (elm) => elm?.split("/")[1] == path?.split("/")[1]
             ) && <Header3 />}
-           
+
             <SearchModal1 />
 
             <div className="body_content">

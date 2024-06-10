@@ -2,20 +2,24 @@
 import { useState, useEffect } from "react";
 import { Tooltip } from "react-tooltip";
 import AwardsModal from "@/components/dashboard/modal/Awards";
+import DeleteModal from "@/components/dashboard/modal/DeleteModal";
 import profileStore from "@/store/myprofile/profile";
 import { dateFormat } from "@/utils/global";
+import Toastr from "@/components/toastr/toastr";
 
 export default function Award() {
-  const { awards, getAwards } = profileStore();
+  const { awards, getAwards, deleteAwards } = profileStore();
   const [awardsList, setAwardsList] = useState([]);
   const [editRecord, setEditRecord] = useState(null);
+  const [showToastr, setShowToastr] = useState(false);
+  const [deletedRecordId, setDeleteRecordId] = useState(null);
 
   useEffect(() => {
     fetchAwards();
   }, []);
 
   useEffect(() => {
-    if (awards && awards.length) {
+    if (awards) {
       setAwardsList(awards);
     }
   }, [awards]);
@@ -35,6 +39,17 @@ export default function Award() {
     }
   };
 
+  const deleteAwardRecord = async (action) => {
+    if (action) {
+      const result = await deleteAwards(deletedRecordId);
+      if (result) {
+        setShowToastr(result);
+        setDeleteRecordId(null);
+        await fetchAwards();
+      }
+    }
+  };
+
   return (
     <>
       <div className="ps-widget bgc-white bdrs4 p30 mb30 overflow-hidden position-relative">
@@ -46,9 +61,10 @@ export default function Award() {
           </a>
         </div>
         <div className="position-relative">
-          <div className="educational-quality ps-0">
-            {awardsList.map((item, ind) => (
-              <div className="wrapper mb40 position-relative" key={ind}>
+          {awardsList.map((item, ind) => (
+            <div className="educational-quality" key={ind}>
+              <div className="m-circle text-thm">Y</div>
+              <div className="wrapper mb40 position-relative">
                 <div className="del-edit">
                   <div className="d-flex">
                     <a
@@ -63,7 +79,13 @@ export default function Award() {
                       </Tooltip>
                       <span className="flaticon-pencil" />
                     </a>
-                    <a className="icon" id="delete">
+                    <a
+                      className="icon"
+                      id="delete"
+                      data-bs-toggle="modal"
+                      data-bs-target="#deleteModal"
+                      onClick={() => setDeleteRecordId(item.id)}
+                    >
                       <Tooltip anchorSelect="#delete" className="ui-tooltip">
                         Delete
                       </Tooltip>
@@ -76,12 +98,16 @@ export default function Award() {
                 <h6 className="text-thm">{item.issuedBy}</h6>
                 <p>{item.description}</p>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
         {awardsList.length === 0 && <div>No Awards found</div>}
       </div>
       <AwardsModal editRecord={editRecord} awardsAdded={awardsAdded} />
+      {showToastr && <Toastr showToastr={showToastr} />}
+      {/* {deletedRecordId && (
+        <DeleteModal action={deleteAwardRecord} name="award" />
+      )} */}
     </>
   );
 }

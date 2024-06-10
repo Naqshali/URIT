@@ -5,7 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import profileStore from "@/store/myprofile/profile";
 import Toastr from "@/components/toastr/toastr";
 
-export default function EducationModal({ editRecord, educationAdded }) {
+export default function EducationModal({ editRecord, educationAdded, meta }) {
   const { saveEducation, updateEducation } = profileStore();
   const [showToastr, setShowToastr] = useState(false);
   const [educationObj, setEducationObj] = useState({
@@ -52,7 +52,7 @@ export default function EducationModal({ editRecord, educationAdded }) {
 
   const onCloseModal = () => {
     resetForm();
-    awardsAdded();
+    educationAdded();
   };
 
   const onSubmitForm = async () => {
@@ -97,37 +97,22 @@ export default function EducationModal({ editRecord, educationAdded }) {
                         label="Degree"
                         defaultValue={educationObj.degree}
                         name="degree"
-                        data={[
-                          {
-                            option: "BSCS",
-                            value: "bscs",
-                          },
-                          {
-                            option: "MBA",
-                            value: "mba",
-                          },
-                        ]}
+                        data={meta.degrees}
                         handler={handleInputChange}
                       />
                     </div>
                   </div>
                   <div className="col">
                     <div className="mb-3">
-                      <SelectInput
-                        label="Institution"
-                        defaultValue={educationObj.institution}
+                      <label className="heading-color ff-heading fw500 mb10">
+                        Institution
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
                         name="institution"
-                        data={[
-                          {
-                            option: "UCP",
-                            value: "ucp",
-                          },
-                          {
-                            option: "UMT",
-                            value: "umt",
-                          },
-                        ]}
-                        handler={handleInputChange}
+                        value={educationObj.institution}
+                        onChange={handleInputChange}
                       />
                     </div>
                   </div>

@@ -4,7 +4,7 @@ import SelectInput from "../option/SelectInput";
 import profileStore from "@/store/myprofile/profile";
 import Toastr from "@/components/toastr/toastr";
 
-export default function Skill() {
+export default function Skill({ meta }) {
   const { allSkills, getSkills, updateSkills } = profileStore();
   const [showToastr, setShowToastr] = useState(false);
   const [skills, setSkills] = useState([
@@ -28,12 +28,14 @@ export default function Skill() {
     await getSkills();
   };
 
-  const handleInputChange = (e, selectField) => {
-    const { name, value, index } = selectField;
+  const handleInputChange = (e, selectField, itemIndex) => {
+    const { name, value, index } = selectField || e.target;
+    const mainIndex = itemIndex !== undefined ? itemIndex : index;
     const newSkills = skills.map((skill, ind) => {
-      return ind === index ? { ...skill, [name]: value } : skill;
+      return ind === mainIndex ? { ...skill, [name]: value } : skill;
     });
 
+    console.log("newSkills", newSkills);
     setSkills(newSkills);
   };
 
@@ -76,38 +78,22 @@ export default function Skill() {
                         defaultValue={item.name}
                         name="name"
                         index={ind}
-                        data={[
-                          {
-                            option: "Designer",
-                            value: "designer",
-                          },
-                          {
-                            option: "UI/UX",
-                            value: "ui-ux",
-                          },
-                        ]}
+                        data={meta.skills}
                         handler={handleInputChange}
                       />
                     </div>
                   </div>
                   <div className="col-sm-5">
                     <div className="mb20">
-                      <SelectInput
-                        label="Point"
-                        defaultValue={item.points}
+                      <label className="heading-color ff-heading fw500 mb10">
+                        Points
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
                         name="points"
-                        index={ind}
-                        data={[
-                          {
-                            option: "80",
-                            value: "80",
-                          },
-                          {
-                            option: "90",
-                            value: "90",
-                          },
-                        ]}
-                        handler={handleInputChange}
+                        value={item.points}
+                        onChange={(e) => handleInputChange(e, null, ind)}
                       />
                     </div>
                   </div>

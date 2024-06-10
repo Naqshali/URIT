@@ -51,7 +51,7 @@ export default function SelectInput({
                             : ""
                         }`}
                       >
-                        <span className="text">{item.option}</span>
+                        <span className="text">{item.value}</span>
                       </a>
                     </li>
                   ))}
