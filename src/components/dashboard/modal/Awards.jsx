@@ -45,6 +45,11 @@ export default function AwardsModal({ editRecord, awardsAdded }) {
     });
   };
 
+  const onCloseModal = () => {
+    resetForm();
+    awardsAdded();
+  };
+
   const onSubmitForm = async () => {
     let result = null;
     if (editRecord) {
@@ -54,8 +59,8 @@ export default function AwardsModal({ editRecord, awardsAdded }) {
     }
     if (result) {
       resetForm();
+      awardsAdded(true);
       setShowToastr(result);
-      awardsAdded();
     }
   };
 
@@ -76,6 +81,7 @@ export default function AwardsModal({ editRecord, awardsAdded }) {
               data-bs-dismiss="modal"
               aria-label="Close"
               style={{ top: "10px", right: "10px", zIndex: "9" }}
+              onClick={() => onCloseModal()}
             />
             <div className="modal-body p-4">
               <form>

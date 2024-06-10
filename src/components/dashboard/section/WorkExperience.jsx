@@ -15,7 +15,7 @@ export default function WorkExperience() {
   }, []);
 
   useEffect(() => {
-    if (workExperiance) {
+    if (workExperiance && workExperiance.length) {
       setWorkExperianceList(workExperianceList);
     }
   }, [workExperiance]);
@@ -28,8 +28,11 @@ export default function WorkExperience() {
     setEditRecord(record);
   };
 
-  const workExperianceAdded = async () => {
-    await fetchWorkExperiance();
+  const workExperianceAdded = async (added) => {
+    setEditRecord(null);
+    if (added) {
+      await fetchWorkExperiance();
+    }
   };
   return (
     <>
@@ -77,6 +80,7 @@ export default function WorkExperience() {
             </div>
           ))}
         </div>
+        {workExperianceList.length === 0 && <div>No Work Experiance found</div>}
       </div>
       <WorkExperienceModal
         editRecord={editRecord}

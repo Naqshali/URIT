@@ -11,8 +11,8 @@ export default function ProfileDetails() {
   const [profileObj, setProfileObj] = useState({
     username: "",
     email: "",
-    phone_number: "",
-    tagline: "",
+    phoneNumber: "",
+    tagLine: "",
     hourlyRate: "",
     gender: "",
     specialization: "",
@@ -151,8 +151,8 @@ export default function ProfileDetails() {
                   <input
                     type="text"
                     className="form-control"
-                    name="phone_number"
-                    value={profileObj.phone_number}
+                    name="phoneNumber"
+                    value={profileObj.phoneNumber}
                     onChange={handleInputChange}
                   />
                 </div>
@@ -165,8 +165,8 @@ export default function ProfileDetails() {
                   <input
                     type="text"
                     className="form-control"
-                    name="tagline"
-                    value={profileObj.tagline}
+                    name="tagLine"
+                    value={profileObj.tagLine}
                     onChange={handleInputChange}
                   />
                 </div>

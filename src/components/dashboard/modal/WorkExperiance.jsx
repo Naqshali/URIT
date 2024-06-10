@@ -24,6 +24,17 @@ export default function workExperianceModal({
     }
   }, [editRecord]);
 
+  const resetForm = () => {
+    const obj = {
+      designation: "",
+      company: "",
+      description: "",
+      startYear: "",
+      endYear: "",
+    };
+    setWorkExperianceObj(obj);
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setWorkExperianceObj({
@@ -39,6 +50,11 @@ export default function workExperianceModal({
     });
   };
 
+  const onCloseModal = () => {
+    resetForm();
+    awardsAdded();
+  };
+
   const onSubmitForm = async () => {
     let result = null;
     if (editRecord) {
@@ -47,7 +63,8 @@ export default function workExperianceModal({
       result = await saveWorkExperiance(workExperianceObj);
     }
     if (result) {
-      workExperianceAdded();
+      resetForm();
+      workExperianceAdded(true);
       setShowToastr(result);
     }
   };
@@ -69,6 +86,7 @@ export default function workExperianceModal({
               data-bs-dismiss="modal"
               aria-label="Close"
               style={{ top: "10px", right: "10px", zIndex: "9" }}
+              onClick={() => onCloseModal()}
             />
             <div className="modal-body p-4">
               <form>

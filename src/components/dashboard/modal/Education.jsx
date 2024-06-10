@@ -50,6 +50,11 @@ export default function EducationModal({ editRecord, educationAdded }) {
     });
   };
 
+  const onCloseModal = () => {
+    resetForm();
+    awardsAdded();
+  };
+
   const onSubmitForm = async () => {
     let result = null;
     if (editRecord) {
@@ -59,7 +64,7 @@ export default function EducationModal({ editRecord, educationAdded }) {
     }
     if (result) {
       resetForm();
-      educationAdded();
+      educationAdded(true);
       setShowToastr(result);
     }
   };
@@ -81,6 +86,7 @@ export default function EducationModal({ editRecord, educationAdded }) {
               data-bs-dismiss="modal"
               aria-label="Close"
               style={{ top: "10px", right: "10px", zIndex: "9" }}
+              onClick={() => onCloseModal()}
             />
             <div className="modal-body p-4">
               <form>

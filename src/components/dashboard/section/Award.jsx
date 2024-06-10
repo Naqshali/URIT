@@ -15,7 +15,7 @@ export default function Award() {
   }, []);
 
   useEffect(() => {
-    if (awards) {
+    if (awards && awards.length) {
       setAwardsList(awards);
     }
   }, [awards]);
@@ -28,9 +28,11 @@ export default function Award() {
     setEditRecord(record);
   };
 
-  const awardsAdded = async () => {
+  const awardsAdded = async (added) => {
     setEditRecord(null);
-    await fetchAwards();
+    if (added) {
+      await fetchAwards();
+    }
   };
 
   return (
@@ -77,6 +79,7 @@ export default function Award() {
             ))}
           </div>
         </div>
+        {awardsList.length === 0 && <div>No Awards found</div>}
       </div>
       <AwardsModal editRecord={editRecord} awardsAdded={awardsAdded} />
     </>

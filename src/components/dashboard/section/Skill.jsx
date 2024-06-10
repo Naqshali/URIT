@@ -19,7 +19,7 @@ export default function Skill() {
   }, []);
 
   useEffect(() => {
-    if (allSkills) {
+    if (allSkills && allSkills.length) {
       setSkills(allSkills);
     }
   }, [allSkills]);

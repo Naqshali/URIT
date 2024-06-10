@@ -15,7 +15,7 @@ export default function Education() {
   }, []);
 
   useEffect(() => {
-    if (education) {
+    if (education && education.length) {
       setEducationList(education);
     }
   }, [education]);
@@ -28,8 +28,11 @@ export default function Education() {
     setEditRecord(record);
   };
 
-  const educationAdded = async () => {
-    await fetchEducation();
+  const educationAdded = async (added) => {
+    setEditRecord(null);
+    if (added) {
+      await fetchEducation();
+    }
   };
 
   return (
@@ -81,10 +84,11 @@ export default function Education() {
                 <h6 className="text-thm">{item.institution}</h6>
                 <p>{item.description}</p>
               </div>
-              <div className="m-circle before-none text-thm">Y</div>
+              {/* <div className="m-circle before-none text-thm">Y</div> */}
             </div>
           ))}
         </div>
+        {educationList.length === 0 && <div>No Edcucation found</div>}
       </div>
       <EducationModal editRecord={editRecord} educationAdded={educationAdded} />
     </>
