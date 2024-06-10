@@ -14,7 +14,6 @@ import toggleStore from "@/store/toggleStore";
 import { footer } from "@/data/footer";
 import "react-tooltip/dist/react-tooltip.css";
 import "react-toastify/dist/ReactToastify.css";
-import "bootstrap/dist/css/bootstrap.min.css";
 import NavSidebar from "@/components/sidebar/NavSidebar";
 
 if (typeof window !== "undefined") {
