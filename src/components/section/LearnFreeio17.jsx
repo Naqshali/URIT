@@ -1,14 +1,14 @@
 "use client";
-import LearnFreeioCard from "../card/LearnFreeioCard";
+import LearnURITCard from "../card/LearnURITCard";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation, Pagination } from "swiper";
-import { learnFreeio1 } from "@/data/project";
+import { learnURIT1 } from "@/data/project";
 import React, { useEffect, useState } from "react";
 
-export default function LearnFreeio17() {
+export default function LearnURIT17() {
   const [showSwiper, setShowSwiper] = useState(false);
   useEffect(() => {
     setShowSwiper(true);
@@ -20,7 +20,7 @@ export default function LearnFreeio17() {
         <div className="row align-items-center wow fadeInUp">
           <div className="col-lg-9 mx-auto">
             <div className="main-title text-center">
-              <h2 className="title">People Love To Learn With Freeio</h2>
+              <h2 className="title">People Love To Learn With URIT</h2>
               <p className="paragraph">
                 Lorem ipsum dolor sit amet, consectetur.
               </p>
@@ -63,9 +63,9 @@ export default function LearnFreeio17() {
                     },
                   }}
                 >
-                  {learnFreeio1.map((item, index) => (
+                  {learnURIT1.map((item, index) => (
                     <SwiperSlide key={index}>
-                      <LearnFreeioCard data={item} />
+                      <LearnURITCard data={item} />
                     </SwiperSlide>
                   ))}
                 </Swiper>

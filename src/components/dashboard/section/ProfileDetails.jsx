@@ -27,9 +27,6 @@ export default function ProfileDetails() {
   const [showToastr, setShowToastr] = useState(false);
 
   useEffect(() => {
-    const fetchProfileDetails = async () => {
-      await getProfileDetails();
-    };
     fetchProfileDetails();
   }, []);
 
@@ -38,6 +35,10 @@ export default function ProfileDetails() {
       setProfileObj(profileDetails);
     }
   }, [profileDetails]);
+
+  const fetchProfileDetails = async () => {
+    await getProfileDetails();
+  };
 
   const handleInputChange = (e, selectField) => {
     const field = selectField || e.target;

@@ -4,7 +4,7 @@ import Link from "next/link";
 import React from "react";
 import CountUp from "react-countup";
 
-export default function LearnFreeio16() {
+export default function LearnURIT16() {
   return (
     <section className="hover-bgc-color pb90 pb30-md overflow-hidden  cta-home5-style">
       <Image
@@ -81,7 +81,7 @@ export default function LearnFreeio16() {
                   </ul>
                   <p className="fz15 dark-color">
                     Clients rate <br />
-                    professionals on Freeio
+                    professionals on URIT
                   </p>
                 </div>
                 <div className="funfact-style1 at-home5 bdrs16 text-center ms-md-auto">

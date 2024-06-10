@@ -5,10 +5,13 @@ export const decodeJWT = (token)=>{
     try {
         token = token.split(" ")[1]
         const decodedToken = decode(token);
+        console.log("Aaa",decodedToken)
+        const type = decodedToken.payload.resource_access["urit-service-provider"] || decodedToken.payload.resource_access["urit-client"]
         const userData = {
             name:decodedToken.payload.name,
-            userType:decodedToken.payload.resource_access["urit-service-provider"].roles[0]
+            userType:type.roles[0]
         }
+        console.log("Aaa",userData)
         return userData
     } catch (error) {
         return null

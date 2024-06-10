@@ -17,8 +17,7 @@ const herobg = [
         and more works.
       </>
     ),
-    brief:
-      "Millions of people use freeio.com to turn their ideas into reality.",
+    brief: "Millions of people use URIT to turn their ideas into reality.",
   },
   {
     id: 2,
@@ -29,8 +28,7 @@ const herobg = [
         Your Business.
       </>
     ),
-    brief:
-      "Millions of people use freeio.com to turn their ideas into reality.",
+    brief: "Millions of people use URIT to turn their ideas into reality.",
   },
   {
     id: 2,
@@ -41,8 +39,7 @@ const herobg = [
         ando more work.
       </>
     ),
-    brief:
-      "Millions of people use freeio.com to turn their ideas into reality.",
+    brief: "Millions of people use URIT to turn their ideas into reality.",
   },
 ];
 

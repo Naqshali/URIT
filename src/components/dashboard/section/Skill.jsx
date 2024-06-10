@@ -1,11 +1,11 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SelectInput from "../option/SelectInput";
 import profileStore from "@/store/myprofile/profile";
 import Toastr from "@/components/toastr/toastr";
 
 export default function Skill() {
-  const { updateSkills } = profileStore();
+  const { allSkills, getSkills, updateSkills } = profileStore();
   const [showToastr, setShowToastr] = useState(false);
   const [skills, setSkills] = useState([
     {
@@ -13,6 +13,20 @@ export default function Skill() {
       points: "",
     },
   ]);
+
+  useEffect(() => {
+    fetchSkills();
+  }, []);
+
+  useEffect(() => {
+    if (allSkills) {
+      setSkills(allSkills);
+    }
+  }, [allSkills]);
+
+  const fetchSkills = async () => {
+    await getSkills();
+  };
 
   const handleInputChange = (e, selectField) => {
     const { name, value, index } = selectField;

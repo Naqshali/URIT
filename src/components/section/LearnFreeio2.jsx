@@ -1,8 +1,8 @@
 "use client";
 import CountUp from "react-countup";
-import LearnFreeIoCard2 from "../card/LearnFreeIoCard2";
+import LearnURITCard2 from "../card/LearnURITCard2";
 
-export default function LearnFreeio2() {
+export default function LearnURIT2() {
   return (
     <>
       <section className="hover-bgc-color pb90 pb30-md overflow-hidden">
@@ -10,7 +10,7 @@ export default function LearnFreeio2() {
           <div className="row align-items-center wow fadeInUp">
             <div className="col-lg-9">
               <div className="main-title">
-                <h2 className="title">People Love To Learn With Freeio</h2>
+                <h2 className="title">People Love To Learn With URIT</h2>
                 <p className="paragraph">
                   Lorem ipsum dolor sit amet, consectetur.
                 </p>
@@ -22,7 +22,7 @@ export default function LearnFreeio2() {
               .fill(3)
               .map((_, i) => (
                 <div key={i} className="col-sm-6 col-lg-4">
-                  <LearnFreeIoCard2 />
+                  <LearnURITCard2 />
                 </div>
               ))}
           </div>
@@ -51,7 +51,7 @@ export default function LearnFreeio2() {
                     </li>
                   </ul>
                   <p className="text mb-0">
-                    Clients rate professionals on Freeio
+                    Clients rate professionals on URIT
                   </p>
                 </div>
               </div>

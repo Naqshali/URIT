@@ -15,8 +15,7 @@ export default function Hero4() {
                   any job, online.
                 </h1>
                 <p className="text animate-up-2">
-                  Millions of people use freeio.com to turn their ideas into
-                  reality.
+                  Millions of people use URIT to turn their ideas into reality.
                 </p>
                 <div className="d-flex align-items-center mt30 animate-up-3">
                   <Link href="/job-1" className="ud-btn btn-thm me-3">

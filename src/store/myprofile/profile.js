@@ -7,13 +7,12 @@ const profileStore = create((set)=>({
     profileDetails:null,
     education:null,
     workExperiance:null,
-    skills:null,
+    allSkills:null,
     awards:null,
 
     getProfileDetails:async () =>{
         const res = await axiosInstance.get("/api/v1/user-profile");
         if(res.data){
-            console.log("res.data", res.data.tagline === null)
             set({profileDetails: transformData(res.data)})
         }
     },
@@ -28,7 +27,7 @@ const profileStore = create((set)=>({
     getSkills:async () =>{
         const res = await axiosInstance.get("/api/v1/users/skills");
         if(res.data){
-            set({skills:{...res.data}})
+            set({allSkills:res.data})
         }
     },
     updateSkills: async (data)=>{

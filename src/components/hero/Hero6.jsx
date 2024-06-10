@@ -35,8 +35,7 @@ export default function Hero6() {
                   do more work.
                 </h1>
                 <p className="animate-up-2 ff-heading mb30 text">
-                  Millions of people use freeio.com to turn their ideas into
-                  reality.
+                  Millions of people use URIT to turn their ideas into reality.
                 </p>
                 <div className="advance-search-tab at-home6 bgc-white bdrs4 p10 position-relative zi2 animate-up-3">
                   <div className="row">
@@ -62,9 +61,11 @@ export default function Hero6() {
                   <p className="hero-text fz15 me-2 mb-0 text">
                     Popular Searches
                   </p>
-                  {popular.map((elm,i)=><a key={i} style={{marginRight:'5px'}} >
-                          {`${elm}${(i != (popular.length -1)) ? ',':' '}`}
-                        </a>)}
+                  {popular.map((elm, i) => (
+                    <a key={i} style={{ marginRight: "5px" }}>
+                      {`${elm}${i != popular.length - 1 ? "," : " "}`}
+                    </a>
+                  ))}
                 </div>
               </div>
             </div>

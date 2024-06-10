@@ -109,8 +109,7 @@ export default function Hero9() {
                   Your Business
                 </h3>
                 <p className="banner-text text-white ff-heading mb30">
-                  Millions of people use freeio.com to turn their ideas into
-                  reality.
+                  Millions of people use URIT to turn their ideas into reality.
                 </p>
                 <div className="advance-search-tab bgc-white bdrs60 p10 bdrs4-sm banner-btn position-relative zi9">
                   <div className="row">

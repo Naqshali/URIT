@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export default function LearnFreeioCard({ data }) {
+export default function LearnURITCard({ data }) {
   return (
     <>
       <div className="testimonial-style1 default-box-shadow1 position-relative bdrs16">

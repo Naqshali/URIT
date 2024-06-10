@@ -1,15 +1,13 @@
-
 import FaqPayment from "@/components/section/FaqPayment";
 import FaqSuggestion from "@/components/section/FaqSuggestion";
 
 export const metadata = {
-  title: "Freeio - Freelance Marketplace React/Next Js Template | FAQ",
+  title: "URIT - Freelance Marketplace React/Next Js Template | FAQ",
 };
 
 export default function page() {
   return (
     <>
-    
       <section className="our-faq pb50">
         <div className="container">
           <div className="row">

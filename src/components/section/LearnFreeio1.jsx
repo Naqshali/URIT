@@ -1,16 +1,16 @@
 "use client";
-import LearnFreeioCard from "../card/LearnFreeioCard";
+import LearnURITCard from "../card/LearnURITCard";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation, Pagination } from "swiper";
-import { learnFreeio1 } from "@/data/project";
+import { learnURIT1 } from "@/data/project";
 import CountUp from "react-countup";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function LearnFreeio1() {
+export default function LearnURIT1() {
   const path = usePathname();
 
   const [showSwiper, setShowSwiper] = useState(false);
@@ -33,7 +33,7 @@ export default function LearnFreeio1() {
               data-wow-delay="100ms"
             >
               <div className="main-title">
-                <h2 className="title">People Love To Learn With Freeio</h2>
+                <h2 className="title">People Love To Learn With URIT</h2>
                 <p className="paragraph">
                   Lorem ipsum dolor sit amet, consectetur.
                 </p>
@@ -63,7 +63,7 @@ export default function LearnFreeio1() {
                         </li>
                       </ul>
                       <p className="text mb-0">
-                        Clients rate professionals on Freeio
+                        Clients rate professionals on URIT
                       </p>
                     </div>
                   </div>
@@ -119,9 +119,9 @@ export default function LearnFreeio1() {
                       clickable: true,
                     }}
                   >
-                    {learnFreeio1.map((item, index) => (
+                    {learnURIT1.map((item, index) => (
                       <SwiperSlide key={index}>
-                        <LearnFreeioCard data={item} />
+                        <LearnURITCard data={item} />
                       </SwiperSlide>
                     ))}
                   </Swiper>
