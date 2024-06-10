@@ -1,7 +1,7 @@
 "use client";
 import { Tooltip } from "react-tooltip";
 import WorkExperienceModal from "@/components/dashboard/modal/WorkExperiance";
-import DeleteModal from "@/components/dashboard/modal/DeleteModal";
+import WorkExperianceDeleteModal from "@/components/dashboard/modal/DeleteModals/WorkExperianceDeleteModal";
 import { useEffect, useState } from "react";
 import profileStore from "@/store/myprofile/profile";
 import { dateFormat } from "@/utils/global";
@@ -86,7 +86,7 @@ export default function WorkExperience() {
                       className="icon"
                       id="delete"
                       data-bs-toggle="modal"
-                      data-bs-target="#deleteModal"
+                      data-bs-target="#workExperianceDeleteModal"
                       onClick={() => setDeleteRecordId(item.id)}
                     >
                       <Tooltip anchorSelect="#delete" className="ui-tooltip">
@@ -113,12 +113,7 @@ export default function WorkExperience() {
         workExperianceAdded={workExperianceAdded}
       />
       {showToastr && <Toastr showToastr={showToastr} />}
-      {deletedRecordId && (
-        <DeleteModal
-          action={deleteWorkExperianceRecord}
-          name="work experiance"
-        />
-      )}
+      <WorkExperianceDeleteModal action={deleteWorkExperianceRecord} />
     </>
   );
 }

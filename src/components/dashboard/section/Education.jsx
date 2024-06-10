@@ -1,8 +1,7 @@
 "use client";
 import { Tooltip } from "react-tooltip";
 import EducationModal from "@/components/dashboard/modal/Education";
-import DeleteModal from "@/components/dashboard/modal/DeleteModal";
-import MyModal from "@/components/dashboard/modal/test";
+import EducationDeleteModal from "@/components/dashboard/modal/DeleteModals/EducationDeleteModal";
 import { useEffect, useState } from "react";
 import profileStore from "@/store/myprofile/profile";
 import { dateFormat } from "@/utils/global";
@@ -89,7 +88,7 @@ export default function Education({ meta }) {
                       className="icon"
                       id="delete"
                       data-bs-toggle="modal"
-                      data-bs-target="#deleteModal"
+                      data-bs-target="#educationDeleteModal"
                       onClick={() => setDeleteRecordId(item.id)}
                     >
                       <Tooltip anchorSelect="#delete" className="ui-tooltip">
@@ -117,10 +116,7 @@ export default function Education({ meta }) {
         meta={meta}
       />
       {showToastr && <Toastr showToastr={showToastr} />}
-      {deletedRecordId && (
-        <DeleteModal action={deleteEducationRecord} name="education" />
-      )}
-      <MyModal></MyModal>
+      <EducationDeleteModal action={deleteEducationRecord} />
     </>
   );
 }

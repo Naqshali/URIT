@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { Tooltip } from "react-tooltip";
 import AwardsModal from "@/components/dashboard/modal/Awards";
-import DeleteModal from "@/components/dashboard/modal/DeleteModal";
+import AwardsDeleteModal from "@/components/dashboard/modal/DeleteModals/AwardsDeleteModal";
 import profileStore from "@/store/myprofile/profile";
 import { dateFormat } from "@/utils/global";
 import Toastr from "@/components/toastr/toastr";
@@ -83,7 +83,7 @@ export default function Award() {
                       className="icon"
                       id="delete"
                       data-bs-toggle="modal"
-                      data-bs-target="#deleteModal"
+                      data-bs-target="#awardsDeleteModal"
                       onClick={() => setDeleteRecordId(item.id)}
                     >
                       <Tooltip anchorSelect="#delete" className="ui-tooltip">
@@ -105,9 +105,7 @@ export default function Award() {
       </div>
       <AwardsModal editRecord={editRecord} awardsAdded={awardsAdded} />
       {showToastr && <Toastr showToastr={showToastr} />}
-      {/* {deletedRecordId && (
-        <DeleteModal action={deleteAwardRecord} name="award" />
-      )} */}
+      <AwardsDeleteModal action={deleteAwardRecord} />
     </>
   );
 }
