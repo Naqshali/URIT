@@ -10,13 +10,12 @@ export default function Toastr({ showToastr }) {
   }, [showToastr]);
 
   const openToastr = () => {
-    toast.success("This is a success message!", {
-      autoClose: 50000,
+    toast.success(showToastr.description, {
+      autoClose: 3000,
       className: "custom-toastr",
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
-      draggable: true,
       progress: undefined,
     });
   };

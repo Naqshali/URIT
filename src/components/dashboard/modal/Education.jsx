@@ -3,9 +3,11 @@ import SelectInput from "../option/SelectInput";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import profileStore from "@/store/myprofile/profile";
+import Toastr from "@/components/toastr/toastr";
 
-export default function EducationModal({ educationAdded, mode }) {
-  const { education, getEducation, saveEducation } = profileStore();
+export default function EducationModal({ editRecord, educationAdded }) {
+  const { saveEducation, updateEducation } = profileStore();
+  const [showToastr, setShowToastr] = useState(false);
   const [educationObj, setEducationObj] = useState({
     degree: "",
     institution: "",
@@ -15,18 +17,21 @@ export default function EducationModal({ educationAdded, mode }) {
   });
 
   useEffect(() => {
-    const fetchEducation = async () => {
-      await getEducation();
-    };
-    fetchEducation();
-  }, []);
-
-  useEffect(() => {
-    if (education) {
-      console.log("education", education);
-      setEducationObj(education);
+    if (editRecord) {
+      setEducationObj(editRecord);
     }
-  }, [education]);
+  }, [editRecord]);
+
+  const resetForm = () => {
+    const obj = {
+      degree: "",
+      institution: "",
+      description: "",
+      startYear: "",
+      endYear: "",
+    };
+    setEducationObj(obj);
+  };
 
   const handleInputChange = (e, selectField) => {
     const field = selectField || e.target;
@@ -46,8 +51,17 @@ export default function EducationModal({ educationAdded, mode }) {
   };
 
   const onSubmitForm = async () => {
-    educationAdded();
-    await saveEducation(educationObj);
+    let result = null;
+    if (editRecord) {
+      result = await updateEducation(educationObj);
+    } else {
+      result = await saveEducation(educationObj);
+    }
+    if (result) {
+      resetForm();
+      educationAdded();
+      setShowToastr(result);
+    }
   };
 
   return (
@@ -165,7 +179,7 @@ export default function EducationModal({ educationAdded, mode }) {
                   aria-label="Close"
                   onClick={() => onSubmitForm()}
                 >
-                  Add
+                  {editRecord ? "Update" : "Add"}
                   <i className="fal fa-arrow-right-long" />
                 </button>
               </form>
@@ -173,6 +187,7 @@ export default function EducationModal({ educationAdded, mode }) {
           </div>
         </div>
       </div>
+      {showToastr && <Toastr showToastr={showToastr} />}
     </>
   );
 }

@@ -35,7 +35,6 @@ export default function ProfileDetails() {
 
   useEffect(() => {
     if (profileDetails) {
-      console.log("profileDetails sss", profileDetails);
       setProfileObj(profileDetails);
     }
   }, [profileDetails]);
@@ -53,7 +52,6 @@ export default function ProfileDetails() {
   const onSubmitForm = async (e) => {
     const result = await updateProfileDetails(profileObj);
     if (result) {
-      console.log("ree", result);
       setShowToastr(result);
     }
   };
@@ -403,7 +401,7 @@ export default function ProfileDetails() {
           </form>
         </div>
       </div>
-      <Toastr showToastr={showToastr} />
+      {showToastr && <Toastr showToastr={showToastr} />}
     </>
   );
 }

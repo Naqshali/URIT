@@ -2,9 +2,11 @@
 import { useState } from "react";
 import SelectInput from "../option/SelectInput";
 import profileStore from "@/store/myprofile/profile";
+import Toastr from "@/components/toastr/toastr";
 
 export default function Skill() {
   const { updateSkills } = profileStore();
+  const [showToastr, setShowToastr] = useState(false);
   const [skills, setSkills] = useState([
     {
       name: "",
@@ -37,7 +39,9 @@ export default function Skill() {
 
   const onSubmitForm = async () => {
     const result = await updateSkills(skills);
-    console.log("result", result);
+    if (result) {
+      setShowToastr(result);
+    }
   };
 
   return (
@@ -131,6 +135,7 @@ export default function Skill() {
           </div>
         </div>
       </div>
+      {showToastr && <Toastr showToastr={showToastr} />}
     </>
   );
 }

@@ -1,4 +1,5 @@
 import { decode } from 'jwt-js-decode';
+import moment from "moment";
 
 export const decodeJWT = (token)=>{
     try {
@@ -23,4 +24,9 @@ export const transformData = (data) => {
         }
     }
     return transformedData;
-};
+}
+
+export const dateFormat = (date) =>{
+    if(!date) return
+    return moment(date).format('D MMMM YYYY');
+}

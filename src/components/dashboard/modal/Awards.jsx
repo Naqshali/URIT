@@ -1,16 +1,34 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import profileStore from "@/store/myprofile/profile";
+import Toastr from "@/components/toastr/toastr";
 
-export default function AwardsModal({ awardsAdded }) {
-  const { saveAwards } = profileStore();
+export default function AwardsModal({ editRecord, awardsAdded }) {
+  const { saveAwards, updateAwards } = profileStore();
+  const [showToastr, setShowToastr] = useState(false);
   const [awardsObj, setAwardsObj] = useState({
     title: "",
     issuedBy: "",
     description: "",
     issueDate: "",
   });
+
+  useEffect(() => {
+    if (editRecord) {
+      setAwardsObj(editRecord);
+    }
+  }, [editRecord]);
+
+  const resetForm = () => {
+    const obj = {
+      title: "",
+      issuedBy: "",
+      description: "",
+      issueDate: "",
+    };
+    setAwardsObj(obj);
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -28,8 +46,17 @@ export default function AwardsModal({ awardsAdded }) {
   };
 
   const onSubmitForm = async () => {
-    awardsAdded();
-    await saveAwards(awardsObj);
+    let result = null;
+    if (editRecord) {
+      result = await updateAwards(awardsObj);
+    } else {
+      result = await saveAwards(awardsObj);
+    }
+    if (result) {
+      resetForm();
+      setShowToastr(result);
+      awardsAdded();
+    }
   };
 
   return (
@@ -113,7 +140,7 @@ export default function AwardsModal({ awardsAdded }) {
                   aria-label="Close"
                   onClick={() => onSubmitForm()}
                 >
-                  Add
+                  {editRecord ? "Update" : "Add"}
                   <i className="fal fa-arrow-right-long" />
                 </button>
               </form>
@@ -121,6 +148,7 @@ export default function AwardsModal({ awardsAdded }) {
           </div>
         </div>
       </div>
+      {showToastr && <Toastr showToastr={showToastr} />}
     </>
   );
 }

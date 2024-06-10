@@ -1,10 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import profileStore from "@/store/myprofile/profile";
+import Toastr from "@/components/toastr/toastr";
 
-export default function workExperianceModal({ workExperianceAdded }) {
+export default function workExperianceModal({
+  editRecord,
+  workExperianceAdded,
+}) {
   const { saveWorkExperiance } = profileStore();
+  const [showToastr, setShowToastr] = useState(false);
   const [workExperianceObj, setWorkExperianceObj] = useState({
     designation: "",
     company: "",
@@ -12,6 +17,12 @@ export default function workExperianceModal({ workExperianceAdded }) {
     startYear: "",
     endYear: "",
   });
+
+  useEffect(() => {
+    if (editRecord) {
+      setWorkExperianceObj(editRecord);
+    }
+  }, [editRecord]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -29,8 +40,16 @@ export default function workExperianceModal({ workExperianceAdded }) {
   };
 
   const onSubmitForm = async () => {
-    workExperianceAdded();
-    await saveWorkExperiance(workExperianceObj);
+    let result = null;
+    if (editRecord) {
+      result = await updateWorkExperiance(workExperianceObj);
+    } else {
+      result = await saveWorkExperiance(workExperianceObj);
+    }
+    if (result) {
+      workExperianceAdded();
+      setShowToastr(result);
+    }
   };
 
   return (
@@ -130,7 +149,7 @@ export default function workExperianceModal({ workExperianceAdded }) {
                   aria-label="Close"
                   onClick={() => onSubmitForm()}
                 >
-                  Add
+                  {editRecord ? "Update" : "Add"}
                   <i className="fal fa-arrow-right-long" />
                 </button>
               </form>
@@ -138,6 +157,7 @@ export default function workExperianceModal({ workExperianceAdded }) {
           </div>
         </div>
       </div>
+      {showToastr && <Toastr showToastr={showToastr} />}
     </>
   );
 }

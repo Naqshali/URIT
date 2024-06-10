@@ -1,10 +1,35 @@
 "use client";
 import { Tooltip } from "react-tooltip";
 import WorkExperienceModal from "@/components/dashboard/modal/WorkExperiance";
+import { useEffect, useState } from "react";
+import profileStore from "@/store/myprofile/profile";
+import { dateFormat } from "@/utils/global";
 
 export default function WorkExperience() {
-  const workExperianceAdded = () => {
-    console.log("Added");
+  const { workExperiance, getWorkExperiance } = profileStore();
+  const [workExperianceList, setWorkExperianceList] = useState([]);
+  const [editRecord, setEditRecord] = useState(null);
+
+  useEffect(() => {
+    fetchWorkExperiance();
+  }, []);
+
+  useEffect(() => {
+    if (workExperiance) {
+      setWorkExperianceList(workExperianceList);
+    }
+  }, [workExperiance]);
+
+  const fetchWorkExperiance = async () => {
+    await getWorkExperiance();
+  };
+
+  const editWorkExpeianceRecord = (record) => {
+    setEditRecord(record);
+  };
+
+  const workExperianceAdded = async () => {
+    await fetchWorkExperiance();
   };
   return (
     <>
@@ -17,71 +42,46 @@ export default function WorkExperience() {
           </a>
         </div>
         <div className="position-relative">
-          <div className="educational-quality">
-            <div className="m-circle text-thm">M</div>
-            <div className="wrapper mb40 position-relative">
-              <div className="del-edit">
-                <div className="d-flex">
-                  <a className="icon me-2" id="edit">
-                    <Tooltip anchorSelect="#edit" className="ui-tooltip">
-                      Edit
-                    </Tooltip>
-                    <span className="flaticon-pencil" />
-                  </a>
-                  <a className="icon" id="delete">
-                    <Tooltip anchorSelect="#delete" className="ui-tooltip">
-                      Delete
-                    </Tooltip>
-                    <span className="flaticon-delete" />
-                  </a>
+          {workExperianceList.map((item, ind) => (
+            <div className="educational-quality">
+              <div className="m-circle text-thm">M</div>
+              <div className="wrapper mb40 position-relative">
+                <div className="del-edit">
+                  <div className="d-flex">
+                    <a className="icon me-2" id="edit">
+                      <Tooltip
+                        anchorSelect="#edit"
+                        className="ui-tooltip"
+                        onClick={() => editWorkExpeianceRecord(item)}
+                      >
+                        Edit
+                      </Tooltip>
+                      <span className="flaticon-pencil" />
+                    </a>
+                    <a className="icon" id="delete">
+                      <Tooltip anchorSelect="#delete" className="ui-tooltip">
+                        Delete
+                      </Tooltip>
+                      <span className="flaticon-delete" />
+                    </a>
+                  </div>
                 </div>
+                <span className="tag">
+                  {dateFormat(item.startYear)} - {dateFormat(item.endYear)}
+                </span>
+                <h5 className="mt15">{item.designation}</h5>
+                <h6 className="text-thm">{item.company}</h6>
+                <p>{item.description}</p>
               </div>
-              <span className="tag">2012 - 2014</span>
-              <h5 className="mt15">UX Designer</h5>
-              <h6 className="text-thm">Dropbox</h6>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a
-                ipsum tellus. Interdum et malesuada fames ac ante ipsum{" "}
-                <br className="d-none d-lg-block" /> primis in faucibus.
-              </p>
+              <div className="m-circle before-none text-thm">M</div>
             </div>
-            <div className="m-circle before-none text-thm">M</div>
-            <div className="wrapper mb30 position-relative">
-              <div className="del-edit">
-                <div className="d-flex">
-                  <a className="icon me-2" id="edit">
-                    <Tooltip anchorSelect="#edit" className="ui-tooltip">
-                      Edit
-                    </Tooltip>
-                    <span className="flaticon-pencil" />
-                  </a>
-                  <a className="icon" id="delete">
-                    <Tooltip anchorSelect="#delete" className="ui-tooltip">
-                      Delete
-                    </Tooltip>
-                    <span className="flaticon-delete" />
-                  </a>
-                </div>
-              </div>
-              <span className="tag">2008 - 2012</span>
-              <h5 className="mt15">Art Director</h5>
-              <h6 className="text-thm">amazon</h6>
-              <p className="mb-0">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a
-                ipsum tellus. Interdum et malesuada fames ac ante ipsum{" "}
-                <br className="d-none d-lg-block" /> primis in faucibus.
-              </p>
-            </div>
-          </div>
-          <div className="text-start">
-            <a className="ud-btn btn-thm">
-              Save
-              <i className="fal fa-arrow-right-long" />
-            </a>
-          </div>
+          ))}
         </div>
       </div>
-      <WorkExperienceModal workExperianceAdded={workExperianceAdded} />
+      <WorkExperienceModal
+        editRecord={editRecord}
+        workExperianceAdded={workExperianceAdded}
+      />
     </>
   );
 }

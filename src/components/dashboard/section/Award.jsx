@@ -1,11 +1,38 @@
 "use client";
+import { useState, useEffect } from "react";
 import { Tooltip } from "react-tooltip";
 import AwardsModal from "@/components/dashboard/modal/Awards";
+import profileStore from "@/store/myprofile/profile";
+import { dateFormat } from "@/utils/global";
 
 export default function Award() {
-  const awardsAdded = () => {
-    console.log("yeessss");
+  const { awards, getAwards } = profileStore();
+  const [awardsList, setAwardsList] = useState([]);
+  const [editRecord, setEditRecord] = useState(null);
+
+  useEffect(() => {
+    fetchAwards();
+  }, []);
+
+  useEffect(() => {
+    if (awards) {
+      setAwardsList(awards);
+    }
+  }, [awards]);
+
+  const fetchAwards = async () => {
+    await getAwards();
   };
+
+  const editAwardRecord = (record) => {
+    setEditRecord(record);
+  };
+
+  const awardsAdded = async () => {
+    setEditRecord(null);
+    await fetchAwards();
+  };
+
   return (
     <>
       <div className="ps-widget bgc-white bdrs4 p30 mb30 overflow-hidden position-relative">
@@ -18,68 +45,40 @@ export default function Award() {
         </div>
         <div className="position-relative">
           <div className="educational-quality ps-0">
-            <div className="wrapper mb40 position-relative">
-              <div className="del-edit">
-                <div className="d-flex">
-                  <a className="icon me-2" id="edit">
-                    <Tooltip anchorSelect="#edit" className="ui-tooltip">
-                      Edit
-                    </Tooltip>
-                    <span className="flaticon-pencil" />
-                  </a>
-                  <a className="icon" id="delete">
-                    <Tooltip anchorSelect="#delete" className="ui-tooltip">
-                      Delete
-                    </Tooltip>
-                    <span className="flaticon-delete" />
-                  </a>
+            {awardsList.map((item, ind) => (
+              <div className="wrapper mb40 position-relative" key={ind}>
+                <div className="del-edit">
+                  <div className="d-flex">
+                    <a
+                      className="icon me-2"
+                      id="edit"
+                      data-bs-toggle="modal"
+                      data-bs-target="#awardsModal"
+                      onClick={() => editAwardRecord(item)}
+                    >
+                      <Tooltip anchorSelect="#edit" className="ui-tooltip">
+                        Edit
+                      </Tooltip>
+                      <span className="flaticon-pencil" />
+                    </a>
+                    <a className="icon" id="delete">
+                      <Tooltip anchorSelect="#delete" className="ui-tooltip">
+                        Delete
+                      </Tooltip>
+                      <span className="flaticon-delete" />
+                    </a>
+                  </div>
                 </div>
+                <span className="tag">{dateFormat(item.issueDate)}</span>
+                <h5 className="mt15">{item.title}</h5>
+                <h6 className="text-thm">{item.issuedBy}</h6>
+                <p>{item.description}</p>
               </div>
-              <span className="tag">2012 - 2014</span>
-              <h5 className="mt15">UI UX Design</h5>
-              <h6 className="text-thm">Udemy</h6>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a
-                ipsum tellus. Interdum et malesuada fames ac ante ipsum{" "}
-                <br className="d-none d-lg-block" /> primis in faucibus.
-              </p>
-            </div>
-            <div className="wrapper mb40 position-relative">
-              <div className="del-edit">
-                <div className="d-flex">
-                  <a className="icon me-2" id="edit">
-                    <Tooltip anchorSelect="#edit" className="ui-tooltip">
-                      Edit
-                    </Tooltip>
-                    <span className="flaticon-pencil" />
-                  </a>
-                  <a className="icon" id="delete">
-                    <Tooltip anchorSelect="#delete" className="ui-tooltip">
-                      Delete
-                    </Tooltip>
-                    <span className="flaticon-delete" />
-                  </a>
-                </div>
-              </div>
-              <span className="tag">2008 - 2012</span>
-              <h5 className="mt15">App Design</h5>
-              <h6 className="text-thm">Google</h6>
-              <p className="mb-0">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a
-                ipsum tellus. Interdum et malesuada fames ac ante ipsum{" "}
-                <br className="d-none d-lg-block" /> primis in faucibus.
-              </p>
-            </div>
-          </div>
-          <div className="text-start">
-            <a className="ud-btn btn-thm" href="#">
-              Save
-              <i className="fal fa-arrow-right-long" />
-            </a>
+            ))}
           </div>
         </div>
       </div>
-      <AwardsModal awardsAdded={awardsAdded} />
+      <AwardsModal editRecord={editRecord} awardsAdded={awardsAdded} />
     </>
   );
 }
