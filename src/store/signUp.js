@@ -41,6 +41,8 @@ const signUpStore = create((set) => ({
   logout: async (data) => {
     try {
       const res = await axiosInstance.post("/api/v1/logout", data);
+      localStorage.clear();
+      set({ loggedInUser: null });
       console.log("Res", res);
       if (res.data) {
         return res.data;

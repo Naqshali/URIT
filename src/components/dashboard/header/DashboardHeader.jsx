@@ -5,18 +5,26 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import signUpStore from "@/store/signUp";
+import { useRouter } from "next/navigation";
 
 export default function DashboardHeader() {
   const toggle = toggleStore((state) => state.dashboardSlidebarToggleHandler);
   const path = usePathname();
   const { logout } = signUpStore();
+  const router = useRouter();
 
-  const handleLogout = async (key) => {
-    if (key !== "logout") {
-      return;
+  const routeToLink = (item) => {
+    if (item.key !== "logout") {
+      router.push(item.path);
+    } else {
+      handleLogout();
     }
+  };
+
+  const handleLogout = async () => {
     const result = await logout();
     if (result) {
+      router.push("/login");
     }
   };
 
@@ -297,17 +305,16 @@ export default function DashboardHeader() {
                               Start
                             </p>
                             {dasboardNavigation.slice(0, 8).map((item, i) => (
-                              <Link
+                              <a
                                 key={i}
                                 className={`dropdown-item ${
                                   path === item.path ? "active" : ""
                                 }`}
-                                href={item.key !== "logout" && item.path}
-                                onClick={() => handleLogout(item.key)}
+                                onClick={() => routeToLink(item)}
                               >
                                 <i className={`${item.icon} mr10`} />
-                                {item.name} - {item.key}
-                              </Link>
+                                {item.name}
+                              </a>
                             ))}
                             <p className="fz15 fw400 ff-heading mt30 pl30">
                               Organize and Manage
