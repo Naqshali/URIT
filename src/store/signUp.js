@@ -10,6 +10,7 @@ const signUpStore = create((set) => ({
       if (res.data) {
         const decodedToken = decodeJWT(res.data.token);
         set({ loggedInUser: { ...res.data, ...decodedToken } });
+        localStorage.setItem("loggedInUser", { ...res.data, ...decodedToken });
         return res.data;
       }
       return null;
@@ -23,12 +24,31 @@ const signUpStore = create((set) => ({
       if (res.data) {
         const decodedToken = decodeJWT(res.data.token);
         set({ loggedInUser: { ...res.data, ...decodedToken } });
+        localStorage.setItem(
+          "loggedInUser",
+          JSON.stringify({ ...res.data, ...decodedToken })
+        );
         return res.data;
       }
       return null;
     } catch (error) {
       return null;
     }
+  },
+  logout: async (data) => {
+    try {
+      const res = await axiosInstance.post("/api/v1/logout", data);
+      console.log("Res", res);
+      if (res.data) {
+        return res.data;
+      }
+      return null;
+    } catch (error) {
+      return null;
+    }
+  },
+  setUerLoggedInData: (info) => {
+    set({ loggedInUser: info });
   },
 }));
 

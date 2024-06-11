@@ -52,7 +52,7 @@ export default function DashboardHeader() {
                       <input
                         type="text"
                         className="form-control border-0"
-                        placeholder="What service are you looking for today?"
+                        placeholder="What service are you looking for today asd?"
                       />
                       <label>
                         <span className="flaticon-loupe" />

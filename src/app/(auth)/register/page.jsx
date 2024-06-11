@@ -35,7 +35,7 @@ export default function page() {
   };
 
   const createAccount = async () => {
-    const result = await signUp(loginUserObj);
+    const result = await signUp(userObj);
     if (result) {
       router.push("/");
     }

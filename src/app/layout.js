@@ -11,6 +11,7 @@ import Header3 from "@/components/header/Header3";
 import { header1, header3, sidebarEnable } from "@/data/header";
 
 import toggleStore from "@/store/toggleStore";
+import signUpStore from "@/store/signUp";
 import { footer } from "@/data/footer";
 import "react-tooltip/dist/react-tooltip.css";
 import "react-toastify/dist/ReactToastify.css";
@@ -28,8 +29,15 @@ const dmSans = DM_Sans({
 
 export default function RootLayout({ children }) {
   const isListingActive = toggleStore((state) => state.isListingActive);
+  const { setUerLoggedInData } = signUpStore();
   const path = usePathname();
 
+  useEffect(() => {
+    const info = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (info) {
+      setUerLoggedInData(info);
+    }
+  }, []);
   // wow js
   useEffect(() => {
     const { WOW } = require("wowjs");

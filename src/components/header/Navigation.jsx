@@ -16,6 +16,7 @@ export default function Navigation() {
       (loggedInUser?.userType === "SERVICE_PROVIDER" &&
         navItem.key !== "services" &&
         navItem.key !== "freelancers") ||
+      (!loggedInUser && navItem.key !== "my_profile") ||
       loggedInUser === null
     );
   };

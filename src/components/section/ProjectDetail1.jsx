@@ -35,6 +35,7 @@ export default function ProjectDetail1() {
                         <div className="iconbox-style1 contact-style d-flex align-items-start mb30">
                           <div className="icon flex-shrink-0">
                             <span className="flaticon-notification-1" />
+                            asd
                           </div>
                           <div className="details">
                             <h5 className="title">Seller Type</h5>
