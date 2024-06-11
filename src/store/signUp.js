@@ -10,7 +10,10 @@ const signUpStore = create((set) => ({
       if (res.data) {
         const decodedToken = decodeJWT(res.data.token);
         set({ loggedInUser: { ...res.data, ...decodedToken } });
-        localStorage.setItem("loggedInUser", { ...res.data, ...decodedToken });
+        localStorage.setItem(
+          "loggedInUser",
+          JSON.stringify({ ...res.data, ...decodedToken })
+        );
         return res.data;
       }
       return null;

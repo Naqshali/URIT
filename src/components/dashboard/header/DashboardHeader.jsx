@@ -4,10 +4,21 @@ import toggleStore from "@/store/toggleStore";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import signUpStore from "@/store/signUp";
 
 export default function DashboardHeader() {
   const toggle = toggleStore((state) => state.dashboardSlidebarToggleHandler);
   const path = usePathname();
+  const { logout } = signUpStore();
+
+  const handleLogout = async (key) => {
+    if (key !== "logout") {
+      return;
+    }
+    const result = await logout();
+    if (result) {
+    }
+  };
 
   return (
     <>
@@ -52,7 +63,7 @@ export default function DashboardHeader() {
                       <input
                         type="text"
                         className="form-control border-0"
-                        placeholder="What service are you looking for today asd?"
+                        placeholder="What service are you looking for today?"
                       />
                       <label>
                         <span className="flaticon-loupe" />
@@ -291,10 +302,11 @@ export default function DashboardHeader() {
                                 className={`dropdown-item ${
                                   path === item.path ? "active" : ""
                                 }`}
-                                href={item.path}
+                                href={item.key !== "logout" && item.path}
+                                onClick={() => handleLogout(item.key)}
                               >
                                 <i className={`${item.icon} mr10`} />
-                                {item.name}
+                                {item.name} - {item.key}
                               </Link>
                             ))}
                             <p className="fz15 fw400 ff-heading mt30 pl30">
