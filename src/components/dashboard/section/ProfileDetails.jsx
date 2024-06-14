@@ -201,7 +201,7 @@ export default function ProfileDetails({ meta }) {
                   </label>
                   <Select
                     classNamePrefix="custom"
-                    isClearable={true}
+                    isClearable
                     name="gender"
                     value={localMetaData.genders.find(
                       (option) => option.value === profileObj.gender
@@ -218,7 +218,7 @@ export default function ProfileDetails({ meta }) {
                   </label>
                   <Select
                     classNamePrefix="custom"
-                    isClearable={true}
+                    isClearable
                     name="country"
                     value={meta.countries.find(
                       (option) => option.value === profileObj.country
@@ -248,7 +248,7 @@ export default function ProfileDetails({ meta }) {
                   </label>
                   <Select
                     classNamePrefix="custom"
-                    isClearable={true}
+                    isClearable
                     name="language"
                     value={meta.languages.find(
                       (option) => option.value === profileObj.language
@@ -265,7 +265,7 @@ export default function ProfileDetails({ meta }) {
                   </label>
                   <Select
                     classNamePrefix="custom"
-                    isClearable={true}
+                    isClearable
                     name="languageLevel"
                     value={localMetaData.languageLevels.find(
                       (option) => option.value === profileObj.languageLevel

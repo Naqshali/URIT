@@ -49,7 +49,7 @@ export default function SavedInfo() {
                 {/* services tab */}
                 {getCurrentTab === 0 && (
                   <div className="row">
-                    {product1.slice(0, 8).map((item,i) => (
+                    {product1.slice(0, 8).map((item, i) => (
                       <div key={i} className="col-sm-6 col-xl-3">
                         <ServiceCard1 data={item} />
                       </div>
@@ -60,11 +60,8 @@ export default function SavedInfo() {
                 {/* projects tab */}
                 {getCurrentTab === 1 && (
                   <div className="row">
-                    {project1.slice(0, 6).map((item,i) => (
-                      <div
-                        key={i}
-                        className="col-md-6 col-lg-12 col-xl-6"
-                      >
+                    {project1.slice(0, 6).map((item, i) => (
+                      <div key={i} className="col-md-6 col-lg-12 col-xl-6">
                         <ProjectCard1 data={item} />
                       </div>
                     ))}

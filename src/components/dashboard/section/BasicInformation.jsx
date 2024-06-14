@@ -1,13 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import SelectInput from "../option/SelectInput";
 import globalStore from "@/store/global";
+import servicesStore from "@/store/myprofile/services";
 import { localMetaData } from "@/utils/localMetaData";
 import Select from "react-select";
+import Toastr from "@/components/toastr/toastr";
+import CurrencyInput from "react-currency-input-field";
+import { useRouter } from "next/navigation";
 
 export default function BasicInformation() {
+  const router = useRouter();
   const { meta } = globalStore();
+  const { saveService } = servicesStore();
+
+  const [showToastr, setShowToastr] = useState(false);
   const [basicInfoObj, setBasicInfoObj] = useState({
     title: "",
     price: "",
@@ -16,7 +23,7 @@ export default function BasicInformation() {
     city: "",
     language: "",
     languageLevel: "",
-    serviceSkills: [{ name: "", points: "" }],
+    serviceSkills: [],
     serviceDetail: "",
   });
 
@@ -29,14 +36,33 @@ export default function BasicInformation() {
       city: "",
       language: "",
       languageLevel: "",
-      serviceSkills: [{ name: "", points: "" }],
+      serviceSkills: [],
     };
     setBasicInfoObj(obj);
   };
 
+  const handleCurrencyInputChange = (e, name) => {
+    const obj = {
+      target: { name: name, value: e },
+    };
+    handleInputChange(obj);
+  };
+
   const handleInputChange = (e, selectField) => {
+    if (!e && selectField) {
+      setBasicInfoObj({
+        ...basicInfoObj,
+        [selectField.name]: "",
+      });
+      return;
+    }
+
     const name = selectField ? selectField.name : e.target.name;
-    const value = selectField ? e.value : e.target.value;
+    const value = selectField
+      ? Array.isArray(e)
+        ? filterSelectedSkills(e)
+        : e.value
+      : e.target.value;
 
     setBasicInfoObj({
       ...basicInfoObj,
@@ -44,10 +70,17 @@ export default function BasicInformation() {
     });
   };
 
-  const getOptionValue = (option) => option.value;
+  const filterSelectedSkills = (skills) => {
+    return skills.map((item) => item.value);
+  };
 
-  const onSubmitForm = () => {
-    console.log("Aaa", basicInfoObj);
+  const onSubmitForm = async () => {
+    const result = await saveService(basicInfoObj);
+    if (result) {
+      setShowToastr(result);
+      resetBasicInfoObj();
+      router.push("/manage-services");
+    }
   };
 
   return (
@@ -78,11 +111,42 @@ export default function BasicInformation() {
                   <label className="heading-color ff-heading fw500 mb10">
                     Price
                   </label>
-                  <input
-                    type="email"
+                  <CurrencyInput
                     className="form-control"
-                    name="price"
+                    prefix="$"
+                    name="cost"
+                    placeholder="Please enter a number"
                     value={basicInfoObj.price}
+                    onValueChange={handleCurrencyInputChange}
+                  />
+                </div>
+              </div>
+              <div className="col-sm-6">
+                <div className="mb20">
+                  <label className="heading-color ff-heading fw500 mb10">
+                    Country
+                  </label>
+                  <Select
+                    classNamePrefix="custom"
+                    isClearable
+                    name="country"
+                    value={meta.countries.find(
+                      (option) => option.value === basicInfoObj.country
+                    )}
+                    options={meta.countries}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              </div>
+              <div className="col-sm-6">
+                <div className="mb20">
+                  <label className="heading-color ff-heading fw500 mb10">
+                    City
+                  </label>
+                  <input
+                    className="form-control"
+                    name="city"
+                    value={basicInfoObj.city}
                     onChange={handleInputChange}
                   />
                 </div>
@@ -94,70 +158,27 @@ export default function BasicInformation() {
                   </label>
                   <Select
                     classNamePrefix="custom"
+                    isClearable
                     name="languageLevel"
-                    getOptionValue={getOptionValue}
+                    value={localMetaData.languageLevels.find(
+                      (option) => option.value === basicInfoObj.languageLevel
+                    )}
                     options={localMetaData.languageLevels}
                     onChange={handleInputChange}
                   />
                 </div>
               </div>
-              <div>
-                {basicInfoObj.serviceSkills.map((item, ind) => (
-                  <div>
-                    <div className="col-sm-8">
-                      <div className="mb20">
-                        <SelectInput
-                          label="Skills"
-                          defaultSelect={item.name}
-                          data={meta.skills}
-                          handler={handleInputChange}
-                        />
-                      </div>
-                    </div>
-                    <div className="col-sm-4">
-                      <div className="mb20">
-                        <div className="skill-plus-minus-icon mt40">
-                          <button
-                            type="button"
-                            className="plus-minus-icon"
-                            onClick={() => addNewSkill()}
-                          >
-                            <i className="fa-solid fa-plus"></i>
-                          </button>
-
-                          <button
-                            type="button"
-                            className="plus-minus-icon ml-4"
-                            onClick={() => removeNewSkill(ind)}
-                          >
-                            <i className="fa-solid fa-minus"></i>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className="col-sm-6">
-                <div className="mb20">
-                  <SelectInput
-                    label="Country"
-                    defaultSelect={basicInfoObj.country}
-                    name="country"
-                    data={meta.countries}
-                    handler={handleInputChange}
-                  />
-                </div>
-              </div>
-              <div className="col-sm-6">
+              <div className="col-sm-8">
                 <div className="mb20">
                   <label className="heading-color ff-heading fw500 mb10">
-                    City
+                    Skills
                   </label>
-                  <input
-                    type="email"
-                    className="form-control"
-                    value={basicInfoObj.city}
+                  <Select
+                    classNamePrefix="custom"
+                    isClearable
+                    isMulti
+                    name="serviceSkills"
+                    options={meta.skills}
                     onChange={handleInputChange}
                   />
                 </div>
@@ -171,6 +192,7 @@ export default function BasicInformation() {
                     cols={30}
                     rows={6}
                     placeholder="Description"
+                    name="serviceDetail"
                     value={basicInfoObj.serviceDetail}
                     onChange={handleInputChange}
                   />
@@ -192,6 +214,7 @@ export default function BasicInformation() {
           </form>
         </div>
       </div>
+      {showToastr && <Toastr showToastr={showToastr} />}
     </>
   );
 }

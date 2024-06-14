@@ -6,6 +6,9 @@ import { Sticky, StickyContainer } from "react-sticky";
 import ProjectPriceWidget1 from "../element/ProjectPriceWidget1";
 import ProjectContactWidget1 from "../element/ProjectContactWidget1";
 import useScreen from "@/hook/useScreen";
+import proposalsStore from "@/store/myprofile/proposals";
+import { useState } from "react";
+import CurrencyInput from "react-currency-input-field";
 
 const skills = [
   "SaaS",
@@ -20,6 +23,32 @@ const skills = [
 
 export default function ProjectDetail1() {
   const isMatchedScreen = useScreen(1216);
+  const { submitProposal } = proposalsStore();
+
+  const [propodalObj, setProposalObj] = useState({
+    coverLetter: "",
+    hourlyRate: "",
+    estimatedHours: "",
+  });
+
+  const handleCurrencyInputChange = (e, name) => {
+    const obj = {
+      target: { name: name, value: e },
+    };
+    handleInputChange(obj);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setProposalObj({
+      ...propodalObj,
+      [name]: value,
+    });
+  };
+
+  const onSubmitForm = async () => {
+    const result = await submitProposal();
+  };
 
   return (
     <>
@@ -35,7 +64,6 @@ export default function ProjectDetail1() {
                         <div className="iconbox-style1 contact-style d-flex align-items-start mb30">
                           <div className="icon flex-shrink-0">
                             <span className="flaticon-notification-1" />
-                            asd
                           </div>
                           <div className="details">
                             <h5 className="title">Seller Type</h5>
@@ -164,13 +192,16 @@ export default function ProjectDetail1() {
                           <div className="row">
                             <div className="col-md-6">
                               <div className="mb20">
-                                <label className="fw500 ff-heading dark-color mb-2">
+                                <label className="heading-color ff-heading fw500 mb10">
                                   Your hourly price
                                 </label>
-                                <input
-                                  type="text"
+                                <CurrencyInput
                                   className="form-control"
-                                  placeholder="$99"
+                                  prefix="$"
+                                  placeholder="Please enter a number"
+                                  name="hourlyRate"
+                                  value={propodalObj.hourlyRate}
+                                  onValueChange={handleCurrencyInputChange}
                                 />
                               </div>
                             </div>
@@ -179,10 +210,12 @@ export default function ProjectDetail1() {
                                 <label className="fw500 ff-heading dark-color mb-2">
                                   Estimated Hours
                                 </label>
-                                <input
-                                  type="text"
+                                <CurrencyInput
                                   className="form-control"
-                                  placeholder={4}
+                                  placeholder="Please enter a number"
+                                  name="estimatedHours"
+                                  value={propodalObj.estimatedHours}
+                                  onValueChange={handleCurrencyInputChange}
                                 />
                               </div>
                             </div>
@@ -194,7 +227,9 @@ export default function ProjectDetail1() {
                                 <textarea
                                   className="pt15"
                                   rows={6}
-                                  placeholder="There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text."
+                                  name="coverLetter"
+                                  value={propodalObj.coverLetter}
+                                  onChange={handleInputChange}
                                 />
                               </div>
                             </div>

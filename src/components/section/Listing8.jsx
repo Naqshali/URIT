@@ -7,8 +7,25 @@ import Pagination1 from "./Pagination1";
 import listingStore from "@/store/listingStore";
 import priceStore from "@/store/priceStore";
 import ListingSidebarModal2 from "../modal/ListingSidebarModal2";
+import projectsStore from "@/store/myprofile/projects";
+import { useEffect, useState } from "react";
 
 export default function Listing8() {
+  const { allProjects, getProjects } = projectsStore();
+  const [projectsList, setProjectsList] = useState([]);
+
+  useEffect(() => {
+    fetchAllProjects();
+  });
+
+  const fetchAllProjects = async () => {
+    await getProjects();
+  };
+
+  useEffect(() => {
+    setProjectsList(allProjects);
+  }, [allProjects]);
+
   const getCategory = listingStore((state) => state.getCategory);
   const getProjectType = listingStore((state) => state.getProjectType);
   const getPrice = priceStore((state) => state.priceRange);
@@ -83,8 +100,8 @@ export default function Listing8() {
     .filter(speakFilter)
     .filter(englishLevelFilter)
     .filter(sortByFilter)
-    .map((item,i) => (
-      <div key={ i } className="col-md-6 col-lg-12">
+    .map((item, i) => (
+      <div key={i} className="col-md-6 col-lg-12">
         <ProjectCard1 data={item} />
       </div>
     ));

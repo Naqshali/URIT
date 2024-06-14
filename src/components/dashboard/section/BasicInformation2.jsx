@@ -1,98 +1,95 @@
 "use client";
 import { useState } from "react";
 import SelectInput from "../option/SelectInput";
-import Link from "next/link";
+import globalStore from "@/store/global";
+import projectsStore from "@/store/myprofile/projects";
+import Select from "react-select";
+import Toastr from "@/components/toastr/toastr";
+import { localMetaData } from "@/utils/localMetaData";
+import CurrencyInput from "react-currency-input-field";
+import { useRouter } from "next/navigation";
 
 export default function BasicInformation2() {
-  const [getCategory, setCategory] = useState({
-    option: "Select",
-    value: "select",
-  });
-  const [getFreeType, setFreeType] = useState({
-    option: "Select",
-    value: "select",
-  });
-  const [getPriceType, setPriceType] = useState({
-    option: "Select",
-    value: "select",
-  });
-  const [getProjectDuration, setProjectDuration] = useState({
-    option: "Select",
-    value: "select",
-  });
-  const [getLevel, setLevel] = useState({
-    option: "Select",
-    value: "select",
-  });
-  const [getCountry, setCountry] = useState({
-    option: "United States",
-    value: "usa",
-  });
-  const [getCity, setCity] = useState({
-    option: "New York",
-    value: "new-york",
-  });
-  const [getLanguage, setLanguage] = useState({
-    option: "Select",
-    value: null,
-  });
-  const [getLanLevel, setLanLevel] = useState({
-    option: "Select",
-    value: null,
-  });
-  const [getSkill, setSkill] = useState({
-    option: "Nothing selected",
-    value: null,
+  const router = useRouter();
+  const { meta } = globalStore();
+  const { saveProject } = projectsStore();
+
+  const [showToastr, setShowToastr] = useState(false);
+  const [basicInfoObj, setBasicInfoObj] = useState({
+    title: "",
+    projectCategory: "",
+    freelancerType: "",
+    priceType: "",
+    cost: "",
+    description: "",
+    projectDuration: "",
+    level: "",
+    country: "",
+    city: "",
+    language: "",
+    languageLevel: "",
+    projectSkills: [],
+    details: "",
   });
 
-  // handlers
-  const categoryHandler = (option, value) => {
-    setCategory({
-      option,
-      value,
+  const resetBasicInfoObj = () => {
+    const obj = {
+      title: "",
+      projectCategory: "",
+      freelancerType: "",
+      priceType: "",
+      cost: "",
+      description: "",
+      projectDuration: "",
+      country: "",
+      city: "",
+      language: "",
+      languageLevel: "",
+      projectSkills: [],
+    };
+    setBasicInfoObj(obj);
+  };
+
+  const handleCurrencyInputChange = (e, name) => {
+    const obj = {
+      target: { name: name, value: e },
+    };
+    handleInputChange(obj);
+  };
+
+  const handleInputChange = (e, selectField) => {
+    if (!e && selectField) {
+      setBasicInfoObj({
+        ...basicInfoObj,
+        [selectField.name]: "",
+      });
+      return;
+    }
+
+    const name = selectField ? selectField.name : e.target.name;
+    const value = selectField
+      ? Array.isArray(e)
+        ? filterSelectedSkills(e)
+        : e.value
+      : e.target.value;
+
+    setBasicInfoObj({
+      ...basicInfoObj,
+      [name]: value,
     });
   };
-  const freeTypeHandler = (option, value) => {
-    setFreeType({
-      option,
-      value,
-    });
+
+  const filterSelectedSkills = (skills) => {
+    return skills.map((item) => item.value);
   };
-  const priceTypeHandler = (option, value) => {
-    setPriceType({
-      option,
-      value,
-    });
-  };
-  const projectDurationHandler = (option, value) => {
-    setProjectDuration({
-      option,
-      value,
-    });
-  };
-  const levelHandler = (option, value) => {
-    setLevel({
-      option,
-      value,
-    });
-  };
-  const countryHandler = (option, value) => {
-    setCountry({ option, value });
-  };
-  const cityHandler = (option, value) => {
-    setCity({ option, value });
-  };
-  const languageHandler = (option, value) => {
-    setLanguage({ option, value });
-  };
-  const lanLevelHandler = (option, value) => {
-    setLanLevel({ option, value });
-  };
-  const skillHandler = (option, value) => {
-    setSkill({
-      option,
-      value,
-    });
+
+  const onSubmitForm = async () => {
+    const result = await saveProject(basicInfoObj);
+    if (result) {
+      setShowToastr(result);
+      resetBasicInfoObj();
+      router.push("/manage-projects");
+    }
   };
 
   return (
@@ -112,116 +109,60 @@ export default function BasicInformation2() {
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="i will"
+                    name="title"
+                    value={basicInfoObj.title}
+                    onChange={handleInputChange}
                   />
                 </div>
               </div>
               <div className="col-sm-6">
                 <div className="mb20">
-                  <SelectInput
-                    label="Category"
-                    defaultSelect={getCategory}
-                    handler={categoryHandler}
-                    data={[
-                      {
-                        option: "Select",
-                        value: "select",
-                      },
-                      {
-                        option: "Graphics & Design",
-                        value: "graphics-design",
-                      },
-                      {
-                        option: "Digital Marketing",
-                        value: "digital-marketing",
-                      },
-                      {
-                        option: "Writing & Translation",
-                        value: "writing-translation",
-                      },
-                      {
-                        option: "Video & Animation",
-                        value: "video-animation",
-                      },
-                      {
-                        option: "Music & Audio",
-                        value: "music-audio",
-                      },
-                      {
-                        option: "Programming & Tech",
-                        value: "programming-tech",
-                      },
-                      {
-                        option: "Business",
-                        value: "business",
-                      },
-                      {
-                        option: "Lifestyle",
-                        value: "lifestyle",
-                      },
-                      {
-                        option: "Trending",
-                        value: "trending",
-                      },
-                    ]}
+                  <label className="heading-color ff-heading fw500 mb10">
+                    Category
+                  </label>
+                  <Select
+                    classNamePrefix="custom"
+                    isClearable
+                    name="projectCategory"
+                    value={meta.skills.find(
+                      (option) => option.value === basicInfoObj.projectCategory
+                    )}
+                    options={meta.skills}
+                    onChange={handleInputChange}
                   />
                 </div>
               </div>
               <div className="col-sm-6">
                 <div className="mb20">
-                  <SelectInput
-                    label="Freelancer Type"
-                    defaultSelect={getFreeType}
-                    handler={freeTypeHandler}
-                    data={[
-                      {
-                        option: "Select",
-                        value: "select",
-                      },
-                      {
-                        option: "Full Time",
-                        value: "full-time",
-                      },
-                      {
-                        option: "Part Time",
-                        value: "part-time",
-                      },
-                      {
-                        option: "Project Based",
-                        value: "project-base",
-                      },
-                      {
-                        option: "Other",
-                        value: "other",
-                      },
-                    ]}
+                  <label className="heading-color ff-heading fw500 mb10">
+                    Freelancer Type
+                  </label>
+                  <Select
+                    classNamePrefix="custom"
+                    isClearable
+                    name="freelancerType"
+                    value={localMetaData.freeLancerType.find(
+                      (option) => option.value === basicInfoObj.freelancerType
+                    )}
+                    options={localMetaData.freeLancerType}
+                    onChange={handleInputChange}
                   />
                 </div>
               </div>
               <div className="col-sm-6">
                 <div className="mb20">
-                  <SelectInput
-                    label="Price type"
-                    defaultSelect={getPriceType}
-                    handler={priceTypeHandler}
-                    data={[
-                      {
-                        option: "Select",
-                        value: "select",
-                      },
-                      {
-                        option: "Low($)",
-                        value: "low",
-                      },
-                      {
-                        option: "Mid($$)",
-                        value: "mid",
-                      },
-                      {
-                        option: "High($$$)",
-                        value: "high",
-                      },
-                    ]}
+                  <label className="heading-color ff-heading fw500 mb10">
+                    Price type
+                  </label>
+                  <Select
+                    classNamePrefix="custom"
+                    isClearable
+                    name="priceType"
+                    value={localMetaData.priceTypes.find(
+                      (option) => option.value === basicInfoObj.priceType
+                    )}
+                    options={localMetaData.priceTypes}
+                    onChange={handleInputChange}
                   />
                 </div>
               </div>
@@ -230,227 +171,126 @@ export default function BasicInformation2() {
                   <label className="heading-color ff-heading fw500 mb10">
                     Cost
                   </label>
-                  <input
-                    type="email"
+                  <CurrencyInput
                     className="form-control"
-                    placeholder="$"
+                    prefix="$"
+                    name="cost"
+                    placeholder="Please enter a number"
+                    value={basicInfoObj.cost}
+                    onValueChange={handleCurrencyInputChange}
                   />
                 </div>
               </div>
               <div className="col-sm-6">
                 <div className="mb20">
-                  <SelectInput
-                    label="Project Duration"
-                    defaultSelect={getProjectDuration}
-                    handler={projectDurationHandler}
-                    data={[
-                      {
-                        option: "Select",
-                        value: "select",
-                      },
-                      {
-                        option: "1 Day",
-                        value: "1-day",
-                      },
-                      {
-                        option: "2 Day",
-                        value: "2-day",
-                      },
-                      {
-                        option: "3 Day",
-                        value: "3-day",
-                      },
-                      {
-                        option: "1 Week",
-                        value: "1-week",
-                      },
-                    ]}
+                  <label className="heading-color ff-heading fw500 mb10">
+                    Project Duration
+                  </label>
+                  <Select
+                    classNamePrefix="custom"
+                    isClearable
+                    name="projectDuration"
+                    value={localMetaData.projectDuration.find(
+                      (option) => option.value === basicInfoObj.projectDuration
+                    )}
+                    options={localMetaData.projectDuration}
+                    onChange={handleInputChange}
                   />
                 </div>
               </div>
               <div className="col-sm-6">
                 <div className="mb20">
-                  <SelectInput
-                    label="Level"
-                    defaultSelect={getLevel}
-                    handler={levelHandler}
-                    data={[
-                      {
-                        option: "Select",
-                        value: "select",
-                      },
-                      {
-                        option: "Entry Level",
-                        value: "entry-level",
-                      },
-                      {
-                        option: "Standard Level",
-                        value: "standard-level",
-                      },
-                      {
-                        option: "Expert Level",
-                        value: "expert-level",
-                      },
-                    ]}
+                  <label className="heading-color ff-heading fw500 mb10">
+                    Level
+                  </label>
+                  <Select
+                    classNamePrefix="custom"
+                    isClearable
+                    name="level"
+                    value={localMetaData.projectDuration.find(
+                      (option) => option.value === basicInfoObj.level
+                    )}
+                    options={localMetaData.levels}
+                    onChange={handleInputChange}
                   />
                 </div>
               </div>
               <div className="col-sm-6">
                 <div className="mb20">
-                  <SelectInput
-                    label="Country"
-                    defaultSelect={getCountry}
-                    data={[
-                      {
-                        option: "United States",
-                        value: "usa",
-                      },
-                      {
-                        option: "Canada",
-                        value: "canada",
-                      },
-                      {
-                        option: "United Kingdom",
-                        value: "uk",
-                      },
-                      {
-                        option: "Australia",
-                        value: "australia",
-                      },
-                      {
-                        option: "Germany",
-                        value: "germany",
-                      },
-                      {
-                        option: "Japan",
-                        value: "japan",
-                      },
-                    ]}
-                    handler={countryHandler}
+                  <label className="heading-color ff-heading fw500 mb10">
+                    Country
+                  </label>
+                  <Select
+                    classNamePrefix="custom"
+                    isClearable
+                    name="country"
+                    value={meta.countries.find(
+                      (option) => option.value === basicInfoObj.country
+                    )}
+                    options={meta.countries}
+                    onChange={handleInputChange}
                   />
                 </div>
               </div>
               <div className="col-sm-6">
                 <div className="mb20">
-                  <SelectInput
-                    label="City"
-                    defaultSelect={getCity}
-                    data={[
-                      {
-                        option: "New York",
-                        value: "new-york",
-                      },
-                      {
-                        option: "Toronto",
-                        value: "toronto",
-                      },
-                      {
-                        option: "London",
-                        value: "london",
-                      },
-                      {
-                        option: "Sydney",
-                        value: "sydney",
-                      },
-                      {
-                        option: "Berlin",
-                        value: "berlin",
-                      },
-                      {
-                        option: "Tokyo",
-                        value: "tokyo",
-                      },
-                    ]}
-                    handler={cityHandler}
+                  <label className="heading-color ff-heading fw500 mb10">
+                    City
+                  </label>
+                  <input
+                    className="form-control"
+                    name="city"
+                    value={basicInfoObj.city}
+                    onChange={handleInputChange}
                   />
                 </div>
               </div>
               <div className="col-sm-6">
                 <div className="mb20">
-                  <SelectInput
-                    label="Language"
-                    defaultSelect={getLanguage}
-                    data={[
-                      {
-                        option: "English",
-                        value: "english",
-                      },
-                      {
-                        option: "French",
-                        value: "french",
-                      },
-                      {
-                        option: "German",
-                        value: "german",
-                      },
-                      {
-                        option: "Japanese",
-                        value: "japanese",
-                      },
-                    ]}
-                    handler={languageHandler}
+                  <label className="heading-color ff-heading fw500 mb10">
+                    Language
+                  </label>
+                  <Select
+                    classNamePrefix="custom"
+                    isClearable
+                    name="language"
+                    value={meta.languages.find(
+                      (option) => option.value === basicInfoObj.language
+                    )}
+                    options={meta.languages}
+                    onChange={handleInputChange}
                   />
                 </div>
               </div>
               <div className="col-sm-6">
                 <div className="mb20">
-                  <SelectInput
-                    label="Languages Level"
-                    defaultSelect={getLanLevel}
-                    data={[
-                      {
-                        option: "Beginner",
-                        value: "beginner",
-                      },
-                      {
-                        option: "Intermediate",
-                        value: "intermediate",
-                      },
-                      {
-                        option: "Advanced",
-                        value: "advanced",
-                      },
-                      {
-                        option: "Fluent",
-                        value: "fluent",
-                      },
-                    ]}
-                    handler={lanLevelHandler}
+                  <label className="heading-color ff-heading fw500 mb10">
+                    Language Level
+                  </label>
+                  <Select
+                    classNamePrefix="custom"
+                    isClearable
+                    name="languageLevel"
+                    value={localMetaData.languageLevels.find(
+                      (option) => option.value === basicInfoObj.languageLevel
+                    )}
+                    options={localMetaData.languageLevels}
+                    onChange={handleInputChange}
                   />
                 </div>
               </div>
               <div className="col-sm-12">
                 <div className="mb20">
-                  <SelectInput
-                    label="Skills"
-                    defaultSelect={getSkill}
-                    handler={skillHandler}
-                    data={[
-                      {
-                        option: "Select",
-                        value: "select",
-                      },
-                      {
-                        option: "Figma",
-                        value: "figma",
-                      },
-                      {
-                        option: "Adobe XD",
-                        value: "adobe-xd",
-                      },
-                      {
-                        option: "CSS",
-                        value: "css",
-                      },
-                      {
-                        option: "HTML",
-                        value: "html",
-                      },
-                      {
-                        option: "Bootstrap",
-                        value: "bootstrap",
-                      },
-                    ]}
+                  <label className="heading-color ff-heading fw500 mb10">
+                    Required Skills on Project
+                  </label>
+                  <Select
+                    classNamePrefix="custom"
+                    isClearable
+                    isMulti
+                    name="projectSkills"
+                    options={meta.skills}
+                    onChange={handleInputChange}
                   />
                 </div>
               </div>
@@ -459,21 +299,35 @@ export default function BasicInformation2() {
                   <label className="heading-color ff-heading fw500 mb10">
                     Project Detail
                   </label>
-                  <textarea cols={30} rows={6} placeholder="Description" />
+                  <textarea
+                    cols={30}
+                    rows={6}
+                    placeholder="Description"
+                    name="details"
+                    value={basicInfoObj.details}
+                    onChange={handleInputChange}
+                  />
                 </div>
               </div>
               <div className="col-md-12">
                 <div className="text-start">
-                  <Link className="ud-btn btn-thm" href="/contact">
+                  <button
+                    type="button"
+                    className="ud-btn btn-thm"
+                    onClick={() => {
+                      onSubmitForm();
+                    }}
+                  >
                     Save
                     <i className="fal fa-arrow-right-long" />
-                  </Link>
+                  </button>
                 </div>
               </div>
             </div>
           </form>
         </div>
       </div>
+      {showToastr && <Toastr showToastr={showToastr} />}
     </>
   );
 }

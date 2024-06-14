@@ -1,11 +1,12 @@
 "use client";
 import Link from "next/link";
 import DashboardNavigation from "../header/DashboardNavigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Pagination1 from "@/components/section/Pagination1";
 import ManageProjectCard from "../card/ManageProjectCard";
 import ProposalModal1 from "../modal/ProposalModal1";
 import DeleteModal from "../modal/DeleteModal";
+import projectsStore from "@/store/myprofile/projects";
 
 const tab = [
   "Posted Projects",
@@ -18,6 +19,21 @@ const tab = [
 
 export default function ManageProjectInfo() {
   const [selectedTab, setSelectedTab] = useState(0);
+  const { allProjects, getProjects } = projectsStore();
+  const [projectsList, setProjectsList] = useState([]);
+
+  useEffect(() => {
+    fetchProjects();
+  });
+
+  useEffect(() => {
+    console.log("allProjects", allProjects);
+    setProjectsList(allProjects);
+  }, [allProjects]);
+
+  const fetchProjects = async () => {
+    await getProjects();
+  };
 
   return (
     <>
@@ -29,7 +45,6 @@ export default function ManageProjectInfo() {
           <div className="col-lg-9">
             <div className="dashboard_title_area">
               <h2>Manage Project</h2>
-              <p className="text">Lorem ipsum dolor sit amet, consectetur.</p>
             </div>
           </div>
           <div className="col-lg-3">

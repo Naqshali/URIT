@@ -17,19 +17,19 @@ export default function CreateProjectInfo() {
               <p className="text">Lorem ipsum dolor sit amet, consectetur.</p>
             </div>
           </div>
-          <div className="col-lg-3">
+          {/* <div className="col-lg-3">
             <div className="text-lg-end">
               <a className="ud-btn btn-dark">
                 Save &amp; Publish
                 <i className="fal fa-arrow-right-long" />
               </a>
             </div>
-          </div>
+          </div> */}
         </div>
         <div className="row">
           <div className="col-xl-12">
             <BasicInformation2 />
-            <UploadAttachment />
+            {/* <UploadAttachment /> */}
           </div>
         </div>
       </div>
