@@ -2,74 +2,52 @@
 
 import { useState } from "react";
 import SelectInput from "../option/SelectInput";
-import Link from "next/link";
+import globalStore from "@/store/global";
+import { localMetaData } from "@/utils/localMetaData";
+import Select from "react-select";
 
 export default function BasicInformation() {
-  const [getCategory, setCategory] = useState({
-    option: "Select",
-    value: "select",
-  });
-  const [getEngLevel, setEngLevel] = useState({
-    option: "Select",
-    value: "select",
-  });
-  const [getResTime, setResTime] = useState({
-    option: "Select",
-    value: "select",
-  });
-  const [getDeliveryTime, setDeliveryTime] = useState({
-    option: "Select",
-    value: "select",
-  });
-  const [getSkill, setSkill] = useState({
-    option: "Nothing selected",
-    value: null,
-  });
-  const [getCountry, setCountry] = useState({
-    option: "United States",
-    value: "usa",
-  });
-  const [getCity, setCity] = useState({
-    option: "New York",
-    value: "new-york",
+  const { meta } = globalStore();
+  const [basicInfoObj, setBasicInfoObj] = useState({
+    title: "",
+    price: "",
+    description: "",
+    country: "",
+    city: "",
+    language: "",
+    languageLevel: "",
+    serviceSkills: [{ name: "", points: "" }],
+    serviceDetail: "",
   });
 
-  // handlers
-  const categoryHandler = (option, value) => {
-    setCategory({
-      option,
-      value,
+  const resetBasicInfoObj = () => {
+    const obj = {
+      title: "",
+      price: "",
+      description: "",
+      country: "",
+      city: "",
+      language: "",
+      languageLevel: "",
+      serviceSkills: [{ name: "", points: "" }],
+    };
+    setBasicInfoObj(obj);
+  };
+
+  const handleInputChange = (e, selectField) => {
+    const name = selectField ? selectField.name : e.target.name;
+    const value = selectField ? e.value : e.target.value;
+
+    setBasicInfoObj({
+      ...basicInfoObj,
+      [name]: value,
     });
   };
-  const engLevelHandler = (option, value) => {
-    setEngLevel({
-      option,
-      value,
-    });
-  };
-  const resTimeHandler = (option, value) => {
-    setResTime({
-      option,
-      value,
-    });
-  };
-  const deliveryTimeHandler = (option, value) => {
-    setDeliveryTime({
-      option,
-      value,
-    });
-  };
-  const skillHandler = (option, value) => {
-    setSkill({
-      option,
-      value,
-    });
-  };
-  const countryHandler = (option, value) => {
-    setCountry({ option, value });
-  };
-  const cityHandler = (option, value) => {
-    setCity({ option, value });
+
+  const getOptionValue = (option) => option.value;
+
+  const onSubmitForm = () => {
+    console.log("Aaa", basicInfoObj);
   };
 
   return (
@@ -89,7 +67,9 @@ export default function BasicInformation() {
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="i will"
+                    value={basicInfoObj.title}
+                    name="title"
+                    onChange={handleInputChange}
                   />
                 </div>
               </div>
@@ -101,242 +81,84 @@ export default function BasicInformation() {
                   <input
                     type="email"
                     className="form-control"
-                    placeholder="$10"
+                    name="price"
+                    value={basicInfoObj.price}
+                    onChange={handleInputChange}
                   />
                 </div>
               </div>
               <div className="col-sm-6">
                 <div className="mb20">
-                  <SelectInput
-                    label="Category"
-                    defaultSelect={getCategory}
-                    handler={categoryHandler}
-                    data={[
-                      {
-                        option: "Select",
-                        value: "select",
-                      },
-                      {
-                        option: "Graphics & Design",
-                        value: "graphics-design",
-                      },
-                      {
-                        option: "Digital Marketing",
-                        value: "digital-marketing",
-                      },
-                      {
-                        option: "Writing & Translation",
-                        value: "writing-translation",
-                      },
-                      {
-                        option: "Video & Animation",
-                        value: "video-animation",
-                      },
-                      {
-                        option: "Music & Audio",
-                        value: "music-audio",
-                      },
-                      {
-                        option: "Programming & Tech",
-                        value: "programming-tech",
-                      },
-                      {
-                        option: "Business",
-                        value: "business",
-                      },
-                      {
-                        option: "Lifestyle",
-                        value: "lifestyle",
-                      },
-                      {
-                        option: "Trending",
-                        value: "trending",
-                      },
-                    ]}
+                  <label className="heading-color ff-heading fw500 mb10">
+                    English Level
+                  </label>
+                  <Select
+                    classNamePrefix="custom"
+                    name="languageLevel"
+                    getOptionValue={getOptionValue}
+                    options={localMetaData.languageLevels}
+                    onChange={handleInputChange}
                   />
                 </div>
               </div>
-              <div className="col-sm-6">
-                <div className="mb20">
-                  <SelectInput
-                    label="English Level"
-                    defaultSelect={getEngLevel}
-                    handler={engLevelHandler}
-                    data={[
-                      {
-                        option: "Select",
-                        value: "select",
-                      },
-                      {
-                        option: "Fluent",
-                        value: "fluent",
-                      },
-                      {
-                        option: "Mid Level",
-                        value: "mid-level",
-                      },
-                      {
-                        option: "Conversational",
-                        value: "conversational",
-                      },
-                      {
-                        option: "Other",
-                        value: "other",
-                      },
-                    ]}
-                  />
-                </div>
-              </div>
-              <div className="col-sm-6">
-                <div className="mb20">
-                  <SelectInput
-                    label="Response Time"
-                    defaultSelect={getResTime}
-                    handler={resTimeHandler}
-                    data={[
-                      {
-                        option: "Select",
-                        value: "select",
-                      },
-                      {
-                        option: "Response Time One",
-                        value: "response-time-one",
-                      },
-                      {
-                        option: "Response Time Two",
-                        value: "response-time-two",
-                      },
-                      {
-                        option: "Response Time Three",
-                        value: "response-time-three",
-                      },
-                    ]}
-                  />
-                </div>
-              </div>
-              <div className="col-sm-6">
-                <div className="mb20">
-                  <SelectInput
-                    label="Delivery Time"
-                    defaultSelect={getDeliveryTime}
-                    handler={deliveryTimeHandler}
-                    data={[
-                      {
-                        option: "Select",
-                        value: "select",
-                      },
-                      {
-                        option: "Delivery Time One",
-                        value: "delivery-time-one",
-                      },
-                      {
-                        option: "Delivery Time Two",
-                        value: "delivery-time-two",
-                      },
-                      {
-                        option: "Delivery Time Three",
-                        value: "delivery-time-three",
-                      },
-                    ]}
-                  />
-                </div>
-              </div>
-              <div className="col-sm-12">
-                <div className="mb20">
-                  <SelectInput
-                    label="Skills"
-                    defaultSelect={getSkill}
-                    handler={skillHandler}
-                    data={[
-                      {
-                        option: "Select",
-                        value: "select",
-                      },
-                      {
-                        option: "Figma",
-                        value: "figma",
-                      },
-                      {
-                        option: "Adobe XD",
-                        value: "adobe-xd",
-                      },
-                      {
-                        option: "CSS",
-                        value: "css",
-                      },
-                      {
-                        option: "HTML",
-                        value: "html",
-                      },
-                      {
-                        option: "Bootstrap",
-                        value: "bootstrap",
-                      },
-                    ]}
-                  />
-                </div>
+              <div>
+                {basicInfoObj.serviceSkills.map((item, ind) => (
+                  <div>
+                    <div className="col-sm-8">
+                      <div className="mb20">
+                        <SelectInput
+                          label="Skills"
+                          defaultSelect={item.name}
+                          data={meta.skills}
+                          handler={handleInputChange}
+                        />
+                      </div>
+                    </div>
+                    <div className="col-sm-4">
+                      <div className="mb20">
+                        <div className="skill-plus-minus-icon mt40">
+                          <button
+                            type="button"
+                            className="plus-minus-icon"
+                            onClick={() => addNewSkill()}
+                          >
+                            <i className="fa-solid fa-plus"></i>
+                          </button>
+
+                          <button
+                            type="button"
+                            className="plus-minus-icon ml-4"
+                            onClick={() => removeNewSkill(ind)}
+                          >
+                            <i className="fa-solid fa-minus"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
               <div className="col-sm-6">
                 <div className="mb20">
                   <SelectInput
                     label="Country"
-                    defaultSelect={getCountry}
-                    data={[
-                      {
-                        option: "United States",
-                        value: "usa",
-                      },
-                      {
-                        option: "Canada",
-                        value: "canada",
-                      },
-                      {
-                        option: "United Kingdom",
-                        value: "uk",
-                      },
-                      {
-                        option: "Australia",
-                        value: "australia",
-                      },
-                      {
-                        option: "Germany",
-                        value: "germany",
-                      },
-                      { option: "Japan", value: "japan" },
-                    ]}
-                    handler={countryHandler}
+                    defaultSelect={basicInfoObj.country}
+                    name="country"
+                    data={meta.countries}
+                    handler={handleInputChange}
                   />
                 </div>
               </div>
               <div className="col-sm-6">
                 <div className="mb20">
-                  <SelectInput
-                    label="City"
-                    defaultSelect={getCity}
-                    data={[
-                      {
-                        option: "New York",
-                        value: "new-york",
-                      },
-                      {
-                        option: "Toronto",
-                        value: "toronto",
-                      },
-                      {
-                        option: "London",
-                        value: "london",
-                      },
-                      {
-                        option: "Sydney",
-                        value: "sydney",
-                      },
-                      {
-                        option: "Berlin",
-                        value: "berlin",
-                      },
-                      { option: "Tokyo", value: "tokyo" },
-                    ]}
-                    handler={cityHandler}
+                  <label className="heading-color ff-heading fw500 mb10">
+                    City
+                  </label>
+                  <input
+                    type="email"
+                    className="form-control"
+                    value={basicInfoObj.city}
+                    onChange={handleInputChange}
                   />
                 </div>
               </div>
@@ -345,15 +167,25 @@ export default function BasicInformation() {
                   <label className="heading-color ff-heading fw500 mb10">
                     Services Detail
                   </label>
-                  <textarea cols={30} rows={6} placeholder="Description" />
+                  <textarea
+                    cols={30}
+                    rows={6}
+                    placeholder="Description"
+                    value={basicInfoObj.serviceDetail}
+                    onChange={handleInputChange}
+                  />
                 </div>
               </div>
               <div className="col-md-12">
                 <div className="text-start">
-                  <Link className="ud-btn btn-thm" href="/contact">
+                  <button
+                    type="button"
+                    className="ud-btn btn-thm"
+                    onClick={() => onSubmitForm()}
+                  >
                     Save
                     <i className="fal fa-arrow-right-long" />
-                  </Link>
+                  </button>
                 </div>
               </div>
             </div>

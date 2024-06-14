@@ -1,8 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
-import SelectInput from "../option/SelectInput";
 import profileStore from "@/store/myprofile/profile";
 import Toastr from "@/components/toastr/toastr";
+import Select from "react-select";
 
 export default function Skill({ meta }) {
   const { allSkills, getSkills, updateSkills } = profileStore();
@@ -29,13 +29,22 @@ export default function Skill({ meta }) {
   };
 
   const handleInputChange = (e, selectField, itemIndex) => {
-    const { name, value, index } = selectField || e.target;
-    const mainIndex = itemIndex !== undefined ? itemIndex : index;
+    if (!e && selectField) {
+      const newSkills = skills.map((skill, ind) => {
+        return ind === itemIndex ? { ...skill, [selectField.name]: "" } : skill;
+      });
+
+      setSkills(newSkills);
+      return;
+    }
+
+    const name = selectField ? selectField.name : e.target.name;
+    const value = selectField ? e.value : e.target.value;
+
     const newSkills = skills.map((skill, ind) => {
-      return ind === mainIndex ? { ...skill, [name]: value } : skill;
+      return ind === itemIndex ? { ...skill, [name]: value } : skill;
     });
 
-    console.log("newSkills", newSkills);
     setSkills(newSkills);
   };
 
@@ -62,7 +71,7 @@ export default function Skill({ meta }) {
 
   return (
     <>
-      <div className="ps-widget bgc-white bdrs4 p30 mb30 overflow-hidden position-relative">
+      <div className="ps-widget bgc-white bdrs4 p30 mb30 position-relative">
         <div className="bdrb1 pb15 mb25">
           <h5 className="list-title">Skills</h5>
         </div>
@@ -73,13 +82,20 @@ export default function Skill({ meta }) {
                 <div className="row" key={ind}>
                   <div className="col-sm-5">
                     <div className="mb20">
-                      <SelectInput
-                        label={"Skill " + (ind + 1)}
-                        defaultValue={item.name}
+                      <label className="heading-color ff-heading fw500 mb10">
+                        {"Skill " + (ind + 1)}
+                      </label>
+                      <Select
+                        classNamePrefix="custom"
+                        isClearable={true}
                         name="name"
-                        index={ind}
-                        data={meta.skills}
-                        handler={handleInputChange}
+                        value={meta.skills.find(
+                          (option) => option.value === item.name
+                        )}
+                        options={meta.skills}
+                        onChange={(e, selected) =>
+                          handleInputChange(e, selected, ind)
+                        }
                       />
                     </div>
                   </div>
@@ -97,7 +113,7 @@ export default function Skill({ meta }) {
                       />
                     </div>
                   </div>
-                  <div className="col-sm-2 skill-plus-minus-icon">
+                  <div className="col-sm-2 skill-plus-minus-icon mt-15">
                     {ind === skills.length - 1 && (
                       <button
                         type="button"

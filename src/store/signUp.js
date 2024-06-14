@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import axiosInstance from "@/axios/axios.config";
 import { decodeJWT } from "@/utils/global";
+import { useRouter } from "next/navigation";
 
 const signUpStore = create((set) => ({
   loggedInUser: null,
@@ -52,7 +53,7 @@ const signUpStore = create((set) => ({
       return null;
     }
   },
-  setUerLoggedInData: (info) => {
+  setUserLoggedInData: (info) => {
     set({ loggedInUser: info });
   },
 }));

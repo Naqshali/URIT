@@ -12586,7 +12586,13 @@ column-gap: 20px;
 .skill-plus-minus-icon {
   display: flex;
   align-items: center;
+}
+.mt-15 {
   margin-top: 15px;
+}
+
+.mt-40 {
+  margin-top: 40px;
 }
 
 .ml-4 {
@@ -12627,5 +12633,20 @@ column-gap: 20px;
   }
   .Toastify__progress-bar--success{
     background-color: #0047AB;
+  }
+}  
+
+.custom__control {
+  border-radius: 8px !important;
+  border: 1px solid #E9E9E9 !important;
+  box-shadow: none;
+  font-size: 15px;
+  height: 55px;
+  outline: none;
+  cursor: pointer !important;
+  
+  padding-left: 15px;
+  .custom__indicator-separator{
+    display: none;
   }
 }

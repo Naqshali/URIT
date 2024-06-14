@@ -16,6 +16,8 @@ import { footer } from "@/data/footer";
 import "react-tooltip/dist/react-tooltip.css";
 import "react-toastify/dist/ReactToastify.css";
 import NavSidebar from "@/components/sidebar/NavSidebar";
+import globalStore from "@/store/global";
+import { useRouter } from "next/navigation";
 
 if (typeof window !== "undefined") {
   import("bootstrap");
@@ -29,16 +31,23 @@ const dmSans = DM_Sans({
 
 export default function RootLayout({ children }) {
   const isListingActive = toggleStore((state) => state.isListingActive);
-  const { setUerLoggedInData } = signUpStore();
+  const { loggedInUser, setUserLoggedInData } = signUpStore();
   const path = usePathname();
+  const { getMetaData } = globalStore();
+  const router = useRouter();
 
   useEffect(() => {
-    const info = JSON.parse(localStorage.getItem("loggedInUser"));
-    if (info) {
-      setUerLoggedInData(info);
-    }
+    onInitializeApp();
   }, []);
-  // wow js
+
+  useEffect(() => {
+    if (loggedInUser === "session_expired") {
+      localStorage.clear();
+      setUserLoggedInData(null);
+      router.push("/login");
+    }
+  }, [loggedInUser]);
+
   useEffect(() => {
     const { WOW } = require("wowjs");
     const wow = new WOW({
@@ -46,6 +55,14 @@ export default function RootLayout({ children }) {
     });
     wow.init();
   }, [path]);
+
+  const onInitializeApp = () => {
+    const info = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (info) {
+      setUserLoggedInData(info);
+    }
+    getMetaData();
+  };
 
   return (
     <html lang="en">

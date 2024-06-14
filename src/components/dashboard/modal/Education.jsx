@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import SelectInput from "../option/SelectInput";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import profileStore from "@/store/myprofile/profile";
 import Toastr from "@/components/toastr/toastr";
+import Select from "react-select";
 
 export default function EducationModal({ editRecord, educationAdded, meta }) {
   const { saveEducation, updateEducation } = profileStore();
@@ -34,8 +34,16 @@ export default function EducationModal({ editRecord, educationAdded, meta }) {
   };
 
   const handleInputChange = (e, selectField) => {
-    const field = selectField || e.target;
-    const { name, value } = field;
+    if (!e && selectField) {
+      setProfileObj({
+        ...profileObj,
+        [selectField.name]: "",
+      });
+      return;
+    }
+
+    const name = selectField ? selectField.name : e.target.name;
+    const value = selectField ? e.value : e.target.value;
 
     setEducationObj({
       ...educationObj,
@@ -93,12 +101,18 @@ export default function EducationModal({ editRecord, educationAdded, meta }) {
                 <div className="row">
                   <div className="col">
                     <div className="mb-3">
-                      <SelectInput
-                        label="Degree"
-                        defaultValue={educationObj.degree}
+                      <label className="heading-color ff-heading fw500 mb10">
+                        Degree
+                      </label>
+                      <Select
+                        classNamePrefix="custom"
+                        isClearable={true}
                         name="degree"
-                        data={meta.degrees}
-                        handler={handleInputChange}
+                        value={meta.degrees.find(
+                          (option) => option.value === educationObj.degree
+                        )}
+                        options={meta.degrees}
+                        onChange={handleInputChange}
                       />
                     </div>
                   </div>

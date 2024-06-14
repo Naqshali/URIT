@@ -1,3 +1,4 @@
+"use client";
 import DashboardNavigation from "../header/DashboardNavigation";
 import BasicInformation from "./BasicInformation";
 import ExtraService from "./ExtraService";
@@ -15,7 +16,6 @@ export default function AddServiceInfo() {
           <div className="col-lg-9">
             <div className="dashboard_title_area">
               <h2>Add Services</h2>
-              <p className="text">Lorem ipsum dolor sit amet, consectetur.</p>
             </div>
           </div>
           <div className="col-lg-3">
@@ -30,9 +30,9 @@ export default function AddServiceInfo() {
         <div className="row">
           <div className="col-xl-12">
             <BasicInformation />
-            <ServicePackage />
+            {/* <ServicePackage />
             <ExtraService />
-            <ServiceGallery />
+            <ServiceGallery /> */}
           </div>
         </div>
       </div>

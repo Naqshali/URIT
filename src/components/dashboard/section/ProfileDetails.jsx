@@ -1,10 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import SelectInput from "../option/SelectInput";
 import Image from "next/image";
 import profileStore from "@/store/myprofile/profile";
 import Toastr from "@/components/toastr/toastr";
 import { localMetaData } from "@/utils/localMetaData";
+import Select from "react-select";
 
 export default function ProfileDetails({ meta }) {
   const { profileDetails, getProfileDetails, updateProfileDetails } =
@@ -42,8 +42,16 @@ export default function ProfileDetails({ meta }) {
   };
 
   const handleInputChange = (e, selectField) => {
-    const field = selectField || e.target;
-    const { name, value } = field;
+    if (!e && selectField) {
+      setProfileObj({
+        ...profileObj,
+        [selectField.name]: "",
+      });
+      return;
+    }
+
+    const name = selectField ? selectField.name : e.target.name;
+    const value = selectField ? e.value : e.target.value;
 
     setProfileObj({
       ...profileObj,
@@ -51,7 +59,7 @@ export default function ProfileDetails({ meta }) {
     });
   };
 
-  const onSubmitForm = async (e) => {
+  const onSubmitForm = async () => {
     const result = await updateProfileDetails(profileObj);
     if (result) {
       setShowToastr(result);
@@ -188,23 +196,35 @@ export default function ProfileDetails({ meta }) {
               </div>
               <div className="col-sm-6">
                 <div className="mb20">
-                  <SelectInput
-                    label="Gender"
-                    defaultValue={profileObj.gender}
+                  <label className="heading-color ff-heading fw500 mb10">
+                    Gender
+                  </label>
+                  <Select
+                    classNamePrefix="custom"
+                    isClearable={true}
                     name="gender"
-                    data={localMetaData.genders}
-                    handler={handleInputChange}
+                    value={localMetaData.genders.find(
+                      (option) => option.value === profileObj.gender
+                    )}
+                    options={localMetaData.genders}
+                    onChange={handleInputChange}
                   />
                 </div>
               </div>
               <div className="col-sm-6">
                 <div className="mb20">
-                  <SelectInput
-                    label="Country"
-                    defaultValue={profileObj.country}
+                  <label className="heading-color ff-heading fw500 mb10">
+                    Country
+                  </label>
+                  <Select
+                    classNamePrefix="custom"
+                    isClearable={true}
                     name="country"
-                    data={meta.countries}
-                    handler={handleInputChange}
+                    value={meta.countries.find(
+                      (option) => option.value === profileObj.country
+                    )}
+                    options={meta.countries}
+                    onChange={handleInputChange}
                   />
                 </div>
               </div>
@@ -223,23 +243,35 @@ export default function ProfileDetails({ meta }) {
               </div>
               <div className="col-sm-6">
                 <div className="mb20">
-                  <SelectInput
-                    label="Language"
-                    defaultValue={profileObj.language}
+                  <label className="heading-color ff-heading fw500 mb10">
+                    Language
+                  </label>
+                  <Select
+                    classNamePrefix="custom"
+                    isClearable={true}
                     name="language"
-                    data={meta.languages}
-                    handler={handleInputChange}
+                    value={meta.languages.find(
+                      (option) => option.value === profileObj.language
+                    )}
+                    options={meta.languages}
+                    onChange={handleInputChange}
                   />
                 </div>
               </div>
               <div className="col-sm-6">
                 <div className="mb20">
-                  <SelectInput
-                    label="Languages Level"
-                    defaultValue={profileObj.languageLevel}
+                  <label className="heading-color ff-heading fw500 mb10">
+                    Language Level
+                  </label>
+                  <Select
+                    classNamePrefix="custom"
+                    isClearable={true}
                     name="languageLevel"
-                    data={localMetaData.languageLevels}
-                    handler={handleInputChange}
+                    value={localMetaData.languageLevels.find(
+                      (option) => option.value === profileObj.languageLevel
+                    )}
+                    options={localMetaData.languageLevels}
+                    onChange={handleInputChange}
                   />
                 </div>
               </div>

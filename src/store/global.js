@@ -3,7 +3,13 @@ import axiosInstance from "@/axios/axios.config";
 import { transformMetaData } from "@/utils/global";
 
 const globalStore = create((set) => ({
-  meta: {},
+  meta: {
+    skills: [],
+    countries: [],
+    services: [],
+    languages: [],
+    degrees: [],
+  },
   getMetaData: async () => {
     try {
       const skills = await axiosInstance.get("/api/v1/commons/skills");
@@ -12,13 +18,7 @@ const globalStore = create((set) => ({
       const languages = await axiosInstance.get("/api/v1/commons/languages");
       const degrees = await axiosInstance.get("/api/v1/commons/degrees");
 
-      const allMeta = {
-        skills: [],
-        countries: [],
-        services: [],
-        languages: [],
-        degrees: [],
-      };
+      const allMeta = {};
 
       if (skills.data) {
         allMeta.skills = transformMetaData(skills.data, "name");

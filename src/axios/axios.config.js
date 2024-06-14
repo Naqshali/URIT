@@ -1,5 +1,6 @@
 import axios from "axios";
 import signUpStore from "@/store/signUp";
+import Router from "next/router";
 
 const axiosInstance = axios.create({
   baseURL: "http://157.175.52.228:80/", // Your API base URL
@@ -28,7 +29,10 @@ axiosInstance.interceptors.response.use(
     // Modify response data or handle success
     return response;
   },
-  (error) => {
+  async (error) => {
+    if (error.response.status === 401) {
+      signUpStore.getState().setUserLoggedInData("session_expired");
+    }
     // Handle response errors
     return error;
     // return Promise.reject(error);

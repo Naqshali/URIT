@@ -1,25 +1,13 @@
 export const localMetaData = {
   genders: [
-    { option: "male", value: "Male" },
-    { option: "female", value: "Female" },
-    { option: "other", value: "Other" },
+    { key: "male", value: "male", label: "Male" },
+    { key: "female", value: "female", label: "Female" },
+    { key: "other", value: "other", label: "Other" },
   ],
   languageLevels: [
-    {
-      option: "beginner",
-      value: "Beginner",
-    },
-    {
-      option: "intermediate",
-      value: "Intermediate",
-    },
-    {
-      option: "advanced",
-      value: "Advanced",
-    },
-    {
-      option: "fluent",
-      value: "Fluent",
-    },
+    { key: "beginner", value: "beginner", label: "Beginner" },
+    { key: "intermediate", value: "intermediate", label: "Intermediate" },
+    { key: "advanced", value: "advanced", label: "Advanced" },
+    { key: "fluent", value: "fluent", label: "Fluent" },
   ],
 };
