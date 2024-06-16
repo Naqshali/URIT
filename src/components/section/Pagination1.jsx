@@ -11,6 +11,15 @@ export default function Pagination1({ totalCount, onSelectPage }) {
     return Math.ceil((totalCount ?? 1) / size);
   });
 
+  const currentlyShowingRecords = useMemo(() => {
+    const records = (selectedPage + 1) * size;
+    if (totalCount > records) {
+      return records;
+    }
+
+    return totalCount;
+  });
+
   const onSelectNewPage = (pageNo) => {
     setSelectedPage(pageNo);
     onSelectPage(pageNo);
@@ -49,7 +58,8 @@ export default function Pagination1({ totalCount, onSelectPage }) {
           </li>
         </ul>
         <p className="mt10 mb-0 pagination_page_count text-center">
-          1 – 20 of 300+ property available
+          {selectedPage === 0 ? 1 : selectedPage * size} –{" "}
+          {currentlyShowingRecords} of {totalCount} records
         </p>
       </div>
     </>
