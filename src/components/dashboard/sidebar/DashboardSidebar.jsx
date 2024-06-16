@@ -10,15 +10,15 @@ export default function DashboardSidebar() {
 
   const showNavigationItem = (navItem) => {
     return (
-      (loggedInUser?.userType === "SERVICE_PROVIDER" &&
+      (loggedInUser?.userType === "CLIENT" &&
         (navItem.key === "create_project" ||
           navItem.key === "manage_project" ||
           navItem.key === "my_profile")) ||
-      (loggedInUser?.userType === "CLIENT" &&
+      (loggedInUser?.userType === "SERVICE_PROVIDER" &&
         (navItem.key === "add_services" ||
           navItem.key === "manage_service" ||
           navItem.key === "my_profile")) ||
-      loggedInUser === null
+      !loggedInUser
     );
   };
 

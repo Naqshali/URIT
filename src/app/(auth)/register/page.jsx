@@ -12,9 +12,8 @@ export default function page() {
   const { getMetaData } = globalStore();
 
   const [userObj, setUserObj] = useState({
-    username: "",
-    password: "",
     name: "",
+    password: "",
     userType: "",
     email: "",
   });
@@ -119,25 +118,13 @@ export default function page() {
                     </div>
                     <div className="mb25">
                       <label className="form-label fw500 dark-color">
-                        Display Name
+                        Username
                       </label>
                       <input
                         type="text"
                         className="form-control"
                         name="name"
                         value={userObj.name}
-                        onChange={handleInputChange}
-                      />
-                    </div>
-                    <div className="mb25">
-                      <label className="form-label fw500 dark-color">
-                        Username
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="username"
-                        value={userObj.username}
                         onChange={handleInputChange}
                       />
                     </div>

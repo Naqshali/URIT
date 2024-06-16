@@ -12,6 +12,7 @@ const profileStore = create((set) => ({
   getProfileDetails: async () => {
     const res = await axiosInstance.get("/api/v1/user-profile");
     if (res.data) {
+      localStorage.setItem("user_profile_id", res.data.id);
       set({ profileDetails: transformData(res.data) });
     }
   },

@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import axiosInstance from "@/axios/axios.config";
 import { decodeJWT } from "@/utils/global";
-import { useRouter } from "next/navigation";
 
 const signUpStore = create((set) => ({
   loggedInUser: null,
@@ -44,11 +43,9 @@ const signUpStore = create((set) => ({
       const res = await axiosInstance.post("/api/v1/logout", data);
       localStorage.clear();
       set({ loggedInUser: null });
-      console.log("Res", res);
       if (res.data) {
         return res.data;
       }
-      return null;
     } catch (error) {
       return null;
     }

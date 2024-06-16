@@ -26,11 +26,6 @@ export const localMetaData = {
       value: "project-base",
       label: "Project Based",
     },
-    {
-      key: "other",
-      value: "other",
-      label: "Other",
-    },
   ],
   priceTypes: [
     {

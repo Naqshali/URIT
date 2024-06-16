@@ -7,32 +7,58 @@ import ManageProjectCard from "../card/ManageProjectCard";
 import ProposalModal1 from "../modal/ProposalModal1";
 import DeleteModal from "../modal/DeleteModal";
 import projectsStore from "@/store/myprofile/projects";
+import EditProjectModal from "@/components/dashboard/modal/editProjectModal";
 
 const tab = [
   "Posted Projects",
-  "Pending Projects",
-  "Ongoing Services",
-  "Expired Projects",
+  "Ongoing Projects",
   "Completed Services",
   "Canceled Services",
 ];
 
 export default function ManageProjectInfo() {
+  const { size, allProjects, getProjects } = projectsStore();
+
   const [selectedTab, setSelectedTab] = useState(0);
-  const { allProjects, getProjects } = projectsStore();
   const [projectsList, setProjectsList] = useState([]);
+  const [userId, setUserId] = useState();
 
   useEffect(() => {
-    fetchProjects();
-  });
+    const id = localStorage.getItem("user_profile_id");
+    if (id) {
+      setUserId(id);
+    }
+  }, []);
 
   useEffect(() => {
-    console.log("allProjects", allProjects);
-    setProjectsList(allProjects);
+    if (userId) {
+      fetchProjects();
+    }
+  }, [userId]);
+
+  useEffect(() => {
+    setProjectsList(allProjects.projects);
   }, [allProjects]);
 
-  const fetchProjects = async () => {
-    await getProjects();
+  const fetchProjects = async (pageNo, status) => {
+    const params = {
+      userId: userId,
+      pageNumber: pageNo ?? 0,
+      pageSize: size,
+      ...(status && { status: status }),
+    };
+
+    await getProjects(params);
+  };
+
+  const onSelectingTab = (selectedTab) => {
+    setSelectedTab(selectedTab);
+    fetchProjects(0, tab[selectedTab]);
+  };
+
+  const onSelectPage = (pageNo) => {
+    console.log("ASdas", pageNo);
+    fetchProjects(pageNo);
   };
 
   return (
@@ -71,163 +97,48 @@ export default function ManageProjectInfo() {
                         className={`nav-link fw500 ps-0 ${
                           selectedTab == i ? "active" : ""
                         }`}
-                        onClick={() => setSelectedTab(i)}
+                        onClick={() => onSelectingTab(i)}
                       >
                         {item}
                       </button>
                     ))}
                   </div>
                 </nav>
-                {selectedTab === 0 && (
-                  <div className="packages_table table-responsive">
-                    <table className="table-style3 table at-savesearch">
-                      <thead className="t-head">
-                        <tr>
-                          <th scope="col">Title</th>
-                          <th scope="col">Category</th>
-                          <th scope="col">Type/Cost</th>
-                          <th scope="col">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody className="t-body">
-                        {Array(7)
-                          .fill(7)
-                          .map((_, i) => (
-                            <ManageProjectCard key={i} />
-                          ))}
-                      </tbody>
-                    </table>
+                <div className="packages_table table-responsive">
+                  <table className="table-style3 table at-savesearch">
+                    <thead className="t-head">
+                      <tr>
+                        <th scope="col">Title</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Type/Cost</th>
+                        <th scope="col">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="t-body">
+                      {projectsList.map((item, ind) => (
+                        <ManageProjectCard key={ind} item={item} />
+                      ))}
+                    </tbody>
+                  </table>
+                  {projectsList.length === 0 && (
+                    <div className="text-align-center">No Projects Found</div>
+                  )}
+                  {allProjects.totalCount > 0 && (
                     <div className="mt30">
-                      <Pagination1 />
+                      <Pagination1
+                        totalCount={allProjects.totalCount ?? 1}
+                        onSelectPage={onSelectPage}
+                      />
                     </div>
-                  </div>
-                )}
-                {selectedTab === 1 && (
-                  <div className="packages_table table-responsive">
-                    <table className="table-style3 table at-savesearch">
-                      <thead className="t-head">
-                        <tr>
-                          <th scope="col">Title</th>
-                          <th scope="col">Category</th>
-                          <th scope="col">Type/Cost</th>
-                          <th scope="col">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody className="t-body">
-                        {Array(7)
-                          .fill(7)
-                          .map((_, i) => (
-                            <ManageProjectCard key={i} />
-                          ))}
-                      </tbody>
-                    </table>
-                    <div className="mt30">
-                      <Pagination1 />
-                    </div>
-                  </div>
-                )}
-                {selectedTab === 2 && (
-                  <div className="packages_table table-responsive">
-                    <table className="table-style3 table at-savesearch">
-                      <thead className="t-head">
-                        <tr>
-                          <th scope="col">Title</th>
-                          <th scope="col">Category</th>
-                          <th scope="col">Type/Cost</th>
-                          <th scope="col">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody className="t-body">
-                        {Array(7)
-                          .fill(7)
-                          .map((_, i) => (
-                            <ManageProjectCard key={i} />
-                          ))}
-                      </tbody>
-                    </table>
-                    <div className="mt30">
-                      <Pagination1 />
-                    </div>
-                  </div>
-                )}
-                {selectedTab === 3 && (
-                  <div className="packages_table table-responsive">
-                    <table className="table-style3 table at-savesearch">
-                      <thead className="t-head">
-                        <tr>
-                          <th scope="col">Title</th>
-                          <th scope="col">Category</th>
-                          <th scope="col">Type/Cost</th>
-                          <th scope="col">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody className="t-body">
-                        {Array(7)
-                          .fill(7)
-                          .map((_, i) => (
-                            <ManageProjectCard key={i} />
-                          ))}
-                      </tbody>
-                    </table>
-                    <div className="mt30">
-                      <Pagination1 />
-                    </div>
-                  </div>
-                )}
-                {selectedTab === 4 && (
-                  <div className="packages_table table-responsive">
-                    <table className="table-style3 table at-savesearch">
-                      <thead className="t-head">
-                        <tr>
-                          <th scope="col">Title</th>
-                          <th scope="col">Category</th>
-                          <th scope="col">Type/Cost</th>
-                          <th scope="col">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody className="t-body">
-                        {Array(7)
-                          .fill(7)
-                          .map((_, i) => (
-                            <ManageProjectCard key={i} />
-                          ))}
-                      </tbody>
-                    </table>
-                    <div className="mt30">
-                      <Pagination1 />
-                    </div>
-                  </div>
-                )}
-                {selectedTab === 5 && (
-                  <div className="packages_table table-responsive">
-                    <table className="table-style3 table at-savesearch">
-                      <thead className="t-head">
-                        <tr>
-                          <th scope="col">Title</th>
-                          <th scope="col">Category</th>
-                          <th scope="col">Type/Cost</th>
-                          <th scope="col">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody className="t-body">
-                        {Array(7)
-                          .fill(7)
-                          .map((_, i) => (
-                            <ManageProjectCard key={i} />
-                          ))}
-                      </tbody>
-                    </table>
-                    <div className="mt30">
-                      <Pagination1 />
-                    </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <ProposalModal1 />
+      <EditProjectModal />
+      {/* <ProposalModal1 /> */}
       <DeleteModal />
     </>
   );

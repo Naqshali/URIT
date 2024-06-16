@@ -12,13 +12,18 @@ export default function Navigation() {
 
   const showNavigationItem = (navItem) => {
     return (
-      (loggedInUser?.userType === "CLIENT" && navItem.key !== "projects") ||
+      (loggedInUser?.userType === "CLIENT" &&
+        (navItem.key === "services" ||
+          navItem.key === "home" ||
+          navItem.key === "my_profile" ||
+          navItem.key === "contact" ||
+          navItem.key === "freelancers")) ||
       (loggedInUser?.userType === "SERVICE_PROVIDER" &&
-        navItem.key !== "services" &&
-        navItem.key !== "freelancers") ||
-      (!loggedInUser &&
-        navItem.key !== "my_profile" &&
-        navItem.key !== "projects")
+        (navItem.key === "projects" ||
+          navItem.key === "my_profile" ||
+          navItem.key === "home" ||
+          navItem.key === "contact")) ||
+      (!loggedInUser && (navItem.key === "home" || navItem.key === "contact"))
     );
   };
 

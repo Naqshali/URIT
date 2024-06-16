@@ -2,37 +2,37 @@ const menus = [
   {
     id: 1,
     name: "Home",
-    key:  "home",
-    path: "/"
+    key: "home",
+    path: "/",
   },
   {
     id: 2,
     name: "Services",
-    key:  "services",
-    path:"/service-1",
+    key: "services",
+    path: "/service-1",
   },
   {
     id: 3,
     name: "Projects",
-    key:"projects",
+    key: "projects",
     path: "/project-1",
   },
   {
     id: 4,
     name: "Freelancers",
-    key:"freelancers",
+    key: "freelancers",
     path: "/freelancer-1",
   },
   {
     id: 5,
     name: "My Profile",
-    key:"my_profile",
+    key: "my_profile",
     path: "/my-profile",
   },
   {
     id: 6,
     name: "Contact",
-    key:'',
+    key: "contact",
     path: "/contact",
   },
 

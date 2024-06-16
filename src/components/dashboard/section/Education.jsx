@@ -74,12 +74,7 @@ export default function Education({ meta }) {
                       data-bs-toggle="modal"
                       data-bs-target="#educationModal"
                     >
-                      <Tooltip
-                        anchorSelect="#edit"
-                        className="ui-tooltip"
-                        data-bs-toggle="modal"
-                        data-bs-target="#educationModal"
-                      >
+                      <Tooltip anchorSelect="#edit" className="ui-tooltip">
                         Edit
                       </Tooltip>
                       <span className="flaticon-pencil" />

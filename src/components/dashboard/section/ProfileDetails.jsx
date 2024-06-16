@@ -2,16 +2,23 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import profileStore from "@/store/myprofile/profile";
+import signUpStore from "@/store/signUp";
 import Toastr from "@/components/toastr/toastr";
 import { localMetaData } from "@/utils/localMetaData";
+import validations from "@/utils/validations";
 import Select from "react-select";
+import CurrencyInput from "react-currency-input-field";
 
 export default function ProfileDetails({ meta }) {
+  const { loggedInUser } = signUpStore();
+
   const { profileDetails, getProfileDetails, updateProfileDetails } =
     profileStore();
 
+  const { isRequired, validateForm } = validations();
+
   const [profileObj, setProfileObj] = useState({
-    username: "",
+    name: "",
     email: "",
     phoneNumber: "",
     tagLine: "",
@@ -25,6 +32,7 @@ export default function ProfileDetails({ meta }) {
   });
 
   const [showToastr, setShowToastr] = useState(false);
+  const [formSubmited, setFormSubmited] = useState(false);
 
   useEffect(() => {
     console.log(meta);
@@ -60,13 +68,33 @@ export default function ProfileDetails({ meta }) {
   };
 
   const onSubmitForm = async () => {
-    const result = await updateProfileDetails(profileObj);
-    if (result) {
-      setShowToastr(result);
+    setFormSubmited(true);
+    const { name, email, phoneNumber, hourlyRate, description } = profileObj;
+
+    const profileValidatinoObject = {
+      name,
+      email,
+      phoneNumber,
+      description,
+      ...(loggedInUser?.userType === "SERVICE_PROVIDER" && { hourlyRate }),
+    };
+
+    if (validateForm(profileValidatinoObject)) {
+      const result = await updateProfileDetails(profileObj);
+      if (result) {
+        setShowToastr(result);
+      }
     }
   };
 
   const [selectedImage, setSelectedImage] = useState(null);
+
+  const handleCurrencyInputChange = (e, name) => {
+    const obj = {
+      target: { name: name, value: e },
+    };
+    handleInputChange(obj);
+  };
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -127,15 +155,22 @@ export default function ProfileDetails({ meta }) {
               <div className="col-sm-6">
                 <div className="mb20">
                   <label className="heading-color ff-heading fw500 mb10">
-                    Username
+                    name
                   </label>
                   <input
                     type="text"
-                    className="form-control"
-                    name="username"
-                    value={profileObj.username}
+                    className={`form-control ${
+                      formSubmited && isRequired(profileObj.name)
+                        ? "validation-error"
+                        : ""
+                    }`}
+                    name="name"
+                    value={profileObj.name}
                     onChange={handleInputChange}
                   />
+                  <span className="validation-msg">
+                    {formSubmited && isRequired(profileObj.name)}
+                  </span>
                 </div>
               </div>
               <div className="col-sm-6">
@@ -145,12 +180,19 @@ export default function ProfileDetails({ meta }) {
                   </label>
                   <input
                     type="email"
-                    className="form-control"
+                    className={`form-control ${
+                      formSubmited && isRequired(profileObj.email)
+                        ? "validation-error"
+                        : ""
+                    }`}
                     name="email"
                     value={profileObj.email}
                     onChange={handleInputChange}
                   />
                 </div>
+                <span className="validation-msg">
+                  {formSubmited && isRequired(profileObj.email)}
+                </span>
               </div>
               <div className="col-sm-6">
                 <div className="mb20">
@@ -159,41 +201,60 @@ export default function ProfileDetails({ meta }) {
                   </label>
                   <input
                     type="text"
-                    className="form-control"
+                    className={`form-control ${
+                      formSubmited && isRequired(profileObj.phoneNumber)
+                        ? "validation-error"
+                        : ""
+                    }`}
                     name="phoneNumber"
                     value={profileObj.phoneNumber}
                     onChange={handleInputChange}
                   />
+                  <span className="validation-msg">
+                    {formSubmited && isRequired(profileObj.phoneNumber)}
+                  </span>
                 </div>
               </div>
-              <div className="col-sm-6">
-                <div className="mb20">
-                  <label className="heading-color ff-heading fw500 mb10">
-                    Tag Line
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="tagLine"
-                    value={profileObj.tagLine}
-                    onChange={handleInputChange}
-                  />
+              {loggedInUser?.userType === "SERVICE_PROVIDER" && (
+                <div className="col-sm-6">
+                  <div className="mb20">
+                    <label className="heading-color ff-heading fw500 mb10">
+                      Tag Line
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="tagLine"
+                      value={profileObj.tagLine}
+                      onChange={handleInputChange}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="col-sm-6">
-                <div className="mb20">
-                  <label className="heading-color ff-heading fw500 mb10">
-                    Hourly Rate
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="hourlyRate"
-                    value={profileObj.hourlyRate}
-                    onChange={handleInputChange}
-                  />
+              )}
+              {loggedInUser?.userType === "SERVICE_PROVIDER" && (
+                <div className="col-sm-6">
+                  <div className="mb20">
+                    <label className="heading-color ff-heading fw500 mb10">
+                      Hourly Rate
+                    </label>
+                    <CurrencyInput
+                      className={`form-control ${
+                        formSubmited && isRequired(profileObj.hourlyRate)
+                          ? "validation-error"
+                          : ""
+                      }`}
+                      prefix="$"
+                      name="hourlyRate"
+                      placeholder="Please enter a number"
+                      value={profileObj.hourlyRate}
+                      onValueChange={handleCurrencyInputChange}
+                    />
+                    <span className="validation-msg">
+                      {formSubmited && isRequired(profileObj.hourlyRate)}
+                    </span>
+                  </div>
                 </div>
-              </div>
+              )}
               <div className="col-sm-6">
                 <div className="mb20">
                   <label className="heading-color ff-heading fw500 mb10">
@@ -281,6 +342,11 @@ export default function ProfileDetails({ meta }) {
                     Introduce Yourself
                   </label>
                   <textarea
+                    className={`${
+                      formSubmited && isRequired(profileObj.description)
+                        ? "validation-error"
+                        : ""
+                    }`}
                     cols={30}
                     rows={6}
                     placeholder="Description"
@@ -288,6 +354,9 @@ export default function ProfileDetails({ meta }) {
                     value={profileObj.description}
                     onChange={handleInputChange}
                   />
+                  <span className="validation-msg">
+                    {formSubmited && isRequired(profileObj.description)}
+                  </span>
                 </div>
               </div>
               <div className="col-md-12">

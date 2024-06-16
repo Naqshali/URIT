@@ -24,10 +24,6 @@ export default function BasicInformation2() {
     description: "",
     projectDuration: "",
     level: "",
-    country: "",
-    city: "",
-    language: "",
-    languageLevel: "",
     projectSkills: [],
     details: "",
   });
@@ -41,10 +37,6 @@ export default function BasicInformation2() {
       cost: "",
       description: "",
       projectDuration: "",
-      country: "",
-      city: "",
-      language: "",
-      languageLevel: "",
       projectSkills: [],
     };
     setBasicInfoObj(obj);
@@ -124,10 +116,10 @@ export default function BasicInformation2() {
                     classNamePrefix="custom"
                     isClearable
                     name="projectCategory"
-                    value={meta.skills.find(
+                    value={meta.services.find(
                       (option) => option.value === basicInfoObj.projectCategory
                     )}
-                    options={meta.skills}
+                    options={meta.services}
                     onChange={handleInputChange}
                   />
                 </div>
@@ -186,14 +178,11 @@ export default function BasicInformation2() {
                   <label className="heading-color ff-heading fw500 mb10">
                     Project Duration
                   </label>
-                  <Select
-                    classNamePrefix="custom"
-                    isClearable
+                  <input
+                    type="text"
+                    className="form-control"
                     name="projectDuration"
-                    value={localMetaData.projectDuration.find(
-                      (option) => option.value === basicInfoObj.projectDuration
-                    )}
-                    options={localMetaData.projectDuration}
+                    value={basicInfoObj.projectDuration}
                     onChange={handleInputChange}
                   />
                 </div>
@@ -211,70 +200,6 @@ export default function BasicInformation2() {
                       (option) => option.value === basicInfoObj.level
                     )}
                     options={localMetaData.levels}
-                    onChange={handleInputChange}
-                  />
-                </div>
-              </div>
-              <div className="col-sm-6">
-                <div className="mb20">
-                  <label className="heading-color ff-heading fw500 mb10">
-                    Country
-                  </label>
-                  <Select
-                    classNamePrefix="custom"
-                    isClearable
-                    name="country"
-                    value={meta.countries.find(
-                      (option) => option.value === basicInfoObj.country
-                    )}
-                    options={meta.countries}
-                    onChange={handleInputChange}
-                  />
-                </div>
-              </div>
-              <div className="col-sm-6">
-                <div className="mb20">
-                  <label className="heading-color ff-heading fw500 mb10">
-                    City
-                  </label>
-                  <input
-                    className="form-control"
-                    name="city"
-                    value={basicInfoObj.city}
-                    onChange={handleInputChange}
-                  />
-                </div>
-              </div>
-              <div className="col-sm-6">
-                <div className="mb20">
-                  <label className="heading-color ff-heading fw500 mb10">
-                    Language
-                  </label>
-                  <Select
-                    classNamePrefix="custom"
-                    isClearable
-                    name="language"
-                    value={meta.languages.find(
-                      (option) => option.value === basicInfoObj.language
-                    )}
-                    options={meta.languages}
-                    onChange={handleInputChange}
-                  />
-                </div>
-              </div>
-              <div className="col-sm-6">
-                <div className="mb20">
-                  <label className="heading-color ff-heading fw500 mb10">
-                    Language Level
-                  </label>
-                  <Select
-                    classNamePrefix="custom"
-                    isClearable
-                    name="languageLevel"
-                    value={localMetaData.languageLevels.find(
-                      (option) => option.value === basicInfoObj.languageLevel
-                    )}
-                    options={localMetaData.languageLevels}
                     onChange={handleInputChange}
                   />
                 </div>

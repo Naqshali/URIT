@@ -5919,6 +5919,15 @@ section {
   outline: none;
   padding-left: 15px;
 }
+
+.validation-error{
+  border-color: red !important;
+}
+
+.validation-msg{
+  color: red;
+}
+
 .form-style1 .form-control::placeholder {
   color: #697488;
   font-family: var(--title-font-family);
@@ -9336,7 +9345,7 @@ li.mm-listitem:focus {
   border: 1px solid #E9E9E9;
 }
 .mbp_pagination .page-item:last-child {
-  border: 1px solid #222222;
+  border: 1px solid #E9E9E9
 }
 .mbp_pagination .page-item.active .page-link {
   background-color: #0047AB;
@@ -12649,4 +12658,17 @@ column-gap: 20px;
   .custom__indicator-separator{
     display: none;
   }
+}
+
+.disabled  {
+  pointer-events: none;
+  color: #6c757d;
+  background-color: #e9ecef; 
+  a {
+    color:  #6c757d !important
+  }
+}
+
+.text-align-center {
+  text-align: center;
 }

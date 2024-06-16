@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 export default function DashboardHeader() {
   const toggle = toggleStore((state) => state.dashboardSlidebarToggleHandler);
   const path = usePathname();
-  const { logout } = signUpStore();
+  const { loggedInUser, logout } = signUpStore();
   const router = useRouter();
 
   const routeToLink = (item) => {
@@ -22,7 +22,7 @@ export default function DashboardHeader() {
   };
 
   const handleLogout = async () => {
-    const result = await logout();
+    const result = await logout({ refreshToken: loggedInUser?.refreshToken });
     if (result) {
       router.push("/login");
     }
