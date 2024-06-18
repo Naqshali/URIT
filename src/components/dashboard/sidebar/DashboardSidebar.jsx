@@ -17,7 +17,8 @@ export default function DashboardSidebar() {
       (loggedInUser?.userType === "SERVICE_PROVIDER" &&
         (navItem.key === "add_services" ||
           navItem.key === "manage_service" ||
-          navItem.key === "my_profile")) ||
+          navItem.key === "my_profile" ||
+          navItem.key === "manage_project")) ||
       !loggedInUser
     );
   };

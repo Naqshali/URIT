@@ -3,8 +3,10 @@ import { Tooltip } from "react-tooltip";
 import { dateInStringFormat } from "@/utils/global";
 import { getService } from "@/utils/global";
 
-export default function ManageProjectCard({ item }) {
-  const onEditProject = () => {};
+export default function ManageProjectCard({ item, openEditProjectModal }) {
+  const onEditProject = () => {
+    openEditProjectModal(item);
+  };
   return (
     <>
       <tr>
@@ -37,14 +39,10 @@ export default function ManageProjectCard({ item }) {
               className="icon me-2"
               id="edit"
               data-bs-toggle="modal"
-              data-bs-target="#editEducationModal"
+              data-bs-target="#editProjectModal"
+              onClick={() => onEditProject()}
             >
-              <Tooltip
-                anchorSelect="#edit"
-                className="ui-tooltip"
-                place="top"
-                onClick={() => onEditProject()}
-              >
+              <Tooltip anchorSelect="#edit" className="ui-tooltip" place="top">
                 Edit
               </Tooltip>
               <span className="flaticon-pencil" />

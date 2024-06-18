@@ -22,6 +22,7 @@ export default function ManageProjectInfo() {
   const [selectedTab, setSelectedTab] = useState(0);
   const [projectsList, setProjectsList] = useState([]);
   const [userId, setUserId] = useState();
+  const [editRecord, setEditRecord] = useState(null);
 
   useEffect(() => {
     const id = localStorage.getItem("user_profile_id");
@@ -57,8 +58,15 @@ export default function ManageProjectInfo() {
   };
 
   const onSelectPage = (pageNo) => {
-    console.log("ASdas", pageNo);
     fetchProjects(pageNo);
+  };
+
+  const openEditProjectModal = (item) => {
+    setEditRecord(item);
+  };
+
+  const onCloseModal = (item) => {
+    setEditRecord(null);
   };
 
   return (
@@ -116,7 +124,11 @@ export default function ManageProjectInfo() {
                     </thead>
                     <tbody className="t-body">
                       {projectsList.map((item, ind) => (
-                        <ManageProjectCard key={ind} item={item} />
+                        <ManageProjectCard
+                          key={ind}
+                          item={item}
+                          openEditProjectModal={openEditProjectModal}
+                        />
                       ))}
                     </tbody>
                   </table>
@@ -137,9 +149,9 @@ export default function ManageProjectInfo() {
           </div>
         </div>
       </div>
-      <EditProjectModal />
-      {/* <ProposalModal1 /> */}
+      <EditProjectModal editRecord={editRecord} onCloseModal={onCloseModal} />
       <DeleteModal />
+      {/* <ProposalModal1 /> */}
     </>
   );
 }

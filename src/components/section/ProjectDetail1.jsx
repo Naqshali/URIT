@@ -7,8 +7,11 @@ import ProjectPriceWidget1 from "../element/ProjectPriceWidget1";
 import ProjectContactWidget1 from "../element/ProjectContactWidget1";
 import useScreen from "@/hook/useScreen";
 import proposalsStore from "@/store/myprofile/proposals";
-import { useState } from "react";
+import projectsStore from "@/store/myprofile/projects";
+import { useEffect, useState } from "react";
 import CurrencyInput from "react-currency-input-field";
+import { useParams } from "next/navigation";
+import { getService } from "@/utils/global";
 
 const skills = [
   "SaaS",
@@ -22,14 +25,31 @@ const skills = [
 ];
 
 export default function ProjectDetail1() {
+  const routeParams = useParams();
   const isMatchedScreen = useScreen(1216);
   const { submitProposal } = proposalsStore();
+  const { allProjects } = projectsStore();
 
+  const [singleProduct, setSingleProduct] = useState({});
   const [propodalObj, setProposalObj] = useState({
     coverLetter: "",
     hourlyRate: "",
     estimatedHours: "",
   });
+
+  useEffect(() => {
+    findSingleProject();
+  }, [allProjects]);
+
+  const findSingleProject = () => {
+    const product = allProjects.projects.find((proj) => {
+      return proj.id == parseInt(routeParams.id);
+    });
+
+    if (product) {
+      setSingleProduct(product);
+    }
+  };
 
   const handleCurrencyInputChange = (e, name) => {
     const obj = {
@@ -89,7 +109,9 @@ export default function ProjectDetail1() {
                           </div>
                           <div className="details">
                             <h5 className="title">Project Duration</h5>
-                            <p className="mb-0 text">10-15 Hours</p>
+                            <p className="mb-0 text">
+                              {singleProduct.projectDuration} Hours
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -110,8 +132,10 @@ export default function ProjectDetail1() {
                             <span className="flaticon-translator" />
                           </div>
                           <div className="details">
-                            <h5 className="title">Languages</h5>
-                            <p className="mb-0 text">20</p>
+                            <h5 className="title">Category</h5>
+                            <p className="mb-0 text">
+                              {getService(singleProduct.projectCategory)}
+                            </p>
                           </div>
                         </div>
                       </div>

@@ -30,6 +30,32 @@ const projectsStore = create((set) => ({
       return null;
     }
   },
+  updateProject: async (data, id) => {
+    try {
+      console.log(" id", id, data);
+      console.log("Aaa", "/api/v1/projects?id" + { id }, data);
+      const res = await axiosInstance.put(`/api/v1/projects/${id}`, {
+        id: 1,
+        title: "New Project",
+        status: "OPEN_FOR_PROPOSALS",
+        projectCategory: "1",
+        freelancerType: "full-time",
+        priceType: "mid",
+        cost: "500",
+        projectDuration: "23",
+        description: "",
+
+        projectSkills: ["1", "2", "3"],
+
+        serviceProvider: null,
+      });
+      if (res.data) {
+        return res.data;
+      }
+    } catch (error) {
+      return null;
+    }
+  },
 }));
 
 export default projectsStore;

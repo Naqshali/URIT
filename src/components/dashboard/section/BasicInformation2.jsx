@@ -25,7 +25,7 @@ export default function BasicInformation2() {
     projectDuration: "",
     level: "",
     projectSkills: [],
-    details: "",
+    description: "",
   });
 
   const resetBasicInfoObj = () => {
@@ -228,8 +228,8 @@ export default function BasicInformation2() {
                     cols={30}
                     rows={6}
                     placeholder="Description"
-                    name="details"
-                    value={basicInfoObj.details}
+                    name="description"
+                    value={basicInfoObj.description}
                     onChange={handleInputChange}
                   />
                 </div>

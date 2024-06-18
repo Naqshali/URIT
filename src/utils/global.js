@@ -60,7 +60,7 @@ export const transformMetaData = (array, valueKey) => {
   }));
 };
 
-const meta = (data) => {
+const meta = () => {
   const { meta } = globalStore();
   return meta;
 };

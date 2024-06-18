@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { getSkill } from "@/utils/global";
 
 export default function ProjectCard1({ data }) {
   return (
@@ -12,7 +13,7 @@ export default function ProjectCard1({ data }) {
                 height={60}
                 width={60}
                 className="rounded-circle mx-auto"
-                src={data.img}
+                src="/images/team/client-1.png"
                 alt="rounded-circle"
               />
               <span className="online-badge2" />
@@ -20,22 +21,18 @@ export default function ProjectCard1({ data }) {
             <div className="details ml15 ml0-md mb15-md">
               <h5 className="title mb-3">{data.title}</h5>
               <p className="mb-0 fz14 list-inline-item mb5-sm pe-1">
-                <i className="flaticon-place fz16 vam text-thm2 me-1" />{" "}
-                {data.location}
-              </p>
-              <p className="mb-0 fz14 list-inline-item mb5-sm pe-1">
-                <i className="flaticon-30-days fz16 vam text-thm2 me-1 bdrl1 pl15 pl0-xs bdrn-xs" />{" "}
-                2 hours ago
+                <i className="flaticon-place fz16 vam text-thm2 me-1" /> 2 hours
+                ago
               </p>
               <p className="mb-0 fz14 list-inline-item mb5-sm">
                 <i className="flaticon-contract fz16 vam text-thm2 me-1 bdrl1 pl15 pl0-xs bdrn-xs" />{" "}
                 1 Received
               </p>
-              <p className="text mt10">{data.brief}</p>
+              <p className="text mt10">{data.description}</p>
               <div className="skill-tags d-flex align-items-center justify-content-start">
-                {data.tags.map((item, i) => (
+                {data.projectSkills.map((item, i) => (
                   <span key={i} className={`tag ${i === 1 ? "mx10" : ""}`}>
-                    {item}
+                    {getSkill(item.name)}
                   </span>
                 ))}
               </div>
@@ -45,9 +42,7 @@ export default function ProjectCard1({ data }) {
         <div className="col-lg-4 ps-0 ps-xl-3 pe-0">
           <div className="details">
             <div className="text-lg-end">
-              <h4>
-                ${data.price.min} - ${data.price.max}
-              </h4>
+              <h4>${data.cost}</h4>
               <p className="text">Hourly Rate</p>
             </div>
             <div className="d-grid mt15">
