@@ -28,9 +28,9 @@ export default function ProjectDetail1() {
   const routeParams = useParams();
   const isMatchedScreen = useScreen(1216);
   const { submitProposal } = proposalsStore();
-  const { allProjects } = projectsStore();
+  const { singleProject, getSingleProject } = projectsStore();
 
-  const [singleProduct, setSingleProduct] = useState({});
+  const [project, setProject] = useState({});
   const [propodalObj, setProposalObj] = useState({
     coverLetter: "",
     hourlyRate: "",
@@ -39,16 +39,16 @@ export default function ProjectDetail1() {
 
   useEffect(() => {
     findSingleProject();
-  }, [allProjects]);
+  }, []);
 
-  const findSingleProject = () => {
-    const product = allProjects.projects.find((proj) => {
-      return proj.id == parseInt(routeParams.id);
-    });
-
-    if (product) {
-      setSingleProduct(product);
+  useEffect(() => {
+    if (singleProject) {
+      setProject(singleProject);
     }
+  }, [singleProject]);
+
+  const findSingleProject = async () => {
+    await getSingleProject(routeParams.id);
   };
 
   const handleCurrencyInputChange = (e, name) => {
@@ -67,7 +67,10 @@ export default function ProjectDetail1() {
   };
 
   const onSubmitForm = async () => {
-    const result = await submitProposal();
+    const result = await submitProposal(propodalObj, routeParams.id);
+    console.log("result", result);
+    if (result) {
+    }
   };
 
   return (
@@ -87,7 +90,7 @@ export default function ProjectDetail1() {
                           </div>
                           <div className="details">
                             <h5 className="title">Seller Type</h5>
-                            <p className="mb-0 text">Company</p>
+                            <p className="mb-0 text">{project.company}</p>
                           </div>
                         </div>
                       </div>
@@ -98,7 +101,9 @@ export default function ProjectDetail1() {
                           </div>
                           <div className="details">
                             <h5 className="title">Project type</h5>
-                            <p className="mb-0 text">Hourly</p>
+                            <p className="mb-0 text">
+                              {project.projectDurationType}
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -110,7 +115,7 @@ export default function ProjectDetail1() {
                           <div className="details">
                             <h5 className="title">Project Duration</h5>
                             <p className="mb-0 text">
-                              {singleProduct.projectDuration} Hours
+                              {project.projectDuration} Hours
                             </p>
                           </div>
                         </div>
@@ -122,7 +127,7 @@ export default function ProjectDetail1() {
                           </div>
                           <div className="details">
                             <h5 className="title">Project Level</h5>
-                            <p className="mb-0 text">Expensive</p>
+                            <p className="mb-0 text">{project.level}</p>
                           </div>
                         </div>
                       </div>
@@ -134,7 +139,7 @@ export default function ProjectDetail1() {
                           <div className="details">
                             <h5 className="title">Category</h5>
                             <p className="mb-0 text">
-                              {getService(singleProduct.projectCategory)}
+                              {getService(project.projectCategory)}
                             </p>
                           </div>
                         </div>
@@ -145,30 +150,15 @@ export default function ProjectDetail1() {
                             <span className="flaticon-goal" />
                           </div>
                           <div className="details">
-                            <h5 className="title">English Level</h5>
-                            <p className="mb-0 text">Professional</p>
+                            <h5 className="title">{project.language} Level</h5>
+                            <p className="mb-0 text">{project.languageLevel}</p>
                           </div>
                         </div>
                       </div>
                     </div>
                     <div className="service-about">
                       <h4>Description</h4>
-                      <p className="text mb30">
-                        It is a long established fact that a reader will be
-                        distracted by the readable content of a page when
-                        looking at its layout. The point of using Lorem Ipsum is
-                        that it has a more-or-less normal distribution of
-                        letters, as opposed to using 'Content here, content
-                        here', making it look like readable English.{" "}
-                      </p>
-                      <p className="text mb30">
-                        Many desktop publishing packages and web page editors
-                        now use Lorem Ipsum as their default model text, and a
-                        search for 'lorem ipsum' will uncover many web sites
-                        still in their infancy. Various versions have evolved
-                        over the years, sometimes by accident, sometimes on
-                        purpose (injected humour and the like).
-                      </p>
+                      <p className="text mb30">{project.description}</p>
                       <hr className="opacity-100 mb60 mt60" />
                       <h4 className="mb30">Attachments</h4>
                       <div className="row">
@@ -258,11 +248,14 @@ export default function ProjectDetail1() {
                               </div>
                             </div>
                             <div className="col-md-12">
-                              <ServiceDetailExtra1 />
+                              {/* <ServiceDetailExtra1 /> */}
                             </div>
                             <div className="col-md-12">
                               <div className="d-grid">
-                                <a className="ud-btn btn-thm">
+                                <a
+                                  className="ud-btn btn-thm"
+                                  onClick={() => onSubmitForm()}
+                                >
                                   Submit a Proposal
                                   <i className="fal fa-arrow-right-long" />
                                 </a>

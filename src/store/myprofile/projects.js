@@ -8,6 +8,7 @@ const projectsStore = create((set) => ({
     projects: [],
     totalCount: 0,
   },
+  singleProject: null,
   getProjects: async (params) => {
     try {
       const res = await axiosInstance.get(
@@ -15,6 +16,16 @@ const projectsStore = create((set) => ({
       );
       if (res.data) {
         set({ allProjects: res.data });
+      }
+    } catch (error) {
+      return null;
+    }
+  },
+  getSingleProject: async (id) => {
+    try {
+      const res = await axiosInstance.get(`/api/v1/projects/${id}`);
+      if (res.data) {
+        set({ singleProject: res.data });
       }
     } catch (error) {
       return null;
@@ -34,21 +45,7 @@ const projectsStore = create((set) => ({
     try {
       console.log(" id", id, data);
       console.log("Aaa", "/api/v1/projects?id" + { id }, data);
-      const res = await axiosInstance.put(`/api/v1/projects/${id}`, {
-        id: 1,
-        title: "New Project",
-        status: "OPEN_FOR_PROPOSALS",
-        projectCategory: "1",
-        freelancerType: "full-time",
-        priceType: "mid",
-        cost: "500",
-        projectDuration: "23",
-        description: "",
-
-        projectSkills: ["1", "2", "3"],
-
-        serviceProvider: null,
-      });
+      const res = await axiosInstance.put(`/api/v1/projects/${id}`, data);
       if (res.data) {
         return res.data;
       }

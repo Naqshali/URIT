@@ -21,6 +21,8 @@ export default function EditProjectModal({ editRecord, onCloseModal }) {
     description: "",
     projectDuration: "",
     level: "",
+    language: "",
+    languageLevel: "",
     projectSkills: [],
     description: "",
   });
@@ -34,7 +36,11 @@ export default function EditProjectModal({ editRecord, onCloseModal }) {
       cost: "",
       description: "",
       projectDuration: "",
+      level: "",
+      language: "",
+      languageLevel: "",
       projectSkills: [],
+      description: "",
     };
     setBasicInfoObj(obj);
   };
@@ -138,6 +144,8 @@ export default function EditProjectModal({ editRecord, onCloseModal }) {
                       />
                     </div>
                   </div>
+                </div>
+                <div className="row">
                   <div className="col">
                     <div className="mb20">
                       <label className="heading-color ff-heading fw500 mb10">
@@ -156,124 +164,179 @@ export default function EditProjectModal({ editRecord, onCloseModal }) {
                       />
                     </div>
                   </div>
-                  <div className="row">
-                    <div className="col">
-                      <div className="mb20">
-                        <label className="heading-color ff-heading fw500 mb10">
-                          Freelancer Type
-                        </label>
-                        <Select
-                          classNamePrefix="custom"
-                          isClearable
-                          name="freelancerType"
-                          value={localMetaData.freeLancerType.find(
-                            (option) =>
-                              option.value === basicInfoObj.freelancerType
-                          )}
-                          options={localMetaData.freeLancerType}
-                          onChange={handleInputChange}
-                        />
-                      </div>
-                    </div>
-                    <div className="col">
-                      <div className="mb20">
-                        <label className="heading-color ff-heading fw500 mb10">
-                          Price type
-                        </label>
-                        <Select
-                          classNamePrefix="custom"
-                          isClearable
-                          name="priceType"
-                          value={localMetaData.priceTypes.find(
-                            (option) => option.value === basicInfoObj.priceType
-                          )}
-                          options={localMetaData.priceTypes}
-                          onChange={handleInputChange}
-                        />
-                      </div>
+                  <div className="col">
+                    <div className="mb20">
+                      <label className="heading-color ff-heading fw500 mb10">
+                        Freelancer Type
+                      </label>
+                      <Select
+                        classNamePrefix="custom"
+                        isClearable
+                        name="freelancerType"
+                        value={localMetaData.freeLancerType.find(
+                          (option) =>
+                            option.value === basicInfoObj.freelancerType
+                        )}
+                        options={localMetaData.freeLancerType}
+                        onChange={handleInputChange}
+                      />
                     </div>
                   </div>
-                  <div className="row">
-                    <div className="col">
-                      <div className="mb20">
-                        <label className="heading-color ff-heading fw500 mb10">
-                          Cost
-                        </label>
-                        <CurrencyInput
-                          className="form-control"
-                          prefix="$"
-                          name="cost"
-                          placeholder="Please enter a number"
-                          value={basicInfoObj.cost}
-                          onValueChange={handleCurrencyInputChange}
-                        />
-                      </div>
-                    </div>
-                    <div className="col">
-                      <div className="mb20">
-                        <label className="heading-color ff-heading fw500 mb10">
-                          Project Duration
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          name="projectDuration"
-                          value={basicInfoObj.projectDuration}
-                          onChange={handleInputChange}
-                        />
-                      </div>
+                </div>
+                <div className="row">
+                  <div className="col">
+                    <div className="mb20">
+                      <label className="heading-color ff-heading fw500 mb10">
+                        Price type
+                      </label>
+                      <Select
+                        classNamePrefix="custom"
+                        isClearable
+                        name="priceType"
+                        value={localMetaData.priceTypes.find(
+                          (option) => option.value === basicInfoObj.priceType
+                        )}
+                        options={localMetaData.priceTypes}
+                        onChange={handleInputChange}
+                      />
                     </div>
                   </div>
-                  <div className="row">
-                    <div className="col">
-                      <div className="mb20">
-                        <label className="heading-color ff-heading fw500 mb10">
-                          Level
-                        </label>
-                        <Select
-                          classNamePrefix="custom"
-                          isClearable
-                          name="level"
-                          value={localMetaData.projectDuration.find(
-                            (option) => option.value === basicInfoObj.level
-                          )}
-                          options={localMetaData.levels}
-                          onChange={handleInputChange}
-                        />
-                      </div>
-                    </div>
-                    <div className="col">
-                      <div className="mb20">
-                        <label className="heading-color ff-heading fw500 mb10">
-                          Required Skills on Project
-                        </label>
-                        <Select
-                          classNamePrefix="custom"
-                          isClearable
-                          isMulti
-                          name="projectSkills"
-                          value={getSkillObject()}
-                          options={meta.skills}
-                          onChange={handleInputChange}
-                        />
-                      </div>
+                  <div className="col">
+                    <div className="mb20">
+                      <label className="heading-color ff-heading fw500 mb10">
+                        Cost
+                      </label>
+                      <CurrencyInput
+                        className="form-control"
+                        prefix="$"
+                        name="cost"
+                        placeholder="Please enter a number"
+                        value={basicInfoObj.cost}
+                        onValueChange={handleCurrencyInputChange}
+                      />
                     </div>
                   </div>
-                  <div className="row">
-                    <div className="col">
-                      <div className="mb10">
-                        <label className="heading-color ff-heading fw500 mb10">
-                          Project Detail
-                        </label>
-                        <textarea
-                          cols={30}
-                          rows={6}
-                          placeholder="Description"
-                          name="description"
-                          value={basicInfoObj.description}
-                          onChange={handleInputChange}
-                        />
-                      </div>
+                </div>
+                <div className="row">
+                  <div className="col-sm-3">
+                    <div className="mb20">
+                      <label className="heading-color ff-heading fw500 mb10">
+                        Project Duration
+                      </label>
+                      <CurrencyInput
+                        className="form-control"
+                        maxLength={3}
+                        name="projectDuration"
+                        value={basicInfoObj.projectDuration}
+                        onValueChange={handleCurrencyInputChange}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-sm-3">
+                    <div className="mb20">
+                      <label className="heading-color ff-heading fw500 mb10">
+                        Project Duration
+                      </label>
+                      <Select
+                        classNamePrefix="custom"
+                        isClearable
+                        name="projectDurationType"
+                        value={localMetaData.projectDurationTypes.find(
+                          (option) =>
+                            option.value === basicInfoObj.projectDurationType
+                        )}
+                        options={localMetaData.projectDurationTypes}
+                        onChange={handleInputChange}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-sm-6">
+                    <div className="mb20">
+                      <label className="heading-color ff-heading fw500 mb10">
+                        Level
+                      </label>
+                      <Select
+                        classNamePrefix="custom"
+                        isClearable
+                        name="level"
+                        value={localMetaData.levels.find(
+                          (option) => option.value === basicInfoObj.level
+                        )}
+                        options={localMetaData.levels}
+                        onChange={handleInputChange}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col">
+                    <div className="mb20">
+                      <label className="heading-color ff-heading fw500 mb10">
+                        Language
+                      </label>
+                      <Select
+                        classNamePrefix="custom"
+                        isClearable
+                        name="language"
+                        value={meta.languages.find(
+                          (option) => option.value === basicInfoObj.language
+                        )}
+                        options={meta.languages}
+                        onChange={handleInputChange}
+                      />
+                    </div>
+                  </div>
+                  <div className="col">
+                    <div className="mb20">
+                      <label className="heading-color ff-heading fw500 mb10">
+                        Language Level
+                      </label>
+                      <Select
+                        classNamePrefix="custom"
+                        isClearable
+                        name="languageLevel"
+                        value={localMetaData.languageLevels.find(
+                          (option) =>
+                            option.value === basicInfoObj.languageLevel
+                        )}
+                        options={localMetaData.languageLevels}
+                        onChange={handleInputChange}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col">
+                    <div className="mb20">
+                      <label className="heading-color ff-heading fw500 mb10">
+                        Required Skills on Project
+                      </label>
+                      <Select
+                        classNamePrefix="custom"
+                        isClearable
+                        isMulti
+                        name="projectSkills"
+                        value={getSkillObject()}
+                        options={meta.skills}
+                        onChange={handleInputChange}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col">
+                    <div className="mb10">
+                      <label className="heading-color ff-heading fw500 mb10">
+                        Project Detail
+                      </label>
+                      <textarea
+                        cols={30}
+                        rows={6}
+                        placeholder="Description"
+                        name="description"
+                        value={basicInfoObj.description}
+                        onChange={handleInputChange}
+                      />
                     </div>
                   </div>
                 </div>

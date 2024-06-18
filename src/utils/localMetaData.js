@@ -44,28 +44,6 @@ export const localMetaData = {
       label: "High($$$)",
     },
   ],
-  projectDuration: [
-    {
-      key: "1-day",
-      value: "1-day",
-      label: "1 Day",
-    },
-    {
-      key: "2-day",
-      value: "2-day",
-      label: "2 Day",
-    },
-    {
-      key: "3-day",
-      value: "3-day",
-      label: "3 Day",
-    },
-    {
-      key: "1-week",
-      value: "1-week",
-      label: "1 Week",
-    },
-  ],
   levels: [
     {
       key: "entry-level",
@@ -81,6 +59,33 @@ export const localMetaData = {
       key: "expert-level",
       value: "expert-level",
       label: "Expert Level",
+    },
+  ],
+  projectDurationTypes: [
+    {
+      key: "hours",
+      value: "wehoursek",
+      label: "Hour(s)",
+    },
+    {
+      key: "days",
+      value: "days",
+      label: "Day(s)",
+    },
+    {
+      key: "week",
+      value: "week",
+      label: "Week(s)",
+    },
+    {
+      key: "months",
+      value: "months",
+      label: "Month(s)",
+    },
+    {
+      key: "year",
+      value: "year",
+      label: "Year(s)",
     },
   ],
 };

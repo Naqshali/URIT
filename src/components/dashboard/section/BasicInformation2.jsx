@@ -23,7 +23,10 @@ export default function BasicInformation2() {
     cost: "",
     description: "",
     projectDuration: "",
+    projectDurationType: "",
     level: "",
+    language: "",
+    languageLevel: "",
     projectSkills: [],
     description: "",
   });
@@ -37,7 +40,11 @@ export default function BasicInformation2() {
       cost: "",
       description: "",
       projectDuration: "",
+      level: "",
+      language: "",
+      languageLevel: "",
       projectSkills: [],
+      description: "",
     };
     setBasicInfoObj(obj);
   };
@@ -173,16 +180,34 @@ export default function BasicInformation2() {
                   />
                 </div>
               </div>
-              <div className="col-sm-6">
+              <div className="col-sm-3">
                 <div className="mb20">
                   <label className="heading-color ff-heading fw500 mb10">
                     Project Duration
                   </label>
-                  <input
-                    type="text"
+                  <CurrencyInput
                     className="form-control"
+                    maxLength={3}
                     name="projectDuration"
                     value={basicInfoObj.projectDuration}
+                    onValueChange={handleCurrencyInputChange}
+                  />
+                </div>
+              </div>
+              <div className="col-sm-3">
+                <div className="mb20">
+                  <label className="heading-color ff-heading fw500 mb10">
+                    Project Duration
+                  </label>
+                  <Select
+                    classNamePrefix="custom"
+                    isClearable
+                    name="projectDurationType"
+                    value={localMetaData.projectDurationTypes.find(
+                      (option) =>
+                        option.value === basicInfoObj.projectDurationType
+                    )}
+                    options={localMetaData.projectDurationTypes}
                     onChange={handleInputChange}
                   />
                 </div>
@@ -196,10 +221,44 @@ export default function BasicInformation2() {
                     classNamePrefix="custom"
                     isClearable
                     name="level"
-                    value={localMetaData.projectDuration.find(
+                    value={localMetaData.levels.find(
                       (option) => option.value === basicInfoObj.level
                     )}
                     options={localMetaData.levels}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              </div>
+              <div className="col-sm-6">
+                <div className="mb20">
+                  <label className="heading-color ff-heading fw500 mb10">
+                    Language
+                  </label>
+                  <Select
+                    classNamePrefix="custom"
+                    isClearable
+                    name="language"
+                    value={meta.languages.find(
+                      (option) => option.value === basicInfoObj.language
+                    )}
+                    options={meta.languages}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              </div>
+              <div className="col-sm-6">
+                <div className="mb20">
+                  <label className="heading-color ff-heading fw500 mb10">
+                    Language Level
+                  </label>
+                  <Select
+                    classNamePrefix="custom"
+                    isClearable
+                    name="languageLevel"
+                    value={localMetaData.languageLevels.find(
+                      (option) => option.value === basicInfoObj.languageLevel
+                    )}
+                    options={localMetaData.languageLevels}
                     onChange={handleInputChange}
                   />
                 </div>
