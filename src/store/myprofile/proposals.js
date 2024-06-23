@@ -3,15 +3,14 @@ import axiosInstance from "@/axios/axios.config";
 
 const proposalsStore = create((set) => ({
   projectProposals: [],
-  getProjectAllProposals: async (id) => {
-    console.log("asd");
+  getProjectProposal: async (id, type, page) => {
     try {
       const res = await axiosInstance.get(
-        "/api/v1/projects/" + id + "/proposals?pageNumber=0&pageSize=10"
+        `/api/v1/projects/${id}/proposals?pageNumber=${page ?? 0}&pageSize=10`
       );
 
-      if (res.data) {
-        set({ projectProposals: res.data });
+      if (res.data && res.data.proposals.length) {
+        return type === "SERVICE_PROVIDER" ? res.data.proposals[0] : res.data;
       }
     } catch (error) {
       return null;

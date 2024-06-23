@@ -1,6 +1,5 @@
 import { decode } from "jwt-js-decode";
 import moment from "moment";
-import globalStore from "@/store/global";
 
 export const decodeJWT = (token) => {
   try {
@@ -58,59 +57,4 @@ export const transformMetaData = (array, valueKey) => {
     value: item.id.toString(),
     label: item[valueKey],
   }));
-};
-
-const meta = () => {
-  const { meta } = globalStore();
-  return meta;
-};
-
-export const getService = (id) => {
-  const itemFound = meta().services.find((service) => {
-    return service.value === id;
-  });
-
-  if (itemFound) {
-    return itemFound.label;
-  }
-};
-
-export const getSkill = (id) => {
-  const itemFound = meta().skills.find((skill) => {
-    return skill.value === id;
-  });
-
-  if (itemFound) {
-    return itemFound.label;
-  }
-};
-
-export const getCountry = (id) => {
-  const itemFound = meta().countries.find((country) => {
-    return country.value === id;
-  });
-
-  if (itemFound) {
-    return itemFound.label;
-  }
-};
-
-export const getDegree = (id) => {
-  const itemFound = meta().degrees.find((degree) => {
-    return degree.value === id;
-  });
-
-  if (itemFound) {
-    return itemFound.label;
-  }
-};
-
-export const getLanguage = (id) => {
-  const itemFound = meta().languages.find((language) => {
-    return language.value === id;
-  });
-
-  if (itemFound) {
-    return itemFound.label;
-  }
 };

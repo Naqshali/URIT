@@ -47,7 +47,14 @@ export default function EditProjectModal({ editRecord, onCloseModal }) {
 
   useEffect(() => {
     if (editRecord) {
-      setBasicInfoObj(editRecord);
+      const record = { ...editRecord };
+      let skillsValueOnly = [];
+      if (record.projectSkills.length) {
+        skillsValueOnly = record.projectSkills.map((item) => item.name);
+      }
+      record.projectSkills = skillsValueOnly;
+      console.log("record", record);
+      setBasicInfoObj(record);
     }
   }, [editRecord]);
 
@@ -86,7 +93,7 @@ export default function EditProjectModal({ editRecord, onCloseModal }) {
 
   const getSkillObject = () => {
     const result = meta.skills.filter((option) =>
-      basicInfoObj.projectSkills.some((pSkill) => pSkill.name === option.value)
+      basicInfoObj.projectSkills.some((pSkill) => pSkill === option.value)
     );
     return result;
   };

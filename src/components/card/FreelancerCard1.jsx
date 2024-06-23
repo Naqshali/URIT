@@ -10,7 +10,7 @@ export default function FreelancerCard1({ data }) {
             height={90}
             width={90}
             className="rounded-circle mx-auto"
-            src={data.img}
+            src="/images/team/fl-1.png"
             alt="thumb"
           />
           <span className="online" />

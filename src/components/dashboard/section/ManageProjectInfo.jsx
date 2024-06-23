@@ -1,28 +1,27 @@
 "use client";
 import Link from "next/link";
 import DashboardNavigation from "../header/DashboardNavigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Pagination1 from "@/components/section/Pagination1";
 import ManageProjectCard from "../card/ManageProjectCard";
-import ProposalModal1 from "../modal/ProposalModal1";
+import ProposalModal from "../modal/Proposal";
 import DeleteModal from "../modal/DeleteModal";
 import projectsStore from "@/store/myprofile/projects";
+import proposalsStore from "@/store/myprofile/proposals";
 import EditProjectModal from "@/components/dashboard/modal/editProjectModal";
-
-const tab = [
-  "Posted Projects",
-  "Ongoing Projects",
-  "Completed Services",
-  "Canceled Services",
-];
+import signUpStore from "@/store/signUp";
 
 export default function ManageProjectInfo() {
   const { size, allProjects, getProjects } = projectsStore();
+  const { loggedInUser } = signUpStore();
 
   const [selectedTab, setSelectedTab] = useState(0);
   const [projectsList, setProjectsList] = useState([]);
   const [userId, setUserId] = useState();
   const [editRecord, setEditRecord] = useState(null);
+
+  const { getProjectProposal } = proposalsStore();
+  const [proposal, setProposal] = useState({});
 
   useEffect(() => {
     const id = localStorage.getItem("user_profile_id");
@@ -41,20 +40,39 @@ export default function ManageProjectInfo() {
     setProjectsList(allProjects.projects);
   }, [allProjects]);
 
+  const userType = useMemo(() => {
+    return loggedInUser?.userType;
+  });
+
   const fetchProjects = async (pageNo, status) => {
     const params = {
       userId: userId,
       pageNumber: pageNo ?? 0,
       pageSize: size,
       ...(status && { status: status }),
+      ...(userType === "SERVICE_PROVIDER" && {
+        proposalSent: true,
+      }),
     };
 
     await getProjects(params);
   };
 
+  const filterTabs = () => {
+    if (userType === "SERVICE_PROVIDER") {
+      return [{ title: "Proposed Projects", status: "OPEN_FOR_PROPOSALS" }];
+    }
+    return [
+      { title: "Posted Projects", status: "OPEN_FOR_PROPOSALS" },
+      { title: "Ongoing Projects", status: "IN_PROCESS" },
+      { title: "Completed Services", status: "COMPLETED_SERVICES" },
+      { title: "Canceled Services", status: "CANCELLED_SERVICES" },
+    ];
+  };
+
   const onSelectingTab = (selectedTab) => {
     setSelectedTab(selectedTab);
-    fetchProjects(0, tab[selectedTab]);
+    fetchProjects(0, filterTabs()[selectedTab].status);
   };
 
   const onSelectPage = (pageNo) => {
@@ -65,8 +83,42 @@ export default function ManageProjectInfo() {
     setEditRecord(item);
   };
 
-  const onCloseModal = (item) => {
+  const onCloseModal = () => {
     setEditRecord(null);
+    fetchProjects();
+  };
+
+  const openProposalModal = async (item) => {
+    const result = await getProjectProposal(item.id, userType);
+    if (result) {
+      if (userType === "SERVICE_PROVIDER") {
+        const obj = {
+          client: item.client,
+          coverLetter: result.coverLetter,
+          hourlyRate: result.hourlyRate,
+          estimatedHours: result.estimatedHours,
+        };
+        setProposal(obj);
+      } else {
+        const obj = {
+          id: item.id,
+          proposals: result.proposals,
+          totalCount: result.totalCount,
+        };
+        setProposal(obj);
+      }
+    } else {
+      setProposal({ noProposals: true });
+    }
+  };
+
+  const getNextProposalsList = async (page) => {
+    const result = await getProjectProposal(proposal.id, userType, page);
+    setProposal(result);
+  };
+
+  const onCloseProposalModal = () => {
+    setProposal({});
   };
 
   return (
@@ -81,17 +133,19 @@ export default function ManageProjectInfo() {
               <h2>Manage Project</h2>
             </div>
           </div>
-          <div className="col-lg-3">
-            <div className="text-lg-end">
-              <Link
-                href="/create-projects"
-                className="ud-btn btn-dark default-box-shadow2"
-              >
-                Create Project
-                <i className="fal fa-arrow-right-long" />
-              </Link>
+          {userType !== "SERVICE_PROVIDER" && (
+            <div className="col-lg-3">
+              <div className="text-lg-end">
+                <Link
+                  href="/create-projects"
+                  className="ud-btn btn-dark default-box-shadow2"
+                >
+                  Create Project
+                  <i className="fal fa-arrow-right-long" />
+                </Link>
+              </div>
             </div>
-          </div>
+          )}
         </div>
         <div className="row">
           <div className="col-xl-12">
@@ -99,7 +153,7 @@ export default function ManageProjectInfo() {
               <div className="navtab-style1">
                 <nav>
                   <div className="nav nav-tabs mb30">
-                    {tab.map((item, i) => (
+                    {filterTabs().map((item, i) => (
                       <button
                         key={i}
                         className={`nav-link fw500 ps-0 ${
@@ -107,7 +161,7 @@ export default function ManageProjectInfo() {
                         }`}
                         onClick={() => onSelectingTab(i)}
                       >
-                        {item}
+                        {item.title}
                       </button>
                     ))}
                   </div>
@@ -119,7 +173,11 @@ export default function ManageProjectInfo() {
                         <th scope="col">Title</th>
                         <th scope="col">Category</th>
                         <th scope="col">Type/Cost</th>
-                        <th scope="col">Actions</th>
+                        <th scope="col">
+                          {userType === "SERVICE_PROVIDER"
+                            ? "Proposal"
+                            : "Actions"}
+                        </th>
                       </tr>
                     </thead>
                     <tbody className="t-body">
@@ -128,6 +186,7 @@ export default function ManageProjectInfo() {
                           key={ind}
                           item={item}
                           openEditProjectModal={openEditProjectModal}
+                          openProposalModal={openProposalModal}
                         />
                       ))}
                     </tbody>
@@ -150,8 +209,12 @@ export default function ManageProjectInfo() {
         </div>
       </div>
       <EditProjectModal editRecord={editRecord} onCloseModal={onCloseModal} />
+      <ProposalModal
+        record={proposal}
+        getNextProposalsList={getNextProposalsList}
+        onCloseProposalModal={onCloseProposalModal}
+      />
       <DeleteModal />
-      {/* <ProposalModal1 /> */}
     </>
   );
 }

@@ -17,11 +17,11 @@ export default function BasicInformation() {
   const [showToastr, setShowToastr] = useState(false);
   const [basicInfoObj, setBasicInfoObj] = useState({
     title: "",
+    serviceCategory: "",
     price: "",
     description: "",
     country: "",
     city: "",
-    language: "",
     languageLevel: "",
     serviceSkills: [],
     serviceDetail: "",
@@ -30,13 +30,14 @@ export default function BasicInformation() {
   const resetBasicInfoObj = () => {
     const obj = {
       title: "",
+      serviceCategory: "",
       price: "",
       description: "",
       country: "",
       city: "",
-      language: "",
       languageLevel: "",
       serviceSkills: [],
+      serviceDetail: "",
     };
     setBasicInfoObj(obj);
   };
@@ -114,7 +115,7 @@ export default function BasicInformation() {
                   <CurrencyInput
                     className="form-control"
                     prefix="$"
-                    name="cost"
+                    name="price"
                     placeholder="Please enter a number"
                     value={basicInfoObj.price}
                     onValueChange={handleCurrencyInputChange}
@@ -147,6 +148,23 @@ export default function BasicInformation() {
                     className="form-control"
                     name="city"
                     value={basicInfoObj.city}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              </div>
+              <div className="col-sm-6">
+                <div className="mb20">
+                  <label className="heading-color ff-heading fw500 mb10">
+                    Category
+                  </label>
+                  <Select
+                    classNamePrefix="custom"
+                    isClearable
+                    name="serviceCategory"
+                    value={meta.services.find(
+                      (option) => option.value === basicInfoObj.serviceCategory
+                    )}
+                    options={meta.services}
                     onChange={handleInputChange}
                   />
                 </div>

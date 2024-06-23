@@ -41,6 +41,19 @@ const projectsStore = create((set) => ({
       return null;
     }
   },
+  uploadAttachments: async (data, id) => {
+    try {
+      const res = await axiosInstance.post(
+        `/api/v1/projects/${id}/attachments`,
+        data
+      );
+      if (res.data) {
+        return res.data;
+      }
+    } catch (error) {
+      return null;
+    }
+  },
   updateProject: async (data, id) => {
     try {
       console.log(" id", id, data);

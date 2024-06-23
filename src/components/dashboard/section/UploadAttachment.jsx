@@ -1,10 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function UploadAttachment() {
+export default function UploadAttachment({
+  doNotshowSaveButton,
+  onSelectingFiles,
+}) {
   const [uploadedFiles, setUploadedFiles] = useState([]);
+
+  useEffect(() => {
+    onSelectingFiles(uploadedFiles);
+  }, [uploadedFiles]);
 
   // upload handler
   const handleFileUpload = (event) => {
@@ -15,7 +22,7 @@ export default function UploadAttachment() {
     };
 
     const uniqueNewFiles = newFiles.filter(
-      (file) => !isFileDuplicate(file, uploadedFiles),
+      (file) => !isFileDuplicate(file, uploadedFiles)
     );
 
     setUploadedFiles((prevFiles) => [...prevFiles, ...uniqueNewFiles]);
@@ -24,7 +31,7 @@ export default function UploadAttachment() {
   // delete handler
   const handleFileDelete = (fileName) => {
     setUploadedFiles((prevFiles) =>
-      prevFiles.filter((file) => file.name !== fileName),
+      prevFiles.filter((file) => file.name !== fileName)
     );
   };
 
@@ -47,7 +54,11 @@ export default function UploadAttachment() {
 
   return (
     <>
-      <div className="ps-widget bgc-white bdrs12 p30 mb30 overflow-hidden position-relative">
+      <div
+        className={`ps-widget bgc-white bdrs12 mb30 overflow-hidden position-relative ${
+          !doNotshowSaveButton ? "p30" : ""
+        }`}
+      >
         <div className="bdrb1 pb15 mb25">
           <h5 className="list-title">Upload Attachments</h5>
         </div>
@@ -69,12 +80,14 @@ export default function UploadAttachment() {
           </div>
         </div>
         <p className="text">Maximum file size: 10 MB</p>
-        <div className="text-start">
-          <Link className="ud-btn btn-thm" href="/contact">
-            Save &amp; Publish
-            <i className="fal fa-arrow-right-long" />
-          </Link>
-        </div>
+        {!doNotshowSaveButton && (
+          <div className="text-start">
+            <Link className="ud-btn btn-thm" href="/contact">
+              Save &amp; Publish
+              <i className="fal fa-arrow-right-long" />
+            </Link>
+          </div>
+        )}
       </div>
     </>
   );

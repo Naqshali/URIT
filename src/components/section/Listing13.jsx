@@ -6,8 +6,33 @@ import Pagination1 from "./Pagination1";
 import { freelancer1 } from "@/data/product";
 import priceStore from "@/store/priceStore";
 import ListingSidebarModal5 from "../modal/ListingSidebarModal5";
+import providersStore from "@/store/providers";
+import { useEffect, useState } from "react";
+import globalMixin from "@/mixins/global";
 
 export default function Listing13() {
+  const { getServiceProviders } = providersStore();
+  const { allListSize } = globalMixin();
+  const [providersList, setProvidersList] = useState({
+    serviceProviders: [],
+    totalCount: 0,
+  });
+
+  useEffect(() => {
+    fetchProviders();
+  }, []);
+
+  const fetchProviders = async () => {
+    const params = {
+      pageNumber: 0,
+      PageSize: allListSize,
+    };
+    const result = await getServiceProviders(params);
+    if (result) {
+      setProvidersList(result);
+    }
+  };
+
   const getCategory = listingStore((state) => state.getCategory);
   const priceRange = priceStore((state) => state.priceRange);
   const getLocation = listingStore((state) => state.getLocation);
@@ -55,20 +80,11 @@ export default function Listing13() {
         <div className="container">
           <ListingOption6 />
           <div className="row">
-            {freelancer1
-              .slice(0, 12)
-              .filter(categoryFilter)
-              .filter(priceFilter)
-              .filter(locationFilter)
-              .filter(searchFilter)
-              .filter(levelFilter)
-              .filter(languageFilter)
-              .filter(sortByFilter)
-              .map((item,i) => (
-                <div key={ i } className="col-md-6 col-lg-4 col-xl-3">
-                  <FreelancerCard1 data={item} />
-                </div>
-              ))}
+            {providersList.serviceProviders.map((item, i) => (
+              <div key={i} className="col-md-6 col-lg-4 col-xl-3">
+                <FreelancerCard1 data={item} />
+              </div>
+            ))}
           </div>
           <div className="row mt30">
             <Pagination1 />

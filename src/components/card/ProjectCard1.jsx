@@ -1,8 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getSkill } from "@/utils/global";
+import globalMixin from "@/mixins/global";
+import { dateInStringFormat } from "@/utils/global";
 
 export default function ProjectCard1({ data }) {
+  const { getSkill } = globalMixin();
   return (
     <>
       <div className="freelancer-style1 bdr1 hover-box-shadow row ms-0 align-items-lg-center">
@@ -21,8 +23,8 @@ export default function ProjectCard1({ data }) {
             <div className="details ml15 ml0-md mb15-md">
               <h5 className="title mb-3">{data.title}</h5>
               <p className="mb-0 fz14 list-inline-item mb5-sm pe-1">
-                <i className="flaticon-place fz16 vam text-thm2 me-1" /> 2 hours
-                ago
+                <i className="flaticon-place fz16 vam text-thm2 me-1" />{" "}
+                {dateInStringFormat(data.createdAt)}
               </p>
               <p className="mb-0 fz14 list-inline-item mb5-sm">
                 <i className="flaticon-contract fz16 vam text-thm2 me-1 bdrl1 pl15 pl0-xs bdrn-xs" />{" "}

@@ -8,13 +8,15 @@ import Toastr from "@/components/toastr/toastr";
 import { localMetaData } from "@/utils/localMetaData";
 import CurrencyInput from "react-currency-input-field";
 import { useRouter } from "next/navigation";
+import UploadAttachment from "./UploadAttachment";
 
 export default function BasicInformation2() {
   const router = useRouter();
   const { meta } = globalStore();
-  const { saveProject } = projectsStore();
+  const { saveProject, uploadAttachments } = projectsStore();
 
   const [showToastr, setShowToastr] = useState(false);
+  const [attachments, setAttachments] = useState([]);
   const [basicInfoObj, setBasicInfoObj] = useState({
     title: "",
     projectCategory: "",
@@ -82,8 +84,17 @@ export default function BasicInformation2() {
     return skills.map((item) => item.value);
   };
 
+  const onSelectingFiles = (files) => {
+    setAttachments(files);
+  };
+
   const onSubmitForm = async () => {
     const result = await saveProject(basicInfoObj);
+    if (attachments.length) {
+      let filesData = new FormData();
+      filesData.append("attachments", attachments);
+      const fileResult = await uploadAttachments(filesData, result.id);
+    }
     if (result) {
       setShowToastr(result);
       resetBasicInfoObj();
@@ -292,6 +303,12 @@ export default function BasicInformation2() {
                     onChange={handleInputChange}
                   />
                 </div>
+              </div>
+              <div className="col-md-12">
+                <UploadAttachment
+                  doNotshowSaveButton={true}
+                  onSelectingFiles={onSelectingFiles}
+                />
               </div>
               <div className="col-md-12">
                 <div className="text-start">

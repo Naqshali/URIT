@@ -1,11 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
+import globalMixin from "@/mixins/global";
 
-export default function ProjectContactWidget1() {
+export default function ProjectContactWidget1({ clientData }) {
+  const { getGender, getCountry, getLanguage } = globalMixin();
   return (
     <>
       <div className="freelancer-style1 service-single mb-0 bdrs8">
-        <h4>About Buyer</h4>
+        <h4>About Project Owner</h4>
         <div className="wrapper d-flex align-items-center mt20">
           <div className="thumb position-relative mb25">
             <Image
@@ -17,13 +19,10 @@ export default function ProjectContactWidget1() {
             />
           </div>
           <div className="ml20">
-            <h5 className="title mb-1">Dropbox</h5>
-            <p className="mb-0">Digital Marketing</p>
+            <h5 className="title mb-1">{clientData.name}</h5>
+            <p className="mb-0">{getGender(clientData.gender)}</p>
             <div className="review">
-              <p>
-                <i className="fas fa-star fz10 review-color pr10" />
-                <span className="dark-color">4.9</span> (595 reviews)
-              </p>
+              <p>{clientData.email}</p>
             </div>
           </div>
         </div>
@@ -33,17 +32,21 @@ export default function ProjectContactWidget1() {
             <a className="meta fw500 text-start">
               Location
               <br />
-              <span className="fz14 fw400">London</span>
+              <span className="fz14 fw400">
+                {getCountry(clientData.country)}
+              </span>
             </a>
             <a className="meta fw500 text-start">
-              Employees
+              Language
               <br />
-              <span className="fz14 fw400">11-20</span>
+              <span className="fz14 fw400">
+                {getLanguage(clientData.language)}
+              </span>
             </a>
             <a className="meta fw500 text-start">
-              Departments
+              Number
               <br />
-              <span className="fz14 fw400">Designer</span>
+              <span className="fz14 fw400">{clientData.phoneNumber}</span>
             </a>
           </div>
         </div>

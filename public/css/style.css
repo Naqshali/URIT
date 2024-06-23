@@ -8347,7 +8347,7 @@ li.mm-listitem:focus {
 }
 
 .modal-md {
-  max-width: 50% !important;
+  max-width: 60% !important;
 }
 
 .modal:before {
@@ -12710,7 +12710,8 @@ column-gap: 20px;
   border: 1px solid #E9E9E9 !important;
   box-shadow: none;
   font-size: 15px;
-  height: 55px;
+  min-height: 55px !important;
+  height: auto;
   outline: none;
   cursor: pointer !important;
   
@@ -12749,3 +12750,9 @@ column-gap: 20px;
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for better visibility */
 }
 
+.proposal-list {
+  border: 1px solid grey;
+  border-radius: 15px;
+  padding: 10px;
+  margin: 10px 0;
+}

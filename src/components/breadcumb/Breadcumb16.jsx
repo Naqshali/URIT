@@ -32,8 +32,7 @@ export default function Breadcumb16() {
                 <div className="position-relative">
                   <h2>Freelancer List</h2>
                   <p className="text mb-0">
-                    All the Lorem Ipsum generators on the Internet tend to
-                    repeat.
+                    Here you can find best sellers globally ,
                   </p>
                 </div>
               </div>

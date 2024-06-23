@@ -1,23 +1,56 @@
 "use client";
 import Link from "next/link";
 import DashboardNavigation from "../header/DashboardNavigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Pagination1 from "@/components/section/Pagination1";
 import ManageServiceCard1 from "../card/ManageServiceCard1";
 import { manageService } from "@/data/dashboard";
 import ProposalModal1 from "../modal/ProposalModal1";
 import DeleteModal from "../modal/DeleteModal";
+import servicesStore from "@/store/myprofile/services";
+import globalMixin from "@/mixins/global";
 
-const tab = [
-  "Active Services",
-  "Pending Services",
-  "Ongoing Services",
-  "Completed Services",
-  "Canceled Services",
-];
+const tab = ["Active Services"];
 
 export default function ManageServiceInfo() {
+  const { allListSize } = globalMixin();
   const [selectedTab, setSelectedTab] = useState(0);
+  const [serviceList, setServiceList] = useState([]);
+  const [userId, setUserId] = useState();
+  const { allServices, getServices } = servicesStore();
+
+  useEffect(() => {
+    const id = localStorage.getItem("user_profile_id");
+    if (id) {
+      setUserId(id);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (userId) {
+      fetchServices();
+    }
+  }, [userId]);
+
+  useEffect(() => {
+    setServiceList(allServices.services);
+  }, [allServices]);
+
+  const fetchServices = async (pageNo) => {
+    const params = {
+      userId: userId,
+      pageNumber: pageNo ?? 0,
+      pageSize: allListSize,
+    };
+
+    await getServices(params);
+  };
+
+  const openEditProjectModal = () => {};
+
+  const onSelectPage = (pageNo) => {
+    fetchServices(pageNo);
+  };
 
   return (
     <>
@@ -29,7 +62,6 @@ export default function ManageServiceInfo() {
           <div className="col-lg-9">
             <div className="dashboard_title_area">
               <h2>Manage Services</h2>
-              <p className="text">Lorem ipsum dolor sit amet, consectetur.</p>
             </div>
           </div>
           <div className="col-lg-3">
@@ -63,116 +95,38 @@ export default function ManageServiceInfo() {
                     ))}
                   </div>
                 </nav>
-                {selectedTab === 0 && (
-                  <div className="packages_table table-responsive">
-                    <table className="table-style3 table at-savesearch">
-                      <thead className="t-head">
-                        <tr>
-                          <th scope="col">Title</th>
-                          <th scope="col">Category</th>
-                          <th scope="col">Type/Cost</th>
-                          <th scope="col">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody className="t-body">
-                        {manageService.map((item, i) => (
-                          <ManageServiceCard1 key={i} data={item} />
-                        ))}
-                      </tbody>
-                    </table>
+                <div className="packages_table table-responsive">
+                  <table className="table-style3 table at-savesearch">
+                    <thead className="t-head">
+                      <tr>
+                        <th scope="col">Title</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Type/Cost</th>
+                        {/* <th scope="col">Actions</th> */}
+                      </tr>
+                    </thead>
+                    <tbody className="t-body">
+                      {serviceList.map((item, ind) => (
+                        <ManageServiceCard1
+                          key={ind}
+                          item={item}
+                          openEditProjectModal={openEditProjectModal}
+                        />
+                      ))}
+                    </tbody>
+                  </table>
+                  {serviceList.length === 0 && (
+                    <div className="text-align-center">No Services Found</div>
+                  )}
+                  {allServices.totalCount > 0 && (
                     <div className="mt30">
-                      <Pagination1 />
+                      <Pagination1
+                        totalCount={allServices.totalCount ?? 1}
+                        onSelectPage={onSelectPage}
+                      />
                     </div>
-                  </div>
-                )}
-                {selectedTab === 1 && (
-                  <div className="packages_table table-responsive">
-                    <table className="table-style3 table at-savesearch">
-                      <thead className="t-head">
-                        <tr>
-                          <th scope="col">Title</th>
-                          <th scope="col">Category</th>
-                          <th scope="col">Type/Cost</th>
-                          <th scope="col">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody className="t-body">
-                        {manageService.slice(0, 4).map((item, i) => (
-                          <ManageServiceCard1 key={i} data={item} />
-                        ))}
-                      </tbody>
-                    </table>
-                    <div className="mt30">
-                      <Pagination1 />
-                    </div>
-                  </div>
-                )}
-                {selectedTab === 2 && (
-                  <div className="packages_table table-responsive">
-                    <table className="table-style3 table at-savesearch">
-                      <thead className="t-head">
-                        <tr>
-                          <th scope="col">Title</th>
-                          <th scope="col">Category</th>
-                          <th scope="col">Type/Cost</th>
-                          <th scope="col">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody className="t-body">
-                        {manageService.slice(0, 3).map((item, i) => (
-                          <ManageServiceCard1 key={i} data={item} />
-                        ))}
-                      </tbody>
-                    </table>
-                    <div className="mt30">
-                      <Pagination1 />
-                    </div>
-                  </div>
-                )}
-                {selectedTab === 3 && (
-                  <div className="packages_table table-responsive">
-                    <table className="table-style3 table at-savesearch">
-                      <thead className="t-head">
-                        <tr>
-                          <th scope="col">Title</th>
-                          <th scope="col">Category</th>
-                          <th scope="col">Type/Cost</th>
-                          <th scope="col">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody className="t-body">
-                        {manageService.slice(0, 4).map((item, i) => (
-                          <ManageServiceCard1 key={i} data={item} />
-                        ))}
-                      </tbody>
-                    </table>
-                    <div className="mt30">
-                      <Pagination1 />
-                    </div>
-                  </div>
-                )}
-                {selectedTab === 4 && (
-                  <div className="packages_table table-responsive">
-                    <table className="table-style3 table at-savesearch">
-                      <thead className="t-head">
-                        <tr>
-                          <th scope="col">Title</th>
-                          <th scope="col">Category</th>
-                          <th scope="col">Type/Cost</th>
-                          <th scope="col">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody className="t-body">
-                        {manageService.slice(0, 5).map((item, i) => (
-                          <ManageServiceCard1 key={i} data={item} />
-                        ))}
-                      </tbody>
-                    </table>
-                    <div className="mt30">
-                      <Pagination1 />
-                    </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             </div>
           </div>

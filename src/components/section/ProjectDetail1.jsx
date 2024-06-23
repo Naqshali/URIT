@@ -11,24 +11,14 @@ import projectsStore from "@/store/myprofile/projects";
 import { useEffect, useState } from "react";
 import CurrencyInput from "react-currency-input-field";
 import { useParams } from "next/navigation";
-import { getService } from "@/utils/global";
-
-const skills = [
-  "SaaS",
-  "Figma",
-  "Software Design",
-  "Sketch",
-  "Prototyping",
-  "HTML5",
-  "Design",
-  "Writing",
-];
+import globalMixin from "@/mixins/global";
 
 export default function ProjectDetail1() {
   const routeParams = useParams();
   const isMatchedScreen = useScreen(1216);
   const { submitProposal } = proposalsStore();
   const { singleProject, getSingleProject } = projectsStore();
+  const { getService, getSkill } = globalMixin();
 
   const [project, setProject] = useState({});
   const [propodalObj, setProposalObj] = useState({
@@ -43,6 +33,7 @@ export default function ProjectDetail1() {
 
   useEffect(() => {
     if (singleProject) {
+      console.log("singleProject", singleProject);
       setProject(singleProject);
     }
   }, [singleProject]);
@@ -180,26 +171,27 @@ export default function ProjectDetail1() {
                       <hr className="opacity-100 mb60 mt30" />
                       <h4 className="mb30">Skills Required</h4>
                       <div className="mb60">
-                        {skills.map((item, i) => (
-                          <a
-                            key={i}
-                            className={`tag list-inline-item mb-2 mb-xl-0 ${
-                              Number(item.length) === 7 ? "mr0" : "mr10"
-                            }`}
-                          >
-                            {item}
-                          </a>
-                        ))}
+                        {project?.projectSkills &&
+                          project.projectSkills.map((item, i) => (
+                            <a
+                              key={i}
+                              className={`tag list-inline-item mb-2 mb-xl-0 ${
+                                Number(item.length) === 7 ? "mr0" : "mr10"
+                              }`}
+                            >
+                              {getSkill(item.name)}
+                            </a>
+                          ))}
                       </div>
                       <hr className="opacity-100 mb60" />
-                      <h4 className="mb30">Project Proposals (3)</h4>
+                      {/* <h4 className="mb30">Project Proposals (3)</h4>
                       <div className="row">
                         {projectProposal1.slice(0, 3).map((item, i) => (
                           <div key={i} className="col-md-6 col-lg-12">
                             <ProjectProposalCard1 data={item} />
                           </div>
                         ))}
-                      </div>
+                      </div> */}
                       <div className="bsp_reveiw_wrt mt25">
                         <h4>Send Your Proposal</h4>
                         <form className="comments_form mt30 mb30-md">

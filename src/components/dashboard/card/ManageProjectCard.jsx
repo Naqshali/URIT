@@ -1,11 +1,23 @@
 "use client";
 import { Tooltip } from "react-tooltip";
 import { dateInStringFormat } from "@/utils/global";
-import { getService } from "@/utils/global";
+import globalMixin from "@/mixins/global";
+import signUpStore from "@/store/signUp";
 
-export default function ManageProjectCard({ item, openEditProjectModal }) {
+export default function ManageProjectCard({
+  item,
+  openEditProjectModal,
+  openProposalModal,
+}) {
+  const { getService } = globalMixin();
+  const { loggedInUser } = signUpStore();
+
   const onEditProject = () => {
     openEditProjectModal(item);
+  };
+
+  const onViewProposal = () => {
+    openProposalModal(item);
   };
   return (
     <>
@@ -37,31 +49,51 @@ export default function ManageProjectCard({ item, openEditProjectModal }) {
           <div className="d-flex">
             <a
               className="icon me-2"
-              id="edit"
+              id="proposal"
               data-bs-toggle="modal"
-              data-bs-target="#editProjectModal"
-              onClick={() => onEditProject()}
+              data-bs-target="#proposalModal"
+              onClick={() => onViewProposal()}
             >
               <Tooltip anchorSelect="#edit" className="ui-tooltip" place="top">
-                Edit
+                View Proposal
               </Tooltip>
-              <span className="flaticon-pencil" />
+              <i className="fa-regular fa-handshake"></i>
             </a>
-            <a
-              className="icon"
-              id="delete"
-              data-bs-toggle="modal"
-              data-bs-target="#deleteModal"
-            >
-              <Tooltip
-                anchorSelect="#delete"
-                place="top"
-                className="ui-tooltip"
+            {loggedInUser?.userType === "CLIENT" && (
+              <a
+                className="icon me-2"
+                id="edit"
+                data-bs-toggle="modal"
+                data-bs-target="#editProjectModal"
+                onClick={() => onEditProject()}
               >
-                Delete
-              </Tooltip>
-              <span className="flaticon-delete" />
-            </a>
+                <Tooltip
+                  anchorSelect="#edit"
+                  className="ui-tooltip"
+                  place="top"
+                >
+                  Edit
+                </Tooltip>
+                <span className="flaticon-pencil" />
+              </a>
+            )}
+            {loggedInUser?.userType === "CLIENT" && (
+              <a
+                className="icon"
+                id="delete"
+                data-bs-toggle="modal"
+                data-bs-target="#deleteModal"
+              >
+                <Tooltip
+                  anchorSelect="#delete"
+                  place="top"
+                  className="ui-tooltip"
+                >
+                  Delete
+                </Tooltip>
+                <span className="flaticon-delete" />
+              </a>
+            )}
           </div>
         </td>
       </tr>
