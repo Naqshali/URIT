@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import profileStore from "@/store/myprofile/profile";
 import { dateFormat } from "@/utils/global";
 import Toastr from "@/components/toastr/toastr";
+import globalMixin from "@/mixins/global";
 
 export default function Education({ meta }) {
   const { education, getEducation, deleteEducation } = profileStore();
@@ -13,6 +14,7 @@ export default function Education({ meta }) {
   const [editRecord, setEditRecord] = useState(null);
   const [showToastr, setShowToastr] = useState(false);
   const [deletedRecordId, setDeleteRecordId] = useState(null);
+  const { getDegree } = globalMixin();
 
   useEffect(() => {
     fetchEducation();
@@ -96,7 +98,7 @@ export default function Education({ meta }) {
                 <span className="tag">
                   {dateFormat(item.startYear)} - {dateFormat(item.endYear)}
                 </span>
-                <h5 className="mt15">{item.degree}</h5>
+                <h5 className="mt15">{getDegree(item.degree)}</h5>
                 <h6 className="text-thm">{item.institution}</h6>
                 <p>{item.description}</p>
               </div>

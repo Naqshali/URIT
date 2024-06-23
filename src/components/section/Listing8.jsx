@@ -37,7 +37,6 @@ export default function Listing8() {
 
   const fetchAllProjects = async (pageNo, status) => {
     const params = {
-      userId: userId,
       pageNumber: pageNo ?? 0,
       pageSize: size,
       ...(status && { status: status }),

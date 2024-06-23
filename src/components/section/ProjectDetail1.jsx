@@ -33,7 +33,6 @@ export default function ProjectDetail1() {
 
   useEffect(() => {
     if (singleProject) {
-      console.log("singleProject", singleProject);
       setProject(singleProject);
     }
   }, [singleProject]);
@@ -268,7 +267,7 @@ export default function ProjectDetail1() {
                         <div className="scrollbalance-inner" style={style}>
                           <div className="blog-sidebar ms-lg-auto">
                             <ProjectPriceWidget1 />
-                            <ProjectContactWidget1 />
+                            <ProjectContactWidget1 clientData={{}} />
                           </div>
                         </div>
                       )}
@@ -277,7 +276,7 @@ export default function ProjectDetail1() {
                     <div className="scrollbalance-inner">
                       <div className="blog-sidebar ms-lg-auto">
                         <ProjectPriceWidget1 />
-                        <ProjectContactWidget1 />
+                        <ProjectContactWidget1 clientData={{}} />
                       </div>
                     </div>
                   )}

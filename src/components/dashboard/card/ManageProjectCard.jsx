@@ -54,7 +54,11 @@ export default function ManageProjectCard({
               data-bs-target="#proposalModal"
               onClick={() => onViewProposal()}
             >
-              <Tooltip anchorSelect="#edit" className="ui-tooltip" place="top">
+              <Tooltip
+                anchorSelect="#proposal"
+                className="ui-tooltip"
+                place="top"
+              >
                 View Proposal
               </Tooltip>
               <i className="fa-regular fa-handshake"></i>
@@ -77,7 +81,7 @@ export default function ManageProjectCard({
                 <span className="flaticon-pencil" />
               </a>
             )}
-            {loggedInUser?.userType === "CLIENT" && (
+            {/* {loggedInUser?.userType === "CLIENT" && (
               <a
                 className="icon"
                 id="delete"
@@ -93,7 +97,7 @@ export default function ManageProjectCard({
                 </Tooltip>
                 <span className="flaticon-delete" />
               </a>
-            )}
+            )} */}
           </div>
         </td>
       </tr>
