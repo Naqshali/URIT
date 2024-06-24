@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import globalMixin from "@/mixins/global";
+import { useEffect } from "react";
 
 export default function ProjectContactWidget1({ clientData }) {
   const { getGender, getCountry, getLanguage } = globalMixin();
@@ -50,12 +51,12 @@ export default function ProjectContactWidget1({ clientData }) {
             </a>
           </div>
         </div>
-        <div className="d-grid mt30">
+        {/* <div className="d-grid mt30">
           <Link href="/contact" className="ud-btn btn-thm-border">
             Contact Buyer
             <i className="fal fa-arrow-right-long" />
           </Link>
-        </div>
+        </div> */}
       </div>
     </>
   );

@@ -155,7 +155,7 @@ export default function ProfileDetails({ meta }) {
               <div className="col-sm-6">
                 <div className="mb20">
                   <label className="heading-color ff-heading fw500 mb10">
-                    name
+                    User Name
                   </label>
                   <input
                     type="text"

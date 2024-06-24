@@ -12,8 +12,10 @@ import { useEffect, useState } from "react";
 import CurrencyInput from "react-currency-input-field";
 import { useParams } from "next/navigation";
 import globalMixin from "@/mixins/global";
+import { useRouter } from "next/navigation";
 
 export default function ProjectDetail1() {
+  const router = useRouter();
   const routeParams = useParams();
   const isMatchedScreen = useScreen(1216);
   const { submitProposal } = proposalsStore();
@@ -32,6 +34,7 @@ export default function ProjectDetail1() {
   }, []);
 
   useEffect(() => {
+    console.log("singleProject", singleProject);
     if (singleProject) {
       setProject(singleProject);
     }
@@ -60,6 +63,7 @@ export default function ProjectDetail1() {
     const result = await submitProposal(propodalObj, routeParams.id);
     console.log("result", result);
     if (result) {
+      router.push("/my-profile");
     }
   };
 
@@ -266,8 +270,10 @@ export default function ProjectDetail1() {
                       {({ style }) => (
                         <div className="scrollbalance-inner" style={style}>
                           <div className="blog-sidebar ms-lg-auto">
-                            <ProjectPriceWidget1 />
-                            <ProjectContactWidget1 clientData={{}} />
+                            <ProjectPriceWidget1 cost={project.cost} />
+                            <ProjectContactWidget1
+                              clientData={project.client ?? {}}
+                            />
                           </div>
                         </div>
                       )}
@@ -276,7 +282,9 @@ export default function ProjectDetail1() {
                     <div className="scrollbalance-inner">
                       <div className="blog-sidebar ms-lg-auto">
                         <ProjectPriceWidget1 />
-                        <ProjectContactWidget1 clientData={{}} />
+                        <ProjectContactWidget1
+                          clientData={project.client ?? {}}
+                        />
                       </div>
                     </div>
                   )}

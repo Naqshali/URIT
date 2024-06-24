@@ -57,9 +57,7 @@ export default function Listing8() {
       <section className="pt30 pb90">
         <div className="container">
           <div className="row">
-            <div className="col-lg-3">
-              <ListingSidebar2 />
-            </div>
+            <div className="col-lg-3">{/* <ListingSidebar2 /> */}</div>
             <div className="col-lg-9">
               <ListingOption2 itemLength={projectsList.projects?.length} />
               <div className="row">
