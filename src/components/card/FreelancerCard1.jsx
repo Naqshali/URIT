@@ -1,7 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
+import globalMixin from "@/mixins/global";
 
 export default function FreelancerCard1({ data }) {
+  const { getCountry, getSkill } = globalMixin();
   return (
     <>
       <div className="freelancer-style1 text-center bdr1 hover-box-shadow">
@@ -21,26 +23,25 @@ export default function FreelancerCard1({ data }) {
           <div className="review">
             <p>
               <i className="fas fa-star fz10 review-color pr10" />
-              <span className="dark-color fw500">{data.rating}</span>(
-              {data.reviews} reviews)
+              <span className="dark-color fw500">4 </span>( reviews)
             </p>
           </div>
           <div className="skill-tags d-flex align-items-center justify-content-center mb5">
-            <span className="tag">Figma</span>
-            <span className="tag mx10">Sketch</span>
-            <span className="tag">HTML5</span>
+            {data.userSkills?.map((item) => (
+              <span className="tag ml5">{getSkill(item.name)}</span>
+            ))}
           </div>
           <hr className="opacity-100 mt20 mb15" />
           <div className="fl-meta d-flex align-items-center justify-content-between">
             <a className="meta fw500 text-start">
               Location
               <br />
-              <span className="fz14 fw400">London</span>
+              <span className="fz14 fw400">{getCountry(data.country)}</span>
             </a>
             <a className="meta fw500 text-start">
               Rate
               <br />
-              <span className="fz14 fw400">$90 / hr</span>
+              <span className="fz14 fw400">${data.hourlyRate} / hr</span>
             </a>
             <a className="meta fw500 text-start">
               Job Success

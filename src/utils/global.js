@@ -51,6 +51,11 @@ export const dateInStringFormat = (date) => {
   return moment(date).fromNow();
 };
 
+export const dateInYearFormatOnly = (date) => {
+  if (!date) return;
+  return moment(date).format("YYYY");
+};
+
 export const transformMetaData = (array, valueKey) => {
   return array.map((item) => ({
     key: item.id.toString(),

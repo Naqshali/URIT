@@ -15,6 +15,7 @@ const servicesStore = create((set) => ({
       );
       if (res.data) {
         set({ allServices: res.data });
+        return res.data;
       }
     } catch (error) {
       return null;

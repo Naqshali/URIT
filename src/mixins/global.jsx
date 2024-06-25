@@ -57,6 +57,16 @@ export default function globalMixin() {
     }
   };
 
+  const getLanguageLevel = (id) => {
+    const itemFound = localMetaData.languageLevels.find((level) => {
+      return level.value === id;
+    });
+
+    if (itemFound) {
+      return itemFound.label;
+    }
+  };
+
   const getGender = (id) => {
     const itemFound = localMetaData.genders.find((gender) => {
       return gender.value === id;
@@ -73,6 +83,7 @@ export default function globalMixin() {
     getCountry,
     getDegree,
     getLanguage,
+    getLanguageLevel,
     getGender,
     allListSize,
   };

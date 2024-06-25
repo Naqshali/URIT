@@ -33,46 +33,9 @@ export default function Listing13() {
     }
   };
 
-  const getCategory = listingStore((state) => state.getCategory);
-  const priceRange = priceStore((state) => state.priceRange);
-  const getLocation = listingStore((state) => state.getLocation);
-  const getSearch = listingStore((state) => state.getSearch);
-  const getLevel = listingStore((state) => state.getLevel);
-  const getSpeak = listingStore((state) => state.getSpeak);
-  const getBestSeller = listingStore((state) => state.getBestSeller);
-
-  // category filter
-  const categoryFilter = (item) =>
-    getCategory?.length !== 0 ? getCategory.includes(item.skill) : item;
-
-  // salary filter
-  const priceFilter = (item) =>
-    priceRange.min <= item.price && priceRange.max >= item.price;
-
-  // location filter
-  const locationFilter = (item) =>
-    getLocation?.length !== 0
-      ? getLocation.includes(item.location.split(" ").join("-").toLowerCase())
-      : item;
-
-  const searchFilter = (item) =>
-    getSearch !== ""
-      ? item.location.split("-").join(" ").includes(getSearch.toLowerCase())
-      : item;
-
-  // level filter
-  const levelFilter = (item) =>
-    getLevel?.length !== 0 ? getLevel.includes(item.level) : item;
-
-  // speak filter
-  const languageFilter = (item) =>
-    getSpeak?.length !== 0
-      ? getSpeak.includes(item.language.toLowerCase())
-      : item;
-
-  // sort by filter
-  const sortByFilter = (item) =>
-    getBestSeller === "best-seller" ? item : item.sort === getBestSeller;
+  const onSelectPage = (pageNo) => {
+    fetchProviders(pageNo);
+  };
 
   return (
     <>
@@ -87,7 +50,10 @@ export default function Listing13() {
             ))}
           </div>
           <div className="row mt30">
-            <Pagination1 />
+            <Pagination1
+              totalCount={providersList.totalCount ?? 1}
+              onSelectPage={onSelectPage}
+            />
           </div>
         </div>
       </section>

@@ -1,13 +1,14 @@
 "use client";
-import { freelancer1 } from "@/data/product";
 import Image from "next/image";
-import { useParams } from "next/navigation";
+import globalMixin from "@/mixins/global";
+import { dateInStringFormat } from "@/utils/global";
 
-export default function Breadcumb17() {
-  const { id } = useParams();
+export default function Breadcumb17({ provider }) {
+  const { getCountry, getSkill } = globalMixin();
 
-  const data = freelancer1.find((item) => item.id == id);
-
+  const skills = () => {
+    return provider.userSkills?.map((item) => getSkill(item.name)).join(", ");
+  };
   return (
     <>
       <section className="breadcumb-section pt-0">
@@ -30,51 +31,32 @@ export default function Breadcumb17() {
             <div className="row wow fadeInUp">
               <div className="col-xl-7">
                 <div className="position-relative">
-                  {data ? (
-                    <h2>{data.title}</h2>
-                  ) : (
-                    <h2>I will design website UI UX in adobe xd or figma</h2>
-                  )}
-
+                  <h2>{provider.tagLine}</h2>
                   <div className="list-meta d-sm-flex align-items-center mt30">
                     <a className="position-relative freelancer-single-style">
                       <span className="online" />
-                      {data ? (
-                        <Image
-                          height={90}
-                          width={90}
-                          className="rounded-circle w-100 wa-sm mb15-sm"
-                          src={data.img}
-                          alt="Freelancer Photo"
-                        />
-                      ) : (
-                        <Image
-                          height={90}
-                          width={90}
-                          className="rounded-circle w-100 wa-sm mb15-sm"
-                          src="/images/team/fl-1.png"
-                          alt="Freelancer Photo"
-                        />
-                      )}
+                      <Image
+                        height={90}
+                        width={90}
+                        className="rounded-circle w-100 wa-sm mb15-sm"
+                        src="/images/team/fl-1.png"
+                        alt="Freelancer Photo"
+                      />
                     </a>
                     <div className="ml20 ml0-xs">
-                      {data ? (
-                        <h5 className="title mb-1">{data.name}</h5>
-                      ) : (
-                        <h5 className="title mb-1">Leslie Alexander</h5>
-                      )}
-                      <p className="mb-0">UI/UX Designer</p>
+                      <h5 className="title mb-1">{provider.name}</h5>
+                      <p className="mb-0">{skills()}</p>
                       <p className="mb-0 dark-color fz15 fw500 list-inline-item mb5-sm">
                         <i className="fas fa-star vam fz10 review-color me-2" />{" "}
                         4.82 94 reviews
                       </p>
                       <p className="mb-0 dark-color fz15 fw500 list-inline-item ml15 mb5-sm ml0-xs">
-                        <i className="flaticon-place vam fz20 me-2" /> London,
-                        UK
+                        <i className="flaticon-place vam fz20 me-2" />{" "}
+                        {getCountry(provider.country)}, {provider.city}
                       </p>
                       <p className="mb-0 dark-color fz15 fw500 list-inline-item ml15 mb5-sm ml0-xs">
                         <i className="flaticon-30-days vam fz20 me-2" /> Member
-                        since April 1, 2022
+                        since {dateInStringFormat(provider.createdAt)}
                       </p>
                     </div>
                   </div>

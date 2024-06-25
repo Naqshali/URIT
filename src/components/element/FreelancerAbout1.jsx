@@ -1,11 +1,15 @@
 import Link from "next/link";
+import globalMixin from "@/mixins/global";
+import { dateInStringFormat } from "@/utils/global";
 
-export default function FreelancerAbout1() {
+export default function FreelancerAbout1({ provider }) {
+  const { getCountry, getGender, getLanguage, getLanguageLevel } =
+    globalMixin();
   return (
     <>
       <div className="price-widget pt25 bdrs8">
         <h3 className="widget-title">
-          $29
+          ${provider.hourlyRate}
           <small className="fz15 fw500">/per hour</small>
         </h3>
         <div className="category-list mt20">
@@ -14,14 +18,17 @@ export default function FreelancerAbout1() {
               <i className="flaticon-place text-thm2 pe-2 vam" />
               Location
             </span>
-            <span>London, UK</span>
+            <span>
+              {" "}
+              {getCountry(provider.country)}, {provider.city}
+            </span>
           </a>
           <a className="d-flex align-items-center justify-content-between bdrb1 pb-2">
             <span className="text">
               <i className="flaticon-30-days text-thm2 pe-2 vam" />
               Member since
             </span>
-            <span>April 2022</span>
+            <span>{dateInStringFormat(provider.createdAt)}</span>
           </a>
           <a className="d-flex align-items-center justify-content-between bdrb1 pb-2">
             <span className="text">
@@ -35,21 +42,21 @@ export default function FreelancerAbout1() {
               <i className="flaticon-mars text-thm2 pe-2 vam" />
               Gender
             </span>
-            <span>Male</span>
+            <span>{getGender(provider.gender)}</span>
           </a>
           <a className="d-flex align-items-center justify-content-between bdrb1 pb-2">
             <span className="text">
               <i className="flaticon-translator text-thm2 pe-2 vam" />
               Languages
             </span>
-            <span>English</span>
+            <span>{getLanguage(provider.language)}</span>
           </a>
           <a className="d-flex align-items-center justify-content-between mb-3">
             <span className="text">
               <i className="flaticon-sliders text-thm2 pe-2 vam" />
               English Level
             </span>
-            <span>Fluent</span>
+            <span>{getLanguageLevel(provider.languageLevel)}</span>
           </a>
         </div>
         <div className="d-grid">

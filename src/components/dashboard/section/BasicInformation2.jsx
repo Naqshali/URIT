@@ -90,15 +90,19 @@ export default function BasicInformation2() {
 
   const onSubmitForm = async () => {
     const result = await saveProject(basicInfoObj);
-    if (attachments.length) {
-      let filesData = new FormData();
-      filesData.append("attachments", attachments);
-      const fileResult = await uploadAttachments(filesData, result.id);
-    }
     if (result) {
-      setShowToastr(result);
-      resetBasicInfoObj();
-      router.push("/manage-projects");
+      if (attachments.length) {
+        const formData = new FormData();
+        attachments.forEach((file) => {
+          formData.append("attachments", file);
+        });
+        const fileResult = await uploadAttachments(formData, result.projectId);
+        if (fileResult) {
+          setShowToastr(result);
+          resetBasicInfoObj();
+          router.push("/manage-projects");
+        }
+      }
     }
   };
 
