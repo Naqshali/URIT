@@ -44,4 +44,5 @@ export const footer = [
   "/my-profile",
   "/add-services",
   "/create-projects",
+  "/chats",
 ];
