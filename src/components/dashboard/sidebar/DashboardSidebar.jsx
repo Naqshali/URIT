@@ -19,7 +19,8 @@ export default function DashboardSidebar() {
         (navItem.key === "add_services" ||
           navItem.key === "manage_service" ||
           navItem.key === "my_profile" ||
-          navItem.key === "manage_project")) ||
+          navItem.key === "manage_project" ||
+          navItem.key === "chats")) ||
       !loggedInUser
     );
   };
