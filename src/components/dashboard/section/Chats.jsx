@@ -44,10 +44,14 @@ export default function Chats() {
 
   const messageReceivedHandler = (msg) => {
     console.log("Received message:", msg);
+    console.log(localStorage.getItem("user_profile_id"), msg.senderId);
     let newMsgs = message;
     newMsgs.push({
       text: msg.text,
-      type: "outgoing",
+      type:
+        localStorage.getItem("user_profile_id") == msg.senderId
+          ? "outgoing"
+          : "incoming",
       dateTime: "11:01 | June 8",
     });
     setMessages([...newMsgs]);
@@ -55,32 +59,36 @@ export default function Chats() {
 
   return (
     <>
-      <div class="messaging">
-        <div class="inbox_msg">
-          <div class="inbox_people">
-            <div class="headind_srch">
-              <div class="recent_heading">
+      <div className="messaging">
+        <div className="inbox_msg">
+          <div className="inbox_people">
+            <div className="headind_srch">
+              <div className="recent_heading">
                 <h4>Recent</h4>
               </div>
-              <div class="srch_bar">
-                <div class="stylish-input-group">
-                  <input type="text" class="search-bar" placeholder="Search" />
+              <div className="srch_bar">
+                <div className="stylish-input-group">
+                  <input
+                    type="text"
+                    className="search-bar"
+                    placeholder="Search"
+                  />
                 </div>
               </div>
             </div>
-            <div class="inbox_chat scroll">
-              <div class="chat_list active_chat">
-                <div class="chat_people">
-                  <div class="chat_img">
+            <div className="inbox_chat scroll">
+              <div className="chat_list active_chat">
+                <div className="chat_people">
+                  <div className="chat_img">
                     {" "}
                     <img
                       src="https://ptetutorials.com/images/user-profile.png"
                       alt="sunil"
                     />{" "}
                   </div>
-                  <div class="chat_ib">
+                  <div className="chat_ib">
                     <h5>
-                      Sunil Rajput <span class="chat_date">Dec 25</span>
+                      Sunil Rajput <span className="chat_date">Dec 25</span>
                     </h5>
                     <p>
                       Test, which is a new approach to have all solutions
@@ -91,48 +99,52 @@ export default function Chats() {
               </div>
             </div>
           </div>
-          <div class="mesgs">
-            <div class="msg_history">
+          <div className="mesgs">
+            <div className="msg_history">
               {message.map((msg) => (
                 <div>
                   {msg.type === "incoming" ? (
-                    <div class="incoming_msg">
-                      <div class="incoming_msg_img">
+                    <div className="incoming_msg">
+                      <div className="incoming_msg_img">
                         {" "}
                         <img
                           src="https://ptetutorials.com/images/user-profile.png"
                           alt="sunil"
                         />{" "}
                       </div>
-                      <div class="received_msg">
-                        <div class="received_withd_msg">
+                      <div className="received_msg">
+                        <div className="received_withd_msg">
                           <p>{msg.text}</p>
-                          <span class="time_date"> {msg.date}</span>
+                          <span className="time_date"> {msg.date}</span>
                         </div>
                       </div>
                     </div>
                   ) : (
-                    <div class="outgoing_msg">
-                      <div class="sent_msg">
+                    <div className="outgoing_msg">
+                      <div className="sent_msg">
                         <p>{msg.text}</p>
-                        <span class="time_date"> {msg.date}</span>{" "}
+                        <span className="time_date"> {msg.date}</span>{" "}
                       </div>
                     </div>
                   )}
                 </div>
               ))}
             </div>
-            <div class="type_msg">
-              <div class="input_msg_write">
+            <div className="type_msg">
+              <div className="input_msg_write">
                 <input
                   type="text"
-                  class="write_msg"
+                  className="write_msg"
                   placeholder="Type a message"
                   value={messageInput}
                   onChange={(e) => setMessageInput(e.target.value)}
                 />
-                <button class="msg_send_btn" type="button" onClick={onSendMsg}>
-                  <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                <button
+                  className="msg_send_btn"
+                  type="button"
+                  onClick={onSendMsg}
+                >
+                  <i className="fa fa-paper-plane" aria-hidden="true"></i>
                 </button>
               </div>
             </div>
