@@ -1,44 +1,60 @@
 "use client";
-import { useState, useEffect } from "react";
-import io from "socket.io-client";
-const socket = io("http://157.175.52.228:8085/ws");
+
+import React, { useState, useEffect } from "react";
+import signUpStore from "@/store/signUp";
+import {
+  connectChat,
+  disconnectChat,
+  sendMessage,
+  receiveMessage,
+} from "@/services/ChatService";
 
 export default function Chats() {
-  const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([]);
+  const { loggedInUser } = signUpStore();
+  const [messageInput, setMessageInput] = useState("");
+  const token = loggedInUser?.token;
+  const [message, setMessages] = useState([
+    {
+      text: "Test which is a new approach to have all solutions",
+      type: "incoming",
+      dateTime: "11:01 | June 8",
+    },
+    {
+      text: "Test which is a new approach to have all solutions",
+      type: "outgoing",
+      dateTime: "11:01 | June 8",
+    },
+  ]);
 
   useEffect(() => {
-    socket.on("chat message", (msg) => {
-      setMessages((prevMessages) => [...prevMessages, msg]);
-    });
+    if (!token) {
+      return;
+    }
 
+    connectChat(token, messageReceivedHandler);
     return () => {
-      socket.off("chat message");
+      disconnectChat();
     };
-  }, []);
+  }, [token]);
 
-  const sendMessage = (e) => {
-    e.preventDefault();
-    socket.emit("chat message", message);
-    setMessage("");
+  const onSendMsg = () => {
+    sendMessage(messageInput);
+    setMessageInput("");
   };
+
+  const messageReceivedHandler = (msg) => {
+    console.log("Received message:", msg);
+    let newMsgs = message;
+    newMsgs.push({
+      text: msg.text,
+      type: "outgoing",
+      dateTime: "11:01 | June 8",
+    });
+    setMessages([...newMsgs]);
+  };
+
   return (
     <>
-      <div>
-        <ul>
-          {messages.map((msg, index) => (
-            <li key={index}>{msg}</li>
-          ))}
-        </ul>
-        <form onSubmit={sendMessage}>
-          <input
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="Type a message..."
-          />
-          <button type="submit">Send</button>
-        </form>
-      </div>
       <div class="messaging">
         <div class="inbox_msg">
           <div class="inbox_people">
@@ -73,191 +89,38 @@ export default function Chats() {
                   </div>
                 </div>
               </div>
-              <div class="chat_list">
-                <div class="chat_people">
-                  <div class="chat_img">
-                    {" "}
-                    <img
-                      src="https://ptetutorials.com/images/user-profile.png"
-                      alt="sunil"
-                    />{" "}
-                  </div>
-                  <div class="chat_ib">
-                    <h5>
-                      Sunil Rajput <span class="chat_date">Dec 25</span>
-                    </h5>
-                    <p>
-                      Test, which is a new approach to have all solutions
-                      astrology under one roof.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div class="chat_list">
-                <div class="chat_people">
-                  <div class="chat_img">
-                    {" "}
-                    <img
-                      src="https://ptetutorials.com/images/user-profile.png"
-                      alt="sunil"
-                    />{" "}
-                  </div>
-                  <div class="chat_ib">
-                    <h5>
-                      Sunil Rajput <span class="chat_date">Dec 25</span>
-                    </h5>
-                    <p>
-                      Test, which is a new approach to have all solutions
-                      astrology under one roof.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div class="chat_list">
-                <div class="chat_people">
-                  <div class="chat_img">
-                    {" "}
-                    <img
-                      src="https://ptetutorials.com/images/user-profile.png"
-                      alt="sunil"
-                    />{" "}
-                  </div>
-                  <div class="chat_ib">
-                    <h5>
-                      Sunil Rajput <span class="chat_date">Dec 25</span>
-                    </h5>
-                    <p>
-                      Test, which is a new approach to have all solutions
-                      astrology under one roof.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div class="chat_list">
-                <div class="chat_people">
-                  <div class="chat_img">
-                    {" "}
-                    <img
-                      src="https://ptetutorials.com/images/user-profile.png"
-                      alt="sunil"
-                    />{" "}
-                  </div>
-                  <div class="chat_ib">
-                    <h5>
-                      Sunil Rajput <span class="chat_date">Dec 25</span>
-                    </h5>
-                    <p>
-                      Test, which is a new approach to have all solutions
-                      astrology under one roof.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div class="chat_list">
-                <div class="chat_people">
-                  <div class="chat_img">
-                    {" "}
-                    <img
-                      src="https://ptetutorials.com/images/user-profile.png"
-                      alt="sunil"
-                    />{" "}
-                  </div>
-                  <div class="chat_ib">
-                    <h5>
-                      Sunil Rajput <span class="chat_date">Dec 25</span>
-                    </h5>
-                    <p>
-                      Test, which is a new approach to have all solutions
-                      astrology under one roof.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div class="chat_list">
-                <div class="chat_people">
-                  <div class="chat_img">
-                    {" "}
-                    <img
-                      src="https://ptetutorials.com/images/user-profile.png"
-                      alt="sunil"
-                    />{" "}
-                  </div>
-                  <div class="chat_ib">
-                    <h5>
-                      Sunil Rajput <span class="chat_date">Dec 25</span>
-                    </h5>
-                    <p>
-                      Test, which is a new approach to have all solutions
-                      astrology under one roof.
-                    </p>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
           <div class="mesgs">
             <div class="msg_history">
-              <div class="incoming_msg">
-                <div class="incoming_msg_img">
-                  {" "}
-                  <img
-                    src="https://ptetutorials.com/images/user-profile.png"
-                    alt="sunil"
-                  />{" "}
+              {message.map((msg) => (
+                <div>
+                  {msg.type === "incoming" ? (
+                    <div class="incoming_msg">
+                      <div class="incoming_msg_img">
+                        {" "}
+                        <img
+                          src="https://ptetutorials.com/images/user-profile.png"
+                          alt="sunil"
+                        />{" "}
+                      </div>
+                      <div class="received_msg">
+                        <div class="received_withd_msg">
+                          <p>{msg.text}</p>
+                          <span class="time_date"> {msg.date}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div class="outgoing_msg">
+                      <div class="sent_msg">
+                        <p>{msg.text}</p>
+                        <span class="time_date"> {msg.date}</span>{" "}
+                      </div>
+                    </div>
+                  )}
                 </div>
-                <div class="received_msg">
-                  <div class="received_withd_msg">
-                    <p>Test which is a new approach to have all solutions</p>
-                    <span class="time_date"> 11:01 AM | June 9</span>
-                  </div>
-                </div>
-              </div>
-              <div class="outgoing_msg">
-                <div class="sent_msg">
-                  <p>Test which is a new approach to have all solutions</p>
-                  <span class="time_date"> 11:01 AM | June 9</span>{" "}
-                </div>
-              </div>
-              <div class="incoming_msg">
-                <div class="incoming_msg_img">
-                  {" "}
-                  <img
-                    src="https://ptetutorials.com/images/user-profile.png"
-                    alt="sunil"
-                  />{" "}
-                </div>
-                <div class="received_msg">
-                  <div class="received_withd_msg">
-                    <p>Test, which is a new approach to have</p>
-                    <span class="time_date"> 11:01 AM | Yesterday</span>
-                  </div>
-                </div>
-              </div>
-              <div class="outgoing_msg">
-                <div class="sent_msg">
-                  <p>Apollo University, Delhi, India Test</p>
-                  <span class="time_date"> 11:01 AM | Today</span>{" "}
-                </div>
-              </div>
-              <div class="incoming_msg">
-                <div class="incoming_msg_img">
-                  {" "}
-                  <img
-                    src="https://ptetutorials.com/images/user-profile.png"
-                    alt="sunil"
-                  />{" "}
-                </div>
-                <div class="received_msg">
-                  <div class="received_withd_msg">
-                    <p>
-                      We work directly with our designers and suppliers, and
-                      sell direct to you, which means quality, exclusive
-                      products, at a price anyone can afford.
-                    </p>
-                    <span class="time_date"> 11:01 AM | Today</span>
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
             <div class="type_msg">
               <div class="input_msg_write">
@@ -265,8 +128,10 @@ export default function Chats() {
                   type="text"
                   class="write_msg"
                   placeholder="Type a message"
+                  value={messageInput}
+                  onChange={(e) => setMessageInput(e.target.value)}
                 />
-                <button class="msg_send_btn" type="button">
+                <button class="msg_send_btn" type="button" onClick={onSendMsg}>
                   <i class="fa fa-paper-plane" aria-hidden="true"></i>
                 </button>
               </div>
