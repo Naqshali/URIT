@@ -6,14 +6,14 @@ import {
   connectChat,
   disconnectChat,
   sendMessage,
-  receiveMessage,
 } from "@/services/ChatService";
+import { chatMsgDateFormat } from "@/utils/global";
 
 export default function Chats() {
   const { loggedInUser } = signUpStore();
   const [messageInput, setMessageInput] = useState("");
   const token = loggedInUser?.token;
-  const [message, setMessages] = useState([
+  const [messages, setMessages] = useState([
     {
       text: "Test which is a new approach to have all solutions",
       type: "incoming",
@@ -25,6 +25,8 @@ export default function Chats() {
       dateTime: "11:01 | June 8",
     },
   ]);
+
+  const userId = localStorage.getItem("user_profile_id");
 
   useEffect(() => {
     if (!token) {
@@ -43,16 +45,12 @@ export default function Chats() {
   };
 
   const messageReceivedHandler = (msg) => {
-    console.log("Received message:", msg);
-    console.log(localStorage.getItem("user_profile_id"), msg.senderId);
-    let newMsgs = message;
+    console.log("Received messages:", msg);
+    let newMsgs = messages;
     newMsgs.push({
       text: msg.text,
-      type:
-        localStorage.getItem("user_profile_id") == msg.senderId
-          ? "outgoing"
-          : "incoming",
-      dateTime: "11:01 | June 8",
+      type: userId == msg.senderId ? "outgoing" : "incoming",
+      dateTime: chatMsgDateFormat(msg.createdAt),
     });
     setMessages([...newMsgs]);
   };
@@ -101,8 +99,8 @@ export default function Chats() {
           </div>
           <div className="mesgs">
             <div className="msg_history">
-              {message.map((msg) => (
-                <div>
+              {messages.map((msg, index) => (
+                <div key={index}>
                   {msg.type === "incoming" ? (
                     <div className="incoming_msg">
                       <div className="incoming_msg_img">
@@ -115,7 +113,7 @@ export default function Chats() {
                       <div className="received_msg">
                         <div className="received_withd_msg">
                           <p>{msg.text}</p>
-                          <span className="time_date"> {msg.date}</span>
+                          <span className="time_date"> {msg.dateTime}</span>
                         </div>
                       </div>
                     </div>
@@ -123,7 +121,7 @@ export default function Chats() {
                     <div className="outgoing_msg">
                       <div className="sent_msg">
                         <p>{msg.text}</p>
-                        <span className="time_date"> {msg.date}</span>{" "}
+                        <span className="time_date"> {msg.dateTime}</span>{" "}
                       </div>
                     </div>
                   )}

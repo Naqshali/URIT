@@ -51,6 +51,11 @@ export const dateInStringFormat = (date) => {
   return moment(date).fromNow();
 };
 
+export const chatMsgDateFormat = (date) => {
+  if (!date) return;
+  return moment(date).format("HH:mm | MMMM D");
+};
+
 export const dateInYearFormatOnly = (date) => {
   if (!date) return;
   return moment(date).format("YYYY");

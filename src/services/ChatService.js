@@ -42,8 +42,3 @@ export function sendMessage(message) {
     }
   }
 }
-
-export function receiveMessage(message) {
-  console.log("Aaaaaaasd", message);
-  return message;
-}
