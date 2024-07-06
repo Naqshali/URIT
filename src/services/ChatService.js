@@ -3,7 +3,7 @@ import Stomp from "stompjs";
 
 let sock = null;
 let stompClient = null;
-export function connectChat(token, messageReceivedCallback) {
+export function connectChat(token, channel, messageReceivedCallback) {
   const socket = new SockJS("http://157.175.52.228:8085/ws");
   const client = Stomp.over(socket);
   client.connect(
@@ -12,11 +12,13 @@ export function connectChat(token, messageReceivedCallback) {
     },
     (frame) => {
       stompClient = client; // Save client to state after connection
-      client.subscribe("/topic/urit/chat", (message) => {
+      client.subscribe(channel, (message) => {
         messageReceivedCallback(JSON.parse(message.body));
       });
     }
   );
+
+  return client;
 }
 
 export function disconnectChat() {

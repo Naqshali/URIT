@@ -35,7 +35,6 @@ export default function ProfileDetails({ meta }) {
   const [formSubmited, setFormSubmited] = useState(false);
 
   useEffect(() => {
-    console.log(meta);
     fetchProfileDetails();
   }, []);
 

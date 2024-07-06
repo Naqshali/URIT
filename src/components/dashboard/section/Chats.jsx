@@ -13,6 +13,9 @@ export default function Chats() {
   const { loggedInUser } = signUpStore();
   const [messageInput, setMessageInput] = useState("");
   const token = loggedInUser?.token;
+  const channel = "/topic/urit/chat";
+  let client = null;
+
   const [messages, setMessages] = useState([
     {
       text: "Test which is a new approach to have all solutions",
@@ -33,7 +36,12 @@ export default function Chats() {
       return;
     }
 
-    connectChat(token, messageReceivedHandler);
+    if (client) {
+      return;
+    }
+
+    client = connectChat(token, channel, messageReceivedHandler);
+    console.log("client", client);
     return () => {
       disconnectChat();
     };
