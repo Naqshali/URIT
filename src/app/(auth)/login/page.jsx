@@ -13,7 +13,6 @@ export default function page() {
   const [loginUserObj, setLoginUserObj] = useState({
     email: "",
     password: "",
-    remember_me: false,
   });
 
   const handleInputChange = (e) => {

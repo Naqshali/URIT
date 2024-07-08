@@ -18,6 +18,7 @@ import "react-toastify/dist/ReactToastify.css";
 import NavSidebar from "@/components/sidebar/NavSidebar";
 import globalStore from "@/store/global";
 import { useRouter } from "next/navigation";
+import PusherInit from "@/components/pusher/pusher";
 
 if (typeof window !== "undefined") {
   import("bootstrap");
@@ -106,6 +107,7 @@ export default function RootLayout({ children }) {
         )}
 
         {/* sidebar mobile navigation */}
+        <PusherInit />
         <NavSidebar />
       </body>
     </html>

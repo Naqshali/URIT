@@ -53,6 +53,11 @@ export const dateInStringFormat = (date) => {
 
 export const chatMsgDateFormat = (date) => {
   if (!date) return;
+  return moment(date).format("MMM DD");
+};
+
+export const chatMsgItemDateFormat = (date) => {
+  if (!date) return;
   return moment(date).format("HH:mm | MMMM D");
 };
 

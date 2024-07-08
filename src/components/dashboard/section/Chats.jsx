@@ -7,27 +7,20 @@ import {
   disconnectChat,
   sendMessage,
 } from "@/services/ChatService";
-import { chatMsgDateFormat } from "@/utils/global";
+import { chatMsgDateFormat, chatMsgItemDateFormat } from "@/utils/global";
+import pusherNotificationStore from "@/store/pusher";
 
 export default function Chats() {
   const { loggedInUser } = signUpStore();
+  const { latestNotification } = pusherNotificationStore();
   const [messageInput, setMessageInput] = useState("");
+
   const token = loggedInUser?.token;
   const channel = "/topic/urit/chat";
   let client = null;
 
-  const [messages, setMessages] = useState([
-    {
-      text: "Test which is a new approach to have all solutions",
-      type: "incoming",
-      dateTime: "11:01 | June 8",
-    },
-    {
-      text: "Test which is a new approach to have all solutions",
-      type: "outgoing",
-      dateTime: "11:01 | June 8",
-    },
-  ]);
+  const [chats, setChats] = useState([]);
+  const [selectedChat, setSelectedChat] = useState(null);
 
   const userId = localStorage.getItem("user_profile_id");
 
@@ -41,11 +34,64 @@ export default function Chats() {
     }
 
     client = connectChat(token, channel, messageReceivedHandler);
-    console.log("client", client);
     return () => {
       disconnectChat();
     };
   }, [token]);
+
+  useEffect(() => {
+    console.log("pusherNotifications", latestNotification);
+    if (latestNotification?.type === "msg") {
+      setChatsList(latestNotification);
+    }
+  }, [latestNotification]);
+
+  useEffect(() => {
+    console.log("chats", chats);
+  }, [chats]);
+
+  const setChatsList = (notification) => {
+    console.log("notification", notification);
+    const memberExist = chats.find(
+      (chat) => chat.userId == notification.senderId
+    );
+
+    console.log("memberExist", memberExist);
+
+    if (!memberExist) {
+      const obj = {
+        userId: notification.senderId,
+        senderName: notification.senderName,
+        projectTitle: notification.projectTitle,
+        date: chatMsgDateFormat(notification.createdAt),
+        active: true,
+        msgs: [
+          {
+            text: notification.text,
+            type: userId == notification.senderId ? "outgoing" : "incoming",
+            dateTime: notification.createdAt,
+          },
+        ],
+      };
+
+      const prevChats = [...chats];
+      setChats([obj, ...prevChats]);
+      setSelectedChat(obj);
+    } else {
+      const msgObj = {
+        text: latestNotification.text,
+        type: userId == latestNotification.senderId ? "outgoing" : "incoming",
+        dateTime: latestNotification.createdAt,
+      };
+      memberExist.msgs.push(msgObj);
+      const prevChats = [...chats];
+      const updatedUserMsgs = prevChats.map((chat) =>
+        chat.userId == latestNotification.senderId ? memberExist : chat
+      );
+
+      setChats(updatedUserMsgs);
+    }
+  };
 
   const onSendMsg = () => {
     sendMessage(messageInput);
@@ -53,14 +99,8 @@ export default function Chats() {
   };
 
   const messageReceivedHandler = (msg) => {
-    console.log("Received messages:", msg);
-    let newMsgs = messages;
-    newMsgs.push({
-      text: msg.text,
-      type: userId == msg.senderId ? "outgoing" : "incoming",
-      dateTime: chatMsgDateFormat(msg.createdAt),
-    });
-    setMessages([...newMsgs]);
+    console.log("msgmsgmsg", msg);
+    setChatsList(msg);
   };
 
   return (
@@ -83,34 +123,34 @@ export default function Chats() {
               </div>
             </div>
             <div className="inbox_chat scroll">
-              <div className="chat_list active_chat">
-                <div className="chat_people">
-                  <div className="chat_img">
-                    {" "}
-                    <img
-                      src="https://ptetutorials.com/images/user-profile.png"
-                      alt="sunil"
-                    />{" "}
-                  </div>
-                  <div className="chat_ib">
-                    <h5>
-                      Sunil Rajput <span className="chat_date">Dec 25</span>
-                    </h5>
-                    <p>
-                      Test, which is a new approach to have all solutions
-                      astrology under one roof.
-                    </p>
+              {chats.map((chat, index) => (
+                <div className="chat_list active_chat" key={index}>
+                  <div className="chat_people">
+                    <div className="chat_img">
+                      {" "}
+                      <img src="https://ptetutorials.com/images/user-profile.png" />{" "}
+                    </div>
+                    <div className="chat_ib">
+                      <h5>
+                        {chat.senderName}{" "}
+                        <span className="chat_date">{chat.date}</span>
+                      </h5>
+                      <p>{chat.msgs[chat.msgs.length - 1].text}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
+              ))}
+              {!chats.length && (
+                <div className="text-align-center pt50p">No Chat History.</div>
+              )}
             </div>
           </div>
           <div className="mesgs">
             <div className="msg_history">
-              {messages.map((msg, index) => (
+              {selectedChat?.msgs.map((msg, index) => (
                 <div key={index}>
                   {msg.type === "incoming" ? (
-                    <div className="incoming_msg">
+                    <div className="incoming_msg mt10">
                       <div className="incoming_msg_img">
                         {" "}
                         <img
@@ -121,7 +161,10 @@ export default function Chats() {
                       <div className="received_msg">
                         <div className="received_withd_msg">
                           <p>{msg.text}</p>
-                          <span className="time_date"> {msg.dateTime}</span>
+                          <span className="time_date">
+                            {" "}
+                            {chatMsgItemDateFormat(msg.dateTime)}
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -129,7 +172,10 @@ export default function Chats() {
                     <div className="outgoing_msg">
                       <div className="sent_msg">
                         <p>{msg.text}</p>
-                        <span className="time_date"> {msg.dateTime}</span>{" "}
+                        <span className="time_date">
+                          {" "}
+                          {chatMsgItemDateFormat(msg.dateTime)}
+                        </span>{" "}
                       </div>
                     </div>
                   )}
