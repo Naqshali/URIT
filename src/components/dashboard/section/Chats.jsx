@@ -37,6 +37,10 @@ export default function Chats() {
       return;
     }
 
+    if (client) {
+      return;
+    }
+
     client = connectChat(token, channel, messageReceivedHandler);
     return () => {
       disconnectChat();
@@ -77,7 +81,10 @@ export default function Chats() {
 
   const messageReceivedHandler = (msg) => {
     console.log("Message Received", msg);
-    if (loggedInUser?.userId == msg.userId) {
+    if (
+      loggedInUser?.userId == msg.senderId ||
+      loggedInUser?.userId === msg.receiverId
+    ) {
       setNewChat(msg);
     }
   };
@@ -93,7 +100,7 @@ export default function Chats() {
       type: "msg",
     };
     setChatsList(obj);
-    // sendMessage("Proposal Accepted");
+    sendMessage("Proposal Accepted");
   };
 
   const setChatsList = (notification) => {
