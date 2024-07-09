@@ -6,6 +6,7 @@ let stompClient = null;
 export function connectChat(token, channel, messageReceivedCallback) {
   const socket = new SockJS("http://157.175.52.228:8085/ws");
   const client = Stomp.over(socket);
+  client.debug = () => {};
   client.connect(
     {
       Authorization: "Bearer " + token,

@@ -1,13 +1,28 @@
 import ProjectContactWidget1 from "@/components/element/ProjectContactWidget1";
 import Pagination1 from "@/components/section/Pagination1";
+import { useRouter } from "next/navigation";
+import React, { useRef } from "react";
+
 export default function ProposalModal({
   record,
   getNextProposalsList,
   onCloseProposalModal,
 }) {
+  const router = useRouter();
+  const closeModalButtonRef = useRef(null);
   const onSelectPage = (page) => {
     getNextProposalsList(page);
   };
+
+  const onAcceptProposal = (proposal) => {
+    console.log("proposal", proposal);
+    console.log("record", record);
+    closeModalButtonRef.current.click();
+    router.push(
+      `/chats?projectId=${proposal.projectId}&providerName=${proposal.serviceProvider.name}&projectName=${proposal.projectName}`
+    );
+  };
+
   return (
     <>
       <div>
@@ -28,6 +43,7 @@ export default function ProposalModal({
                   data-bs-dismiss="modal"
                   aria-label="Close"
                   style={{ top: "10px", right: "10px", zIndex: "9" }}
+                  ref={closeModalButtonRef}
                   onClick={() => onCloseProposalModal()}
                 />
               </div>
@@ -52,6 +68,15 @@ export default function ProposalModal({
                               <strong>Email:</strong>{" "}
                               {item.serviceProvider.email}
                             </span>
+                            <div>
+                              <a
+                                className="ud-btn btn-thm accept-proposal"
+                                onClick={() => onAcceptProposal(item)}
+                              >
+                                Accept & Chat
+                                <i className="fal fa-arrow-right-long fs12" />
+                              </a>
+                            </div>
                           </div>
                         </div>
                       </div>

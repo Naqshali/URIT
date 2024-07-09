@@ -9,11 +9,18 @@ import {
 } from "@/services/ChatService";
 import { chatMsgDateFormat, chatMsgItemDateFormat } from "@/utils/global";
 import pusherNotificationStore from "@/store/pusher";
+import { useSearchParams } from "next/navigation";
+import moment from "moment";
 
 export default function Chats() {
   const { loggedInUser } = signUpStore();
   const { latestNotification } = pusherNotificationStore();
   const [messageInput, setMessageInput] = useState("");
+  const searchParams = useSearchParams();
+
+  const projectId = searchParams.get("projectId");
+  const providerName = searchParams.get("providerName");
+  const projectName = searchParams.get("projectName");
 
   const token = loggedInUser?.token;
   const channel = "/topic/urit/chat";
@@ -24,7 +31,9 @@ export default function Chats() {
   const [selectedChat, setSelectedChat] = useState(null);
 
   useEffect(() => {
-    if (!token || client) {
+    console.log("client", token, client);
+    console.log("client typoe", typeof client);
+    if (!token) {
       return;
     }
 
@@ -33,6 +42,14 @@ export default function Chats() {
       disconnectChat();
     };
   }, [token]);
+
+  useEffect(() => {
+    if (client) {
+      if (projectId && providerName) {
+        setDefaultMessage();
+      }
+    }
+  }, [client]);
 
   useEffect(() => {
     if (
@@ -59,9 +76,24 @@ export default function Chats() {
   };
 
   const messageReceivedHandler = (msg) => {
+    console.log("Message Received", msg);
     if (loggedInUser?.userId == msg.userId) {
       setNewChat(msg);
     }
+  };
+
+  const setDefaultMessage = () => {
+    const obj = {
+      senderId: loggedInUser.userId,
+      senderName: providerName,
+      projectTitle: projectName,
+      createdAt: moment(),
+      text: "Proposal Accepted",
+      userId: loggedInUser.userId,
+      type: "msg",
+    };
+    setChatsList(obj);
+    // sendMessage("Proposal Accepted");
   };
 
   const setChatsList = (notification) => {

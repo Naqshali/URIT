@@ -89,12 +89,16 @@ export default function ManageProjectInfo() {
           coverLetter: result.coverLetter,
           hourlyRate: result.hourlyRate,
           estimatedHours: result.estimatedHours,
+          projectName: item.title,
         };
         setProposal(obj);
       } else {
         const obj = {
           id: item.id,
-          proposals: result.proposals,
+          proposals: result.proposals.map((proposal) => ({
+            ...proposal,
+            projectName: item.title,
+          })),
           totalCount: result.totalCount,
         };
         setProposal(obj);
@@ -109,7 +113,7 @@ export default function ManageProjectInfo() {
     setProposal(result);
   };
 
-  const onCloseProposalModal = () => {
+  const onCloseProposalModal = (data) => {
     setProposal({});
   };
 
