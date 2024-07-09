@@ -20,16 +20,11 @@ export default function Chats() {
   let client = null;
 
   const [chats, setChats] = useState([]);
+  const [newChat, setNewChat] = useState(null);
   const [selectedChat, setSelectedChat] = useState(null);
 
-  const userId = localStorage.getItem("user_profile_id");
-
   useEffect(() => {
-    if (!token) {
-      return;
-    }
-
-    if (client) {
+    if (!token || client) {
       return;
     }
 
@@ -40,23 +35,39 @@ export default function Chats() {
   }, [token]);
 
   useEffect(() => {
-    console.log("pusherNotifications", latestNotification);
-    if (latestNotification?.type === "msg") {
+    if (
+      loggedInUser?.userId == latestNotification?.userId &&
+      latestNotification?.type === "msg"
+    ) {
       setChatsList(latestNotification);
     }
   }, [latestNotification]);
 
   useEffect(() => {
+    if (newChat) {
+      setChatsList(newChat);
+    }
+  }, [newChat]);
+
+  useEffect(() => {
     console.log("chats", chats);
   }, [chats]);
 
+  const onSendMsg = () => {
+    sendMessage(messageInput);
+    setMessageInput("");
+  };
+
+  const messageReceivedHandler = (msg) => {
+    if (loggedInUser?.userId == msg.userId) {
+      setNewChat(msg);
+    }
+  };
+
   const setChatsList = (notification) => {
-    console.log("notification", notification);
     const memberExist = chats.find(
       (chat) => chat.userId == notification.senderId
     );
-
-    console.log("memberExist", memberExist);
 
     if (!memberExist) {
       const obj = {
@@ -64,11 +75,13 @@ export default function Chats() {
         senderName: notification.senderName,
         projectTitle: notification.projectTitle,
         date: chatMsgDateFormat(notification.createdAt),
-        active: true,
         msgs: [
           {
             text: notification.text,
-            type: userId == notification.senderId ? "outgoing" : "incoming",
+            type:
+              loggedInUser.userId == notification.senderId
+                ? "outgoing"
+                : "incoming",
             dateTime: notification.createdAt,
           },
         ],
@@ -79,28 +92,22 @@ export default function Chats() {
       setSelectedChat(obj);
     } else {
       const msgObj = {
-        text: latestNotification.text,
-        type: userId == latestNotification.senderId ? "outgoing" : "incoming",
-        dateTime: latestNotification.createdAt,
+        text: notification.text,
+        type:
+          loggedInUser.userId == notification.senderId
+            ? "outgoing"
+            : "incoming",
+        dateTime: notification.createdAt,
       };
       memberExist.msgs.push(msgObj);
       const prevChats = [...chats];
+
       const updatedUserMsgs = prevChats.map((chat) =>
-        chat.userId == latestNotification.senderId ? memberExist : chat
+        chat.userId == notification.senderId ? memberExist : chat
       );
 
       setChats(updatedUserMsgs);
     }
-  };
-
-  const onSendMsg = () => {
-    sendMessage(messageInput);
-    setMessageInput("");
-  };
-
-  const messageReceivedHandler = (msg) => {
-    console.log("msgmsgmsg", msg);
-    setChatsList(msg);
   };
 
   return (
@@ -124,7 +131,13 @@ export default function Chats() {
             </div>
             <div className="inbox_chat scroll">
               {chats.map((chat, index) => (
-                <div className="chat_list active_chat" key={index}>
+                <div
+                  className={`chat_list ${
+                    chat.userId === selectedChat.userId ? "active_chat" : ""
+                  }`}
+                  key={index}
+                  onClick={() => setSelectedChat(chat)}
+                >
                   <div className="chat_people">
                     <div className="chat_img">
                       {" "}

@@ -17,24 +17,16 @@ export default function ManageProjectInfo() {
 
   const [selectedTab, setSelectedTab] = useState(0);
   const [projectsList, setProjectsList] = useState([]);
-  const [userId, setUserId] = useState();
   const [editRecord, setEditRecord] = useState(null);
 
   const { getProjectProposal } = proposalsStore();
   const [proposal, setProposal] = useState({});
 
   useEffect(() => {
-    const id = localStorage.getItem("user_profile_id");
-    if (id) {
-      setUserId(id);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (userId) {
+    if (loggedInUser) {
       fetchProjects();
     }
-  }, [userId]);
+  }, [loggedInUser]);
 
   useEffect(() => {
     setProjectsList(allProjects.projects);
@@ -46,7 +38,7 @@ export default function ManageProjectInfo() {
 
   const fetchProjects = async (pageNo, status) => {
     const params = {
-      userId: userId,
+      userId: loggedInUser.userId,
       pageNumber: pageNo ?? 0,
       pageSize: size,
       ...(status && { status: status }),

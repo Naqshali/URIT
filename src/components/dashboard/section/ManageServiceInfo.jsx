@@ -9,6 +9,7 @@ import ProposalModal1 from "../modal/ProposalModal1";
 import DeleteModal from "../modal/DeleteModal";
 import servicesStore from "@/store/myprofile/services";
 import globalMixin from "@/mixins/global";
+import signUpStore from "@/store/signUp";
 
 const tab = ["Active Services"];
 
@@ -16,21 +17,14 @@ export default function ManageServiceInfo() {
   const { allListSize } = globalMixin();
   const [selectedTab, setSelectedTab] = useState(0);
   const [serviceList, setServiceList] = useState([]);
-  const [userId, setUserId] = useState();
   const { allServices, getServices } = servicesStore();
+  const { loggedInUser } = signUpStore();
 
   useEffect(() => {
-    const id = localStorage.getItem("user_profile_id");
-    if (id) {
-      setUserId(id);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (userId) {
+    if (loggedInUser) {
       fetchServices();
     }
-  }, [userId]);
+  }, [loggedInUser]);
 
   useEffect(() => {
     setServiceList(allServices.services);
@@ -38,7 +32,7 @@ export default function ManageServiceInfo() {
 
   const fetchServices = async (pageNo) => {
     const params = {
-      userId: userId,
+      userId: loggedInUser.userId,
       pageNumber: pageNo ?? 0,
       pageSize: allListSize,
     };

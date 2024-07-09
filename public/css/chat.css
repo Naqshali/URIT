@@ -107,9 +107,14 @@
 }
 
 .chat_list {
+  cursor: pointer;
   border-bottom: 1px solid #ddd;
   margin: 0;
   padding: 18px 16px 10px;
+}
+
+.chat_list:hover {
+  background: #d0e9f9;
 }
 
 .inbox_chat {

@@ -15,21 +15,10 @@ export default function Listing8() {
   const { size, allProjects, getProjects } = projectsStore();
   const { getProfileDetails } = profileStore();
   const [projectsList, setProjectsList] = useState({ projects: [] });
-  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
     fetchProfileDetails();
-    const id = localStorage.getItem("user_profile_id");
-    if (id) {
-      setUserId(1);
-    }
   }, []);
-
-  useEffect(() => {
-    if (userId) {
-      fetchAllProjects();
-    }
-  }, [userId]);
 
   const fetchProfileDetails = async () => {
     await getProfileDetails();
