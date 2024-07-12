@@ -1,26 +1,30 @@
 import pusherNotificationStore from "@/store/pusher";
 import Pusher from "pusher-js";
 import { useEffect } from "react";
+import signUpStore from "@/store/signUp";
 
 export default function PusherInit() {
+  const { loggedInUser } = signUpStore();
   const { saveNotification } = pusherNotificationStore();
 
   useEffect(() => {
-    const pusher = new Pusher("3213023a7b5ce6b8d90d", {
-      cluster: "ap2",
-    });
+    if (loggedInUser) {
+      const pusher = new Pusher("1a37ac12ec6f1e056d88", {
+        cluster: "ap2",
+      });
 
-    const channel = pusher.subscribe("my-channel");
-    channel.bind("my-event", function (data) {
-      console.log("Notification", data);
-      saveNotification(data);
-    });
+      const channel = pusher.subscribe("notifications");
+      channel.bind(`event-${loggedInUser.userId}`, function (data) {
+        console.log("Notification", data);
+        saveNotification(data);
+      });
 
-    return () => {
-      channel.unbind_all();
-      channel.unsubscribe();
-    };
-  }, []);
+      return () => {
+        channel.unbind_all();
+        channel.unsubscribe();
+      };
+    }
+  }, [loggedInUser]);
 
   return <></>;
 }

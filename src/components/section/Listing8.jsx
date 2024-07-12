@@ -18,6 +18,7 @@ export default function Listing8() {
 
   useEffect(() => {
     fetchProfileDetails();
+    fetchAllProjects();
   }, []);
 
   const fetchProfileDetails = async () => {

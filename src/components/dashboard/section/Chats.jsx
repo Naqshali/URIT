@@ -19,11 +19,12 @@ export default function Chats() {
   const searchParams = useSearchParams();
 
   const projectId = searchParams.get("projectId");
+  let proposalId = searchParams.get("proposalId");
   const providerName = searchParams.get("providerName");
   const projectName = searchParams.get("projectName");
 
   const token = loggedInUser?.token;
-  const channel = "/topic/urit/chat";
+  const channel = `/topic/urit/chat/`;
   let client = null;
 
   const [chats, setChats] = useState([]);
@@ -66,6 +67,9 @@ export default function Chats() {
 
   useEffect(() => {
     if (newChat) {
+      proposalId = newChat.proposalId;
+      console.log("proposalId", proposalId);
+      console.log("newChat", newChat);
       setChatsList(newChat);
     }
   }, [newChat]);
@@ -75,18 +79,18 @@ export default function Chats() {
   }, [chats]);
 
   const onSendMsg = () => {
-    sendMessage(messageInput);
+    console.log("ASdasd", projectId);
+    sendMessage({
+      msg: messageInput,
+      senderId: loggedInUser.userId,
+      proposalId: 3,
+    });
     setMessageInput("");
   };
 
   const messageReceivedHandler = (msg) => {
     console.log("Message Received", msg);
-    if (
-      loggedInUser?.userId == msg.senderId ||
-      loggedInUser?.userId === msg.receiverId
-    ) {
-      setNewChat(msg);
-    }
+    setNewChat(msg);
   };
 
   const setDefaultMessage = () => {
@@ -96,21 +100,25 @@ export default function Chats() {
       projectTitle: projectName,
       createdAt: moment(),
       text: "Proposal Accepted",
-      userId: loggedInUser.userId,
+      receiverId: loggedInUser.userId,
       type: "msg",
     };
     setChatsList(obj);
-    sendMessage("Proposal Accepted");
+    sendMessage({
+      msg: "Proposal Accepted",
+      senderId: loggedInUser.userId,
+      proposalId: proposalId,
+    });
   };
 
   const setChatsList = (notification) => {
     const memberExist = chats.find(
-      (chat) => chat.userId == notification.senderId
+      (chat) => chat.receiverId == notification.senderId
     );
 
     if (!memberExist) {
       const obj = {
-        userId: notification.senderId,
+        receiverId: notification.senderId,
         senderName: notification.senderName,
         projectTitle: notification.projectTitle,
         date: chatMsgDateFormat(notification.createdAt),

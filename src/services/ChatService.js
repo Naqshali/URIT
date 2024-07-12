@@ -23,14 +23,15 @@ export function connectChat(token, channel, messageReceivedCallback) {
 }
 
 export function disconnectChat() {
+  console.log("disconnecte");
   if (stompClient !== null) {
     stompClient.disconnect();
   }
 }
 
-export function sendMessage(message) {
+export function sendMessage(obj) {
   if (stompClient) {
-    const messageContent = message.trim();
+    const messageContent = obj.msg.trim();
 
     if (messageContent !== "") {
       stompClient.send(
@@ -38,8 +39,8 @@ export function sendMessage(message) {
         {},
         JSON.stringify({
           text: messageContent,
-          senderId: localStorage.getItem("user_profile_id"),
-          proposalId: 1,
+          senderId: obj.senderId,
+          proposalId: obj.proposalId,
         })
       );
     }
