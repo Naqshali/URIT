@@ -6,10 +6,12 @@ import Navigation from "./Navigation";
 import useStickyMenu from "@/hook/useStickyMenu";
 import MobileNavigation1 from "./MobileNavigation1";
 import signUpStore from "@/store/signUp";
+import HeaderNotifications from "./Notifications";
 
 export default function Header1() {
   const sticky = useStickyMenu(50);
   const { loggedInUser } = signUpStore();
+
   return (
     <>
       <header
@@ -48,13 +50,14 @@ export default function Header1() {
               <div className="col-auto px-0">
                 <div className="d-flex align-items-center">
                   <Navigation />
-                  <a
+                  {/* <a
                     className="login-info bdrl1 pl15-lg pl30"
                     data-bs-toggle="modal"
                     href="#exampleModalToggle"
                   >
-                    {/* <span className="flaticon-loupe" /> */}
-                  </a>
+                    <span className="flaticon-loupe" />
+                  </a> */}
+                  <HeaderNotifications />
                   {!loggedInUser && (
                     <span className="display-flex-center">
                       <Link className={`login-info mr15-lg mr30`} href="/login">

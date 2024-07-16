@@ -91,7 +91,14 @@ export const dasboardNavigation = [
     path: "/chats",
   },
   {
-    id: 16,
+    id: 15,
+    name: "Notifications",
+    key: "notifications",
+    icon: "flaticon-photo",
+    path: "/notifications",
+  },
+  {
+    id: 17,
     name: "Logout",
     key: "logout",
     icon: "flaticon-logout",

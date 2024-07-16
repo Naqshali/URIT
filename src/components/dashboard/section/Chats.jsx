@@ -15,7 +15,7 @@ import chatStore from "@/store/chat";
 
 export default function Chats() {
   const { loggedInUser } = signUpStore();
-  const { getChats } = chatStore();
+  const { getChats, getProjectChat } = chatStore();
   const { latestNotification } = pusherNotificationStore();
   const [messageInput, setMessageInput] = useState("");
   const searchParams = useSearchParams();
@@ -50,6 +50,10 @@ export default function Chats() {
   }, [token]);
 
   useEffect(() => {
+    fetchChats();
+  }, []);
+
+  useEffect(() => {
     if (client && projectId && providerName) {
       setDefaultMessage();
     }
@@ -72,22 +76,65 @@ export default function Chats() {
 
   const fetchChats = async (chat) => {
     const params = {
+      pageNumber: 0,
+      pageSize: 10,
+    };
+    const result = await getChats(params);
+    const list = [];
+    result.chats.forEach((row, index) => {
+      let obj = {
+        userId: index,
+        senderId: row.clientId,
+        senderName: row.clientName,
+        members: [parseInt(row.clientId), parseInt(row.serviceProviderId)],
+        projectId: row.projectId,
+        projectTitle: row.projectTitle,
+        proposalId: row.proposalId,
+        receiverName: row.serviceProviderName,
+        date: "",
+        msgs: [],
+      };
+      list.push(obj);
+    });
+    setChats(list);
+  };
+
+  const onSelectChat = (chat) => {
+    setSelectedChat(chat);
+    fetchProjectChat(chat);
+  };
+
+  const fetchProjectChat = async (chat) => {
+    const params = {
       projectId: chat.projectId,
       proposalId: chat.proposalId,
       pageNumber: 0,
       pageSize: 10,
     };
-    const result = await getChats(params);
+    const result = await getProjectChat(params);
     const prevSelectedChat = { ...chat };
-    prevSelectedChat.msgs = result.messages;
+    const updatedMsgs = result.messages.map((msg) => ({
+      ...msg,
+      type: msg.senderId === loggedInUser?.userId ? "outgoing" : "incoming",
+    }));
+    prevSelectedChat.msgs = updatedMsgs;
     setSelectedChat(prevSelectedChat);
+
+    const chatToUpdateMsgs = chats.map((chatTo) => {
+      return {
+        ...chatTo,
+        msgs: chatTo.userId === chat.userId ? updatedMsgs : chatTo.msgs,
+      };
+    });
+
+    setChats(chatToUpdateMsgs);
   };
 
   const onSendMsg = () => {
     sendMessage({
       msg: messageInput,
       senderId: loggedInUser.userId,
-      proposalId: selectedChat.proposalId,
+      proposalId: selectedChat?.proposalId,
     });
     setMessageInput("");
     const prevSelectedChat = { ...selectedChat };
@@ -128,6 +175,7 @@ export default function Chats() {
   };
 
   const setChatsList = (notification) => {
+    console.log("chats", chats);
     const chatExists = chats.find(
       (chat) => chat.proposalId == notification.proposalId
     );
@@ -137,6 +185,7 @@ export default function Chats() {
       (chatExists && !chatExists.members.includes(notification.senderId))
     ) {
       const obj = {
+        userId: chats.length + 1,
         senderId: loggedInUser.userId,
         senderName: notification.senderName,
         members: [
@@ -164,7 +213,6 @@ export default function Chats() {
       const prevChats = [...chats];
       setChats([obj, ...prevChats]);
       setSelectedChat(obj);
-      fetchChats(obj);
     } else {
       const msgObj = {
         text: notification.text,
@@ -176,12 +224,13 @@ export default function Chats() {
         name: notification.senderName,
       };
       chatExists.msgs.push(msgObj);
+      console.log("chatExists", chatExists);
       const prevChats = [...chats];
 
       const updatedUserMsgs = prevChats.map((chat) =>
         chat.userId == notification.senderId ? chatExists : chat
       );
-
+      console.log("Hrer at alse", updatedUserMsgs);
       setChats(updatedUserMsgs);
     }
   };
@@ -209,10 +258,10 @@ export default function Chats() {
               {chats.map((chat, index) => (
                 <div
                   className={`chat_list ${
-                    chat.userId === selectedChat.userId ? "active_chat" : ""
+                    chat.userId === selectedChat?.userId ? "active_chat" : ""
                   }`}
                   key={index}
-                  onClick={() => setSelectedChat(chat)}
+                  onClick={() => onSelectChat(chat)}
                 >
                   <div className="chat_people">
                     <div className="chat_img">
@@ -227,7 +276,7 @@ export default function Chats() {
                         </div>
                         <span className="chat_date">{chat.date}</span>
                       </h5>
-                      <p>{chat.msgs[chat.msgs.length - 1].text}</p>
+                      <p>{chat.msgs[chat.msgs.length - 1]?.text}</p>
                     </div>
                   </div>
                 </div>
