@@ -19,7 +19,7 @@ export default function ProposalModal({
     console.log("record", record);
     closeModalButtonRef.current.click();
     router.push(
-      `/chats?projectId=${proposal.projectId}&providerName=${proposal.serviceProvider.name}&projectName=${proposal.projectName}&proposalId=${proposal.id}`
+      `/chats?projectId=${proposal.projectId}&providerName=${proposal.serviceProvider.name}&projectName=${proposal.projectName}&proposalId=${proposal.id}&serviceProviderId=${proposal.serviceProviderId}`
     );
   };
 

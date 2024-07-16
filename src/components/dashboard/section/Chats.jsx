@@ -11,9 +11,11 @@ import { chatMsgDateFormat, chatMsgItemDateFormat } from "@/utils/global";
 import pusherNotificationStore from "@/store/pusher";
 import { useSearchParams } from "next/navigation";
 import moment from "moment";
+import chatStore from "@/store/chat";
 
 export default function Chats() {
   const { loggedInUser } = signUpStore();
+  const { getChats } = chatStore();
   const { latestNotification } = pusherNotificationStore();
   const [messageInput, setMessageInput] = useState("");
   const searchParams = useSearchParams();
@@ -22,9 +24,10 @@ export default function Chats() {
   let proposalId = searchParams.get("proposalId");
   const providerName = searchParams.get("providerName");
   const projectName = searchParams.get("projectName");
+  const serviceProviderId = searchParams.get("serviceProviderId");
 
   const token = loggedInUser?.token;
-  const channel = `/topic/urit/chat/`;
+  const channel = `/topic/urit/chat/${loggedInUser?.userId}`;
   let client = null;
 
   const [chats, setChats] = useState([]);
@@ -32,8 +35,6 @@ export default function Chats() {
   const [selectedChat, setSelectedChat] = useState(null);
 
   useEffect(() => {
-    console.log("client", token, client);
-    console.log("client typoe", typeof client);
     if (!token) {
       return;
     }
@@ -49,10 +50,8 @@ export default function Chats() {
   }, [token]);
 
   useEffect(() => {
-    if (client) {
-      if (projectId && providerName) {
-        setDefaultMessage();
-      }
+    if (client && projectId && providerName) {
+      setDefaultMessage();
     }
   }, [client]);
 
@@ -67,25 +66,38 @@ export default function Chats() {
 
   useEffect(() => {
     if (newChat) {
-      proposalId = newChat.proposalId;
-      console.log("proposalId", proposalId);
-      console.log("newChat", newChat);
       setChatsList(newChat);
     }
   }, [newChat]);
 
-  useEffect(() => {
-    console.log("chats", chats);
-  }, [chats]);
+  const fetchChats = async (chat) => {
+    const params = {
+      projectId: chat.projectId,
+      proposalId: chat.proposalId,
+      pageNumber: 0,
+      pageSize: 10,
+    };
+    const result = await getChats(params);
+    const prevSelectedChat = { ...chat };
+    prevSelectedChat.msgs = result.messages;
+    setSelectedChat(prevSelectedChat);
+  };
 
   const onSendMsg = () => {
-    console.log("ASdasd", projectId);
     sendMessage({
       msg: messageInput,
       senderId: loggedInUser.userId,
-      proposalId: 3,
+      proposalId: selectedChat.proposalId,
     });
     setMessageInput("");
+    const prevSelectedChat = { ...selectedChat };
+    prevSelectedChat.msgs.push({
+      text: messageInput,
+      dateTime: moment(),
+      type: "outgoing",
+      name: loggedInUser.name,
+    });
+    setSelectedChat(prevSelectedChat);
   };
 
   const messageReceivedHandler = (msg) => {
@@ -96,11 +108,15 @@ export default function Chats() {
   const setDefaultMessage = () => {
     const obj = {
       senderId: loggedInUser.userId,
-      senderName: providerName,
+      senderName: loggedInUser.name,
+      members: [parseInt(loggedInUser.userId), parseInt(serviceProviderId)],
+      projectId: projectId,
       projectTitle: projectName,
+      proposalId: proposalId,
+      receiverId: serviceProviderId,
+      receiverName: providerName,
       createdAt: moment(),
       text: "Proposal Accepted",
-      receiverId: loggedInUser.userId,
       type: "msg",
     };
     setChatsList(obj);
@@ -112,15 +128,25 @@ export default function Chats() {
   };
 
   const setChatsList = (notification) => {
-    const memberExist = chats.find(
-      (chat) => chat.receiverId == notification.senderId
+    const chatExists = chats.find(
+      (chat) => chat.proposalId == notification.proposalId
     );
 
-    if (!memberExist) {
+    if (
+      !chatExists ||
+      (chatExists && !chatExists.members.includes(notification.senderId))
+    ) {
       const obj = {
-        receiverId: notification.senderId,
+        senderId: loggedInUser.userId,
         senderName: notification.senderName,
+        members: [
+          parseInt(notification.senderId),
+          parseInt(notification.receiverId),
+        ],
+        projectId: notification.projectId,
         projectTitle: notification.projectTitle,
+        proposalId: notification.proposalId,
+        receiverName: notification.receiverName,
         date: chatMsgDateFormat(notification.createdAt),
         msgs: [
           {
@@ -130,6 +156,7 @@ export default function Chats() {
                 ? "outgoing"
                 : "incoming",
             dateTime: notification.createdAt,
+            name: notification.senderName,
           },
         ],
       };
@@ -137,6 +164,7 @@ export default function Chats() {
       const prevChats = [...chats];
       setChats([obj, ...prevChats]);
       setSelectedChat(obj);
+      fetchChats(obj);
     } else {
       const msgObj = {
         text: notification.text,
@@ -145,12 +173,13 @@ export default function Chats() {
             ? "outgoing"
             : "incoming",
         dateTime: notification.createdAt,
+        name: notification.senderName,
       };
-      memberExist.msgs.push(msgObj);
+      chatExists.msgs.push(msgObj);
       const prevChats = [...chats];
 
       const updatedUserMsgs = prevChats.map((chat) =>
-        chat.userId == notification.senderId ? memberExist : chat
+        chat.userId == notification.senderId ? chatExists : chat
       );
 
       setChats(updatedUserMsgs);
@@ -192,7 +221,10 @@ export default function Chats() {
                     </div>
                     <div className="chat_ib">
                       <h5>
-                        {chat.senderName}{" "}
+                        {chat.projectTitle}{" "}
+                        <div className="members">
+                          {chat.senderName}, {chat.receiverName}
+                        </div>
                         <span className="chat_date">{chat.date}</span>
                       </h5>
                       <p>{chat.msgs[chat.msgs.length - 1].text}</p>
@@ -219,6 +251,7 @@ export default function Chats() {
                         />{" "}
                       </div>
                       <div className="received_msg">
+                        <div>{msg.name}</div>
                         <div className="received_withd_msg">
                           <p>{msg.text}</p>
                           <span className="time_date">

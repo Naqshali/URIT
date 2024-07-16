@@ -1,7 +1,6 @@
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 
-let sock = null;
 let stompClient = null;
 export function connectChat(token, channel, messageReceivedCallback) {
   const socket = new SockJS("http://157.175.52.228:8085/ws");
@@ -23,7 +22,6 @@ export function connectChat(token, channel, messageReceivedCallback) {
 }
 
 export function disconnectChat() {
-  console.log("disconnecte");
   if (stompClient !== null) {
     stompClient.disconnect();
   }

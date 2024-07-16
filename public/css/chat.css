@@ -226,3 +226,8 @@
   height: 516px;
   overflow-y: auto;
 }
+
+.members {
+  font-size: 12px;
+  color: grey;
+}
