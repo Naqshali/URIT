@@ -42,7 +42,7 @@ export default function DashboardSidebar() {
                   }`}
                 >
                   <i className={`${item.icon} mr15`} />
-                  {item.name}
+                  {item.name} <span className="notification-count"></span>
                 </Link>
               )}
             </div>

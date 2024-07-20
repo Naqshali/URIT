@@ -124,6 +124,7 @@ export default function Chats() {
       const updatedMsgs = result.messages.map((msg) => ({
         ...msg,
         type: msg.senderId === loggedInUser?.userId ? "outgoing" : "incoming",
+        name: msg.senderName,
       }));
       prevSelectedChat.msgs = updatedMsgs;
       setSelectedChat(prevSelectedChat);
@@ -201,7 +202,7 @@ export default function Chats() {
   };
 
   const setChatsList = (notification) => {
-    console.log("chats", chats);
+    console.log("setChatsList", notification);
     const chatExists = chats.find(
       (chat) => chat.proposalId == notification.proposalId
     );
