@@ -13141,3 +13141,51 @@ hr {
     }
   }
 }
+
+.notification-info {
+  position: relative;
+  display: inline-block;
+}
+
+.notification-info .fa-bell {
+  font-size: 15px;
+  color: #fff;
+  font-weight: 500;
+}
+
+.notification-info .notification-count {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 8px; /* Adjust the dot size */
+  height: 8px; /* Adjust the dot size */
+  background-color: red;
+  border-radius: 50%;
+  border: 2px solid white; /* Optional: Add a white border to make the dot more visible */
+  box-sizing: border-box;
+}
+
+.notification-info .notification-count-profile {
+  content: "";
+  position: absolute;
+  width: 12px; /* Adjust the dot size */
+  height: 12px; /* Adjust the dot size */
+  background-color: red;
+  border-radius: 50%;
+  border: 2px solid white; /* Optional: Add a white border to make the dot more visible */
+  box-sizing: border-box;
+}
+
+.notification-info .notification-count-chat {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 12px; /* Adjust the dot size */
+  height: 12px; /* Adjust the dot size */
+  background-color: red;
+  border-radius: 50%;
+  border: 2px solid white; /* Optional: Add a white border to make the dot more visible */
+  box-sizing: border-box;
+}

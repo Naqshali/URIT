@@ -94,6 +94,8 @@ export default function Chats() {
         proposalId: row.proposalId,
         receiverName: row.serviceProviderName,
         date: "",
+        clientIsActive: row.clientIsActive,
+        readByClient: row.readByClient,
         msgs: [],
       };
       list.push(obj);
@@ -295,7 +297,7 @@ export default function Chats() {
                       {" "}
                       <img src="https://ptetutorials.com/images/user-profile.png" />{" "}
                     </div>
-                    <div className="chat_ib">
+                    <div className="chat_ib notification-info">
                       <h5>
                         {chat.projectTitle}{" "}
                         <div className="members">
@@ -303,7 +305,7 @@ export default function Chats() {
                         </div>
                         <span className="chat_date">{chat.date}</span>
                       </h5>
-                      <p>{chat.msgs[chat.msgs.length - 1]?.text}</p>
+                      <span className="notification-count-chat"></span>
                     </div>
                   </div>
                 </div>

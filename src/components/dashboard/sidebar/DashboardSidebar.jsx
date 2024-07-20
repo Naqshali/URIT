@@ -3,10 +3,13 @@ import { dasboardNavigation } from "@/data/dashboard";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import signUpStore from "@/store/signUp";
+import notificationsStore from "@/store/notifications";
 
 export default function DashboardSidebar() {
   const path = usePathname();
   const { loggedInUser } = signUpStore();
+  const { setShowNotificationIcon, showNotificationIcon } =
+    notificationsStore();
 
   const showNavigationItem = (navItem) => {
     return (
@@ -40,9 +43,20 @@ export default function DashboardSidebar() {
                   className={`items-center ${
                     path === item.path ? "-is-active" : ""
                   }`}
+                  onClick={() =>
+                    item.key === "notifications" &&
+                    setShowNotificationIcon(false)
+                  }
                 >
                   <i className={`${item.icon} mr15`} />
-                  {item.name} <span className="notification-count"></span>
+                  {item.key === "notifications" && showNotificationIcon ? (
+                    <span className="notification-info">
+                      {item.name}{" "}
+                      <span className="notification-count-profile"></span>
+                    </span>
+                  ) : (
+                    item.name
+                  )}
                 </Link>
               )}
             </div>
