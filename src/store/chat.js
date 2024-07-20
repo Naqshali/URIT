@@ -29,6 +29,19 @@ const chatStore = create(() => ({
       return null;
     }
   },
+  setActiveChat: async (params) => {
+    try {
+      const res = await axiosInstance.post(`/api/v1/chats/${params.id}`, {
+        isActive: params.isActive,
+      });
+
+      if (res?.data) {
+        return res.data;
+      }
+    } catch (error) {
+      return null;
+    }
+  },
 }));
 
 export default chatStore;

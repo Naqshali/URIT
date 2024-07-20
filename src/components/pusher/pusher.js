@@ -1,11 +1,11 @@
-import pusherNotificationStore from "@/store/pusher";
+import notificationsStore from "@/store/notifications";
 import Pusher from "pusher-js";
 import { useEffect } from "react";
 import signUpStore from "@/store/signUp";
 
 export default function PusherInit() {
   const { loggedInUser } = signUpStore();
-  const { saveNotification } = pusherNotificationStore();
+  const { newNotification, saveNewNotification } = notificationsStore();
 
   useEffect(() => {
     if (loggedInUser) {
@@ -16,7 +16,7 @@ export default function PusherInit() {
       const channel = pusher.subscribe("notifications");
       channel.bind(`event-${loggedInUser.userId}`, function (data) {
         console.log("Notification", data);
-        saveNotification(data);
+        saveNewNotification(data);
       });
 
       return () => {

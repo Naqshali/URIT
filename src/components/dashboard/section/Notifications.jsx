@@ -3,12 +3,22 @@ import React, { useEffect, useState } from "react";
 import notificationsStore from "@/store/notifications";
 
 function Notifications() {
-  const { getNotifications } = notificationsStore();
+  const { newNotification, saveNewNotification, getNotifications } =
+    notificationsStore();
   const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
     fetchNotifications();
   }, []);
+
+  useEffect(() => {
+    console.log("newNotification", newNotification);
+    if (newNotification) {
+      const prevNotification = [...notifications];
+      prevNotification.unshift(newNotification);
+      saveNewNotification(null);
+    }
+  }, [newNotification]);
 
   const fetchNotifications = async () => {
     const params = {

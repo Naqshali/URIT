@@ -2,15 +2,27 @@
 import { useEffect, useState } from "react";
 import notificationsStore from "@/store/notifications";
 import { useRouter } from "next/navigation";
+import { dateFormat } from "@/utils/global";
 
 function HeaderNotifications() {
   const router = useRouter();
-  const { getNotifications } = notificationsStore();
+  const { newNotification, saveNewNotification, getNotifications } =
+    notificationsStore();
   const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
     fetchNotifications();
   }, []);
+
+  useEffect(() => {
+    console.log("newNotification", newNotification);
+    if (newNotification) {
+      const prevNotification = [...notifications];
+      prevNotification.unshift(newNotification);
+      setNotifications(prevNotification);
+      saveNewNotification(null);
+    }
+  }, [newNotification]);
 
   const fetchNotifications = async () => {
     const params = {
@@ -45,14 +57,24 @@ function HeaderNotifications() {
           className="dropdown-menu custom-notification-dropdown"
           aria-labelledby="dropdownMenuLink"
         >
-          {notifications.map((notification) => (
-            <a
-              className="dropdown-item"
-              href="#"
-              onClick={() => routeTo(notification)}
-            >
-              {notification.message}
-            </a>
+          {notifications.map((notification, index) => (
+            <div key={index}>
+              <a
+                className="dropdown-item"
+                href="#"
+                onClick={() => routeTo(notification)}
+              >
+                {notification.message} <br />
+                <span className="msg-info">
+                  <span className="fs-12">
+                    {dateFormat(notification.createAt)}
+                  </span>
+                  <span className="fs-12">
+                    {notification.messageSenderName}
+                  </span>
+                </span>
+              </a>
+            </div>
           ))}
         </div>
       </div>

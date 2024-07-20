@@ -2,7 +2,8 @@ import { create } from "zustand";
 import axiosInstance from "@/axios/axios.config";
 import { queryString } from "@/utils/global";
 
-const notificationsStore = create(() => ({
+const notificationsStore = create((set) => ({
+  newNotification: null,
   getNotifications: async (params) => {
     try {
       const res = await axiosInstance.get(
@@ -15,6 +16,10 @@ const notificationsStore = create(() => ({
     } catch (error) {
       return null;
     }
+  },
+  saveNewNotification: (data) => {
+    console.log("data", data);
+    set({ newNotification: data });
   },
 }));
 

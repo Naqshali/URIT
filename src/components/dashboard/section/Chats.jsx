@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import signUpStore from "@/store/signUp";
 import {
   connectChat,
@@ -8,15 +8,13 @@ import {
   sendMessage,
 } from "@/services/ChatService";
 import { chatMsgDateFormat, chatMsgItemDateFormat } from "@/utils/global";
-import pusherNotificationStore from "@/store/pusher";
 import { useSearchParams } from "next/navigation";
 import moment from "moment";
 import chatStore from "@/store/chat";
 
 export default function Chats() {
   const { loggedInUser } = signUpStore();
-  const { getChats, getProjectChat } = chatStore();
-  const { latestNotification } = pusherNotificationStore();
+  const { getChats, getProjectChat, setActiveChat } = chatStore();
   const [messageInput, setMessageInput] = useState("");
   const searchParams = useSearchParams();
 
@@ -33,6 +31,7 @@ export default function Chats() {
   const [chats, setChats] = useState([]);
   const [newChat, setNewChat] = useState(null);
   const [selectedChat, setSelectedChat] = useState(null);
+  const messagesEndRef = useRef(null);
 
   useEffect(() => {
     if (!token) {
@@ -60,15 +59,6 @@ export default function Chats() {
   }, [client]);
 
   useEffect(() => {
-    if (
-      loggedInUser?.userId == latestNotification?.userId &&
-      latestNotification?.type === "msg"
-    ) {
-      setChatsList(latestNotification);
-    }
-  }, [latestNotification]);
-
-  useEffect(() => {
     if (newChat) {
       setChatsList(newChat);
     }
@@ -83,6 +73,7 @@ export default function Chats() {
     const list = [];
     result.chats.forEach((row, index) => {
       let obj = {
+        chatId: row.chatId,
         userId: index,
         senderId: row.clientId,
         senderName: row.clientName,
@@ -99,9 +90,10 @@ export default function Chats() {
     setChats(list);
   };
 
-  const onSelectChat = (chat) => {
+  const onSelectChat = async (chat) => {
     setSelectedChat(chat);
-    fetchProjectChat(chat);
+    await fetchProjectChat(chat);
+    saveActiveChat(chat);
   };
 
   const fetchProjectChat = async (chat) => {
@@ -112,22 +104,39 @@ export default function Chats() {
       pageSize: 10,
     };
     const result = await getProjectChat(params);
-    const prevSelectedChat = { ...chat };
-    const updatedMsgs = result.messages.map((msg) => ({
-      ...msg,
-      type: msg.senderId === loggedInUser?.userId ? "outgoing" : "incoming",
-    }));
-    prevSelectedChat.msgs = updatedMsgs;
-    setSelectedChat(prevSelectedChat);
+    if (result) {
+      result.messages = result.messages.reverse();
+      const prevSelectedChat = { ...chat };
+      const updatedMsgs = result.messages.map((msg) => ({
+        ...msg,
+        type: msg.senderId === loggedInUser?.userId ? "outgoing" : "incoming",
+      }));
+      prevSelectedChat.msgs = updatedMsgs;
+      setSelectedChat(prevSelectedChat);
 
-    const chatToUpdateMsgs = chats.map((chatTo) => {
-      return {
-        ...chatTo,
-        msgs: chatTo.userId === chat.userId ? updatedMsgs : chatTo.msgs,
-      };
-    });
+      const chatToUpdateMsgs = chats.map((chatTo) => {
+        return {
+          ...chatTo,
+          msgs: chatTo.userId === chat.userId ? updatedMsgs : chatTo.msgs,
+        };
+      });
 
-    setChats(chatToUpdateMsgs);
+      setChats(chatToUpdateMsgs);
+      setScrolToBottom();
+    }
+  };
+
+  const saveActiveChat = (selectedChat) => {
+    console.log("seeell", selectedChat);
+    setActiveChat({ id: selectedChat.chatId, isActive: true });
+  };
+
+  const setScrolToBottom = () => {
+    setTimeout(() => {
+      if (messagesEndRef.current) {
+        messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
+      }
+    }, 100);
   };
 
   const onSendMsg = () => {
@@ -145,6 +154,7 @@ export default function Chats() {
       name: loggedInUser.name,
     });
     setSelectedChat(prevSelectedChat);
+    setScrolToBottom();
   };
 
   const messageReceivedHandler = (msg) => {
@@ -287,7 +297,7 @@ export default function Chats() {
             </div>
           </div>
           <div className="mesgs">
-            <div className="msg_history">
+            <div className="msg_history" ref={messagesEndRef}>
               {selectedChat?.msgs.map((msg, index) => (
                 <div key={index}>
                   {msg.type === "incoming" ? (
@@ -332,6 +342,11 @@ export default function Chats() {
                   placeholder="Type a message"
                   value={messageInput}
                   onChange={(e) => setMessageInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.keyCode === 13) {
+                      onSendMsg();
+                    }
+                  }}
                 />
                 <button
                   className="msg_send_btn"

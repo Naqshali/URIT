@@ -13133,4 +13133,11 @@ hr {
   .dropdown-item:hover {
     background-color: #f8f9fa;
   }
+  .msg-info {
+    display: flex;
+    justify-content: space-between;
+    .fs-12 {
+      font-size: 12px;
+    }
+  }
 }
