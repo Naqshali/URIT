@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import signUpStore from "@/store/signUp";
 import {
   connectChat,
@@ -11,10 +11,12 @@ import { chatMsgDateFormat, chatMsgItemDateFormat } from "@/utils/global";
 import { useSearchParams } from "next/navigation";
 import moment from "moment";
 import chatStore from "@/store/chat";
+import notificationsStore from "@/store/notifications";
 
 export default function Chats() {
   const { loggedInUser } = signUpStore();
   const { getChats, getProjectChat, setActiveChat } = chatStore();
+  const { newNotification } = notificationsStore();
   const [messageInput, setMessageInput] = useState("");
   const searchParams = useSearchParams();
 
@@ -32,6 +34,10 @@ export default function Chats() {
   const [newChat, setNewChat] = useState(null);
   const [selectedChat, setSelectedChat] = useState(null);
   const messagesEndRef = useRef(null);
+
+  const userType = useMemo(() => {
+    return loggedInUser?.userType;
+  });
 
   useEffect(() => {
     return () => {
@@ -75,6 +81,33 @@ export default function Chats() {
     }
   }, [newChat]);
 
+  useEffect(() => {
+    // if (newNotification && newNotification.notificationType === "Message") {
+    //   console.log("Selected", selectedChat);
+    //   if (
+    //     selectedChat.projectId != newNotification.projectId ||
+    //     (selectedChat.projectId == newNotification.projectId &&
+    //       !selectedChat.members.includes(newNotification.messageSenderId))
+    //   ) {
+    //     const newChat = chats.map((chat) => {
+    //       if (chat.chatId === selectedChat.chatId) {
+    //         return {
+    //           ...chat,
+    //           readByClient: userType === "CLIENT" ? false : chat.readByClient,
+    //           readByServiceProvider:
+    //             userType === "SERVICE_PROVIDER"
+    //               ? false
+    //               : chat.readByServiceProvider,
+    //         };
+    //       } else {
+    //         return chat;
+    //       }
+    //     });
+    //     setChats(newChat);
+    //   }
+    // }
+  }, [newNotification]);
+
   const fetchChats = async (chat) => {
     const params = {
       pageNumber: 0,
@@ -96,6 +129,7 @@ export default function Chats() {
         date: "",
         clientIsActive: row.clientIsActive,
         readByClient: row.readByClient,
+        readByServiceProvider: row.readByServiceProvider,
         msgs: [],
       };
       list.push(obj);
@@ -104,6 +138,7 @@ export default function Chats() {
   };
 
   const onSelectChat = async (chat) => {
+    localStorage.setItem("selectedChatId", chat.chatId);
     setSelectedChat(chat);
     await fetchProjectChat(chat);
     if (selectedChat) {
@@ -135,6 +170,11 @@ export default function Chats() {
         return {
           ...chatTo,
           msgs: chatTo.userId === chat.userId ? updatedMsgs : chatTo.msgs,
+          readByClient: userType === "CLIENT" ? true : chatTo.readByClient,
+          readByServiceProvider:
+            userType === "SERVICE_PROVIDER"
+              ? true
+              : chatTo.readByServiceProvider,
         };
       });
 
@@ -305,7 +345,11 @@ export default function Chats() {
                         </div>
                         <span className="chat_date">{chat.date}</span>
                       </h5>
-                      <span className="notification-count-chat"></span>
+                      {((userType === "CLIENT" && !chat.readByClient) ||
+                        (userType === "SERVICE_PROVIDER" &&
+                          !chat.readByServiceProvider)) && (
+                        <span className="notification-count-chat"></span>
+                      )}
                     </div>
                   </div>
                 </div>
