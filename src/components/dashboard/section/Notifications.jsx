@@ -12,7 +12,6 @@ function Notifications() {
   }, []);
 
   useEffect(() => {
-    console.log("newNotification", newNotification);
     if (newNotification) {
       const prevNotification = [...notifications];
       prevNotification.unshift(newNotification);

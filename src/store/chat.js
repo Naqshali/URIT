@@ -31,9 +31,9 @@ const chatStore = create(() => ({
   },
   setActiveChat: async (params) => {
     try {
-      const res = await axiosInstance.post(`/api/v1/chats/${params.id}`, {
-        isActive: params.isActive,
-      });
+      const res = await axiosInstance.put(
+        `/api/v1/chats/${params.id}?&isActive=${params.isActive}`
+      );
 
       if (res?.data) {
         return res.data;

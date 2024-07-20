@@ -5,7 +5,7 @@ import signUpStore from "@/store/signUp";
 
 export default function PusherInit() {
   const { loggedInUser } = signUpStore();
-  const { newNotification, saveNewNotification } = notificationsStore();
+  const { setShowNotificationIcon, saveNewNotification } = notificationsStore();
 
   useEffect(() => {
     if (loggedInUser) {
@@ -16,6 +16,7 @@ export default function PusherInit() {
       const channel = pusher.subscribe("notifications");
       channel.bind(`event-${loggedInUser.userId}`, function (data) {
         console.log("Notification", data);
+        setShowNotificationIcon(true);
         saveNewNotification(data);
       });
 

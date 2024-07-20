@@ -34,6 +34,17 @@ export default function Chats() {
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
+    return () => {
+      const chatId = localStorage.getItem("selectedChatId");
+      if (chatId && chatId !== "null") {
+        saveActiveChat({ chatId: chatId, isActive: false });
+        localStorage.setItem("selectedChatId", null);
+      }
+      disconnectChat();
+    };
+  }, []);
+
+  useEffect(() => {
     if (!token) {
       return;
     }
@@ -93,6 +104,9 @@ export default function Chats() {
   const onSelectChat = async (chat) => {
     setSelectedChat(chat);
     await fetchProjectChat(chat);
+    if (selectedChat) {
+      saveActiveChat({ chatId: selectedChat.chatId, isActive: false });
+    }
     saveActiveChat(chat);
   };
 
@@ -127,8 +141,10 @@ export default function Chats() {
   };
 
   const saveActiveChat = (selectedChat) => {
-    console.log("seeell", selectedChat);
-    setActiveChat({ id: selectedChat.chatId, isActive: true });
+    setActiveChat({
+      id: selectedChat.chatId,
+      isActive: selectedChat.isActive ?? true,
+    });
   };
 
   const setScrolToBottom = () => {

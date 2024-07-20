@@ -4,6 +4,7 @@ import { queryString } from "@/utils/global";
 
 const notificationsStore = create((set) => ({
   newNotification: null,
+  showNotificationIcon: false,
   getNotifications: async (params) => {
     try {
       const res = await axiosInstance.get(
@@ -18,8 +19,10 @@ const notificationsStore = create((set) => ({
     }
   },
   saveNewNotification: (data) => {
-    console.log("data", data);
     set({ newNotification: data });
+  },
+  setShowNotificationIcon: (data) => {
+    set({ showNotificationIcon: data });
   },
 }));
 

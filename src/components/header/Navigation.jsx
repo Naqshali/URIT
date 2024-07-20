@@ -17,12 +17,14 @@ export default function Navigation() {
           navItem.key === "home" ||
           navItem.key === "my_profile" ||
           navItem.key === "contact" ||
-          navItem.key === "freelancers")) ||
+          navItem.key === "freelancers" ||
+          navItem.key === "notification")) ||
       (loggedInUser?.userType === "SERVICE_PROVIDER" &&
         (navItem.key === "projects" ||
           navItem.key === "my_profile" ||
           navItem.key === "home" ||
-          navItem.key === "contact")) ||
+          navItem.key === "contact" ||
+          navItem.key === "notification")) ||
       (!loggedInUser && (navItem.key === "home" || navItem.key === "contact"))
     );
   };
