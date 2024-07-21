@@ -11,11 +11,13 @@ function HeaderNotifications() {
     newNotification,
     saveNewNotification,
     getNotifications,
+    getNotificationsCount,
   } = notificationsStore();
   const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
     fetchNotifications();
+    fetchCount();
   }, []);
 
   useEffect(() => {
@@ -26,6 +28,13 @@ function HeaderNotifications() {
       saveNewNotification(null);
     }
   }, [newNotification]);
+
+  const fetchCount = async () => {
+    const result = await getNotificationsCount();
+    if (result && result.count > 0) {
+      setShowNotificationIcon(true);
+    }
+  };
 
   const fetchNotifications = async () => {
     const params = {

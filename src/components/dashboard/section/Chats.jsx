@@ -82,30 +82,32 @@ export default function Chats() {
   }, [newChat]);
 
   useEffect(() => {
-    // if (newNotification && newNotification.notificationType === "Message") {
-    //   console.log("Selected", selectedChat);
-    //   if (
-    //     selectedChat.projectId != newNotification.projectId ||
-    //     (selectedChat.projectId == newNotification.projectId &&
-    //       !selectedChat.members.includes(newNotification.messageSenderId))
-    //   ) {
-    //     const newChat = chats.map((chat) => {
-    //       if (chat.chatId === selectedChat.chatId) {
-    //         return {
-    //           ...chat,
-    //           readByClient: userType === "CLIENT" ? false : chat.readByClient,
-    //           readByServiceProvider:
-    //             userType === "SERVICE_PROVIDER"
-    //               ? false
-    //               : chat.readByServiceProvider,
-    //         };
-    //       } else {
-    //         return chat;
-    //       }
-    //     });
-    //     setChats(newChat);
-    //   }
-    // }
+    if (
+      selectedChat &&
+      newNotification &&
+      newNotification.notificationType === "Message"
+    ) {
+      console.log("Selected", selectedChat);
+      const newChat = chats.map((chat) => {
+        console.log("dmasdasdasdnj", chat);
+        if (
+          chat.proposalId == newNotification.proposalId &&
+          chat.chatId !== selectedChat.chatId
+        ) {
+          return {
+            ...chat,
+            readByClient: userType === "CLIENT" ? false : chat.readByClient,
+            readByServiceProvider:
+              userType === "SERVICE_PROVIDER"
+                ? false
+                : chat.readByServiceProvider,
+          };
+        } else {
+          return chat;
+        }
+      });
+      setChats(newChat);
+    }
   }, [newNotification]);
 
   const fetchChats = async (chat) => {

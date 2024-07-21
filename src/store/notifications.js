@@ -18,6 +18,17 @@ const notificationsStore = create((set) => ({
       return null;
     }
   },
+  getNotificationsCount: async (params) => {
+    try {
+      const res = await axiosInstance.get("/api/v1/notifications/count?");
+
+      if (res?.data) {
+        return res.data;
+      }
+    } catch (error) {
+      return null;
+    }
+  },
   markNotificationAsRead: async (id) => {
     try {
       const res = await axiosInstance.put(
