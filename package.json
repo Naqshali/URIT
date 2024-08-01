@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@babel/core": "^7.0.0",
+    "@dytesdk/react-ui-kit": "^1.70.2",
+    "@dytesdk/react-web-core": "^1.36.14",
     "@popperjs/core": "^2.11.8",
     "@react-google-maps/api": "^2.19.2",
     "@reduxjs/toolkit": "^2.2.1",

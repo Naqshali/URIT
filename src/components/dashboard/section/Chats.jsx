@@ -12,6 +12,7 @@ import { useSearchParams } from "next/navigation";
 import moment from "moment";
 import chatStore from "@/store/chat";
 import notificationsStore from "@/store/notifications";
+import axios from "axios";
 
 export default function Chats() {
   const { loggedInUser } = signUpStore();
@@ -87,9 +88,7 @@ export default function Chats() {
       newNotification &&
       newNotification.notificationType === "Message"
     ) {
-      console.log("Selected", selectedChat);
       const newChat = chats.map((chat) => {
-        console.log("dmasdasdasdnj", chat);
         if (
           chat.proposalId == newNotification.proposalId &&
           chat.chatId !== selectedChat.chatId
@@ -306,6 +305,51 @@ export default function Chats() {
     }
   };
 
+  const startCallSession = async () => {
+    const apiKey = "cefa6144-8367-435a-b054-25ed0d0dde73";
+    const apiSecret = "c6403f8f69cc7ccb287b";
+    const token = Buffer.from(`${apiKey}:${apiSecret}`).toString("base64");
+
+    const meeting = await axios.post(
+      "https://api.dyte.io/v2/meetings",
+      {
+        title: "Test",
+        preferred_region: "ap-south-1",
+        record_on_start: false,
+        live_stream_on_start: false,
+      },
+      {
+        headers: {
+          Authorization: `Basic ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (meeting) {
+      const addHostInMeeting = await axios.post(
+        `https://api.dyte.io/v2/meetings/${meeting.data.data.id}/participants`,
+        {
+          name: "Usman Javaid",
+          picture: "https://www.svgrepo.com/show/452030/avatar-default.svg",
+          custom_participant_id: "2038",
+          preset_name: "group_call_host",
+        },
+        {
+          headers: {
+            Authorization: `Basic ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (addHostInMeeting) {
+        window.open(
+          `https://app.dyte.io/v2/meeting?id=${meeting.data.data.id}&authToken=${addHostInMeeting.data.data.token}`
+        );
+      }
+    }
+  };
+
   return (
     <>
       <div className="messaging">
@@ -332,14 +376,16 @@ export default function Chats() {
                     chat.userId === selectedChat?.userId ? "active_chat" : ""
                   }`}
                   key={index}
-                  onClick={() => onSelectChat(chat)}
                 >
                   <div className="chat_people">
                     <div className="chat_img">
                       {" "}
                       <img src="https://ptetutorials.com/images/user-profile.png" />{" "}
                     </div>
-                    <div className="chat_ib notification-info">
+                    <div
+                      className="chat_ib notification-info"
+                      onClick={() => onSelectChat(chat)}
+                    >
                       <h5>
                         {chat.projectTitle}{" "}
                         <div className="members">
@@ -353,6 +399,13 @@ export default function Chats() {
                         <span className="notification-count-chat"></span>
                       )}
                     </div>
+                    <span class="call-icon">
+                      <i
+                        class="fa fa-phone"
+                        aria-hidden="true"
+                        onClick={startCallSession}
+                      ></i>
+                    </span>
                   </div>
                 </div>
               ))}
