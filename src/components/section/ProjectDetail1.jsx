@@ -34,7 +34,6 @@ export default function ProjectDetail1() {
   }, []);
 
   useEffect(() => {
-    console.log("singleProject", singleProject);
     if (singleProject) {
       setProject(singleProject);
     }
@@ -42,6 +41,16 @@ export default function ProjectDetail1() {
 
   const findSingleProject = async () => {
     await getSingleProject(routeParams.id);
+  };
+
+  const formatString = (input) => {
+    if (!input || (input && input === "")) {
+      return;
+    }
+    const cleanedString = input.replace("-", " ");
+    const capitalizedString =
+      cleanedString.charAt(0).toUpperCase() + cleanedString.slice(1);
+    return capitalizedString;
   };
 
   const handleCurrencyInputChange = (e, name) => {
@@ -61,9 +70,8 @@ export default function ProjectDetail1() {
 
   const onSubmitForm = async () => {
     const result = await submitProposal(propodalObj, routeParams.id);
-    console.log("result", result);
     if (result) {
-      router.push("/my-profile");
+      router.push("/manage-projects");
     }
   };
 
@@ -84,7 +92,9 @@ export default function ProjectDetail1() {
                           </div>
                           <div className="details">
                             <h5 className="title">Seller Type</h5>
-                            <p className="mb-0 text">{project.company}</p>
+                            <p className="mb-0 text">
+                              {formatString(project.freelancerType)}
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -96,7 +106,7 @@ export default function ProjectDetail1() {
                           <div className="details">
                             <h5 className="title">Project type</h5>
                             <p className="mb-0 text">
-                              {project.projectDurationType}
+                              {project.projectDurationType?.toUpperCase()}
                             </p>
                           </div>
                         </div>
@@ -121,7 +131,9 @@ export default function ProjectDetail1() {
                           </div>
                           <div className="details">
                             <h5 className="title">Project Level</h5>
-                            <p className="mb-0 text">{project.level}</p>
+                            <p className="mb-0 text">
+                              {formatString(project.level)}
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -138,23 +150,12 @@ export default function ProjectDetail1() {
                           </div>
                         </div>
                       </div>
-                      <div className="col-sm-6 col-xl-4">
-                        <div className="iconbox-style1 contact-style d-flex align-items-start mb30">
-                          <div className="icon flex-shrink-0">
-                            <span className="flaticon-goal" />
-                          </div>
-                          <div className="details">
-                            <h5 className="title">{project.language} Level</h5>
-                            <p className="mb-0 text">{project.languageLevel}</p>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                     <div className="service-about">
                       <h4>Description</h4>
                       <p className="text mb30">{project.description}</p>
                       <hr className="opacity-100 mb60 mt60" />
-                      <h4 className="mb30">Attachments</h4>
+                      {/* <h4 className="mb30">Attachments</h4>
                       <div className="row">
                         <div className="col-6 col-lg-3">
                           <div className="project-attach">
@@ -170,8 +171,8 @@ export default function ProjectDetail1() {
                             <span className="icon flaticon-page" />
                           </div>
                         </div>
-                      </div>
-                      <hr className="opacity-100 mb60 mt30" />
+                      </div> */}
+                      {/* <hr className="opacity-100 mb60 mt30" /> */}
                       <h4 className="mb30">Skills Required</h4>
                       <div className="mb60">
                         {project?.projectSkills &&

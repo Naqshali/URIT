@@ -24,7 +24,7 @@ export default function BasicInformation() {
     city: "",
     languageLevel: "",
     serviceSkills: [],
-    serviceDetail: "",
+    description: "",
   });
 
   const resetBasicInfoObj = () => {
@@ -37,7 +37,7 @@ export default function BasicInformation() {
       city: "",
       languageLevel: "",
       serviceSkills: [],
-      serviceDetail: "",
+      description: "",
     };
     setBasicInfoObj(obj);
   };
@@ -210,8 +210,8 @@ export default function BasicInformation() {
                     cols={30}
                     rows={6}
                     placeholder="Description"
-                    name="serviceDetail"
-                    value={basicInfoObj.serviceDetail}
+                    name="description"
+                    value={basicInfoObj.description}
                     onChange={handleInputChange}
                   />
                 </div>

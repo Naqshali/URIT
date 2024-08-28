@@ -56,9 +56,9 @@ export default function ManageProjectInfo() {
     }
     return [
       { title: "Posted Projects", status: "OPEN_FOR_PROPOSALS" },
-      { title: "Ongoing Projects", status: "IN_PROCESS" },
-      { title: "Completed Services", status: "COMPLETED_SERVICES" },
-      { title: "Canceled Services", status: "CANCELLED_SERVICES" },
+      // { title: "Ongoing Projects", status: "IN_PROCESS" },
+      // { title: "Completed Services", status: "COMPLETED_SERVICES" },
+      // { title: "Canceled Services", status: "CANCELLED_SERVICES" },
     ];
   };
 

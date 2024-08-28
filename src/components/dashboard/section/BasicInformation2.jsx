@@ -102,6 +102,8 @@ export default function BasicInformation2() {
           resetBasicInfoObj();
           router.push("/manage-projects");
         }
+      } else {
+        router.push("/manage-projects");
       }
     }
   };

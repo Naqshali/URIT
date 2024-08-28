@@ -42,6 +42,31 @@ const chatStore = create(() => ({
       return null;
     }
   },
+  startMeeting: async (data) => {
+    try {
+      const res = await axiosInstance.post(`/api/v1/meetings`, data);
+
+      if (res?.data) {
+        return res.data;
+      }
+    } catch (error) {
+      return null;
+    }
+  },
+  addParticipantInMeeting: async (id, data) => {
+    try {
+      const res = await axiosInstance.post(
+        `/api/v1/meetings/${id}/participants`,
+        data
+      );
+
+      if (res?.data) {
+        return res.data;
+      }
+    } catch (error) {
+      return null;
+    }
+  },
 }));
 
 export default chatStore;

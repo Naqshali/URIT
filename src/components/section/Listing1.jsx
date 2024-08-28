@@ -9,29 +9,18 @@ import servicesStore from "@/store/myprofile/services";
 import { useEffect, useState } from "react";
 import globalMixin from "@/mixins/global";
 
-export default function Listing1() {
-  const { getServices } = servicesStore();
-  const { allListSize } = globalMixin();
-
+export default function Listing1({ services }) {
   const [list, setList] = useState({
     services: [],
     totalCount: 0,
   });
 
   useEffect(() => {
-    fetchServices();
-  }, []);
-
-  const fetchServices = async (pageNo) => {
-    const params = {
-      pageNumber: pageNo ?? 0,
-      pageSize: allListSize,
-    };
-    const result = await getServices(params);
-    if (result) {
-      setList(result);
+    if (services) {
+      console.log("useEffect ~ services:", services);
+      setList(services);
     }
-  };
+  }, [services]);
 
   return (
     <>

@@ -1,20 +1,40 @@
+"use client";
 import Breadcumb3 from "@/components/breadcumb/Breadcumb3";
 import Breadcumb4 from "@/components/breadcumb/Breadcumb4";
 
 import Listing1 from "@/components/section/Listing1";
 import TabSection1 from "@/components/section/TabSection1";
-
-export const metadata = {
-  title: "URIT",
-};
+import servicesStore from "@/store/myprofile/services";
+import globalMixin from "@/mixins/global";
+import { useEffect, useState } from "react";
 
 export default function page() {
+  const { getServices } = servicesStore();
+  const [services, setServices] = useState({});
+  const { allListSize } = globalMixin();
+
+  useEffect(() => {
+    fetchServices();
+  }, []);
+
+  const fetchServices = async (pageNo) => {
+    const params = {
+      pageNumber: pageNo ?? 0,
+      pageSize: allListSize,
+    };
+    const result = await getServices(params);
+    console.log("fetchServices ~ result:", result);
+    if (result) {
+      setServices(result);
+    }
+  };
+
   return (
     <>
-      <TabSection1 />
-      <Breadcumb3 path={["Home", "Services", "Design & Creative"]} />
+      {/* <TabSection1 /> */}
+      {/* <Breadcumb3 path={["Home", "Services", "Design & Creative"]} /> */}
       <Breadcumb4 />
-      <Listing1 />
+      <Listing1 services={services} />
     </>
   );
 }

@@ -2,15 +2,25 @@
 import { project1 } from "@/data/product";
 import Image from "next/image";
 import { useParams } from "next/navigation";
+import projectsStore from "@/store/myprofile/projects";
+import { useEffect, useState } from "react";
 
 export default function Breadcumb11() {
   const { id } = useParams();
 
   const data = project1.find((item) => item.id == id);
+  const { singleProject } = projectsStore();
+  const [project, setProject] = useState({});
+
+  useEffect(() => {
+    if (singleProject) {
+      setProject(singleProject);
+    }
+  }, [singleProject]);
 
   return (
     <>
-      <section className="breadcumb-section pt-0">
+      <section className="breadcumb-section">
         <div className="cta-service-v1 freelancer-single-style mx-auto maxw1700 pt120 pt60-sm pb120 pb60-sm bdrs16 position-relative overflow-hidden d-flex align-items-center mx20-lg px30-lg">
           <Image
             height={181}
@@ -30,11 +40,7 @@ export default function Breadcumb11() {
             <div className="row wow fadeInUp">
               <div className="col-xl-7">
                 <div className="position-relative">
-                  {data ? (
-                    <h2>{data.title}</h2>
-                  ) : (
-                    <h2>Website Designer Required For Directory Theme</h2>
-                  )}
+                  {data ? <h2>{data.title}</h2> : <h2>{project.title}</h2>}
 
                   <div className="list-meta mt15">
                     <p className="mb-0 dark-color fz15 fw500 list-inline-item mb5-sm">

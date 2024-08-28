@@ -12,8 +12,8 @@ export default function page() {
   return (
     <>
       {/* <Header3 /> */}
-      <TabSection1 />
-      <Breadcumb10 path={["Home", "Services", "Design & Creative"]} />
+      {/* <TabSection1 />
+      <Breadcumb10 path={["Home", "Services", "Design & Creative"]} /> */}
       <Breadcumb11 />
       <ProjectDetail1 />
     </>

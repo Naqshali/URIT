@@ -83,7 +83,7 @@ export default function page() {
                     onChange={handleInputChange}
                   />
                 </div>
-                <div className="checkbox-style1 d-block d-sm-flex align-items-center justify-content-between mb20">
+                {/* <div className="checkbox-style1 d-block d-sm-flex align-items-center justify-content-between mb20">
                   <label className="custom_checkbox fz14 ff-heading">
                     Remember me
                     <input
@@ -95,7 +95,7 @@ export default function page() {
                     <span className="checkmark" />
                   </label>
                   <a className="fz14 ff-heading">Lost your password?</a>
-                </div>
+                </div> */}
                 <div className="d-grid mb20">
                   <button
                     className="ud-btn btn-thm"
@@ -105,7 +105,7 @@ export default function page() {
                     Log In <i className="fal fa-arrow-right-long" />
                   </button>
                 </div>
-                <div className="hr_content mb20">
+                {/* <div className="hr_content mb20">
                   <hr />
                   <span className="hr_top_text">OR</span>
                 </div>
@@ -125,7 +125,7 @@ export default function page() {
                   <button className="ud-btn btn-apple fz14 fw400" type="button">
                     <i className="fab fa-apple" /> Continue Apple
                   </button>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

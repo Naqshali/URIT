@@ -79,7 +79,21 @@ export default function ProfileDetails({ meta }) {
     };
 
     if (validateForm(profileValidatinoObject)) {
-      const result = await updateProfileDetails(profileObj);
+      const details = { ...profileObj };
+
+      if (details.name) {
+        delete details.name;
+      }
+
+      if (details.email) {
+        delete details.email;
+      }
+
+      if (details.userType) {
+        delete details.userType;
+      }
+
+      const result = await updateProfileDetails(details);
       if (result) {
         setShowToastr(result);
       }

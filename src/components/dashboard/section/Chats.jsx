@@ -16,7 +16,13 @@ import axios from "axios";
 
 export default function Chats() {
   const { loggedInUser } = signUpStore();
-  const { getChats, getProjectChat, setActiveChat } = chatStore();
+  const {
+    getChats,
+    getProjectChat,
+    setActiveChat,
+    startMeeting,
+    addParticipantInMeeting,
+  } = chatStore();
   const { newNotification } = notificationsStore();
   const [messageInput, setMessageInput] = useState("");
   const searchParams = useSearchParams();
@@ -218,7 +224,6 @@ export default function Chats() {
   };
 
   const messageReceivedHandler = (msg) => {
-    console.log("Message Received", msg);
     setNewChat(msg);
   };
 
@@ -305,26 +310,50 @@ export default function Chats() {
     }
   };
 
-  const startCallSession = async () => {
+  const startCallSession = async (chat) => {
     const apiKey = "cefa6144-8367-435a-b054-25ed0d0dde73";
     const apiSecret = "c6403f8f69cc7ccb287b";
     const token = Buffer.from(`${apiKey}:${apiSecret}`).toString("base64");
 
-    const meeting = await axios.post(
-      "https://api.dyte.io/v2/meetings",
-      {
-        title: "Test",
-        preferred_region: "ap-south-1",
-        record_on_start: false,
-        live_stream_on_start: false,
-      },
-      {
-        headers: {
-          Authorization: `Basic ${token}`,
-          "Content-Type": "application/json",
-        },
+    const meeting = await startMeeting({
+      userId: loggedInUser?.userId,
+      projectId: chat.projectId,
+      proposalId: chat.proposalId,
+    });
+    console.log("startCallSession ~ meeting:", meeting, chat);
+
+    if (meeting) {
+      const participant = await addParticipantInMeeting(meeting.id, {
+        picture: "https://www.svgrepo.com/show/452030/avatar-default.s",
+        projectId: chat.projectId,
+        proposalId: chat.proposalId,
+      });
+
+      console.log("startCallSession ~ participant:", participant);
+      if (participant) {
+        window.open(
+          `https://app.dyte.io/v2/meeting?id=${meeting.id}&authToken=${participant.token}`
+        );
       }
-    );
+    }
+
+    return;
+
+    // const meeting = await axios.post(
+    //   "https://api.dyte.io/v2/meetings",
+    //   {
+    //     title: "Test",
+    //     preferred_region: "ap-south-1",
+    //     record_on_start: false,
+    //     live_stream_on_start: false,
+    //   },
+    //   {
+    //     headers: {
+    //       Authorization: `Basic ${token}`,
+    //       "Content-Type": "application/json",
+    //     },
+    //   }
+    // );
 
     if (meeting) {
       const addHostInMeeting = await axios.post(
@@ -403,7 +432,7 @@ export default function Chats() {
                       <i
                         class="fa fa-phone"
                         aria-hidden="true"
-                        onClick={startCallSession}
+                        onClick={() => startCallSession(chat)}
                       ></i>
                     </span>
                   </div>

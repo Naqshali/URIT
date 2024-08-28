@@ -38,8 +38,8 @@ export default function MyProfileInfo() {
                 <Award />
               </div>
             )}
-            <ChangePassword />
-            <ConfirmPassword />
+            {/* <ChangePassword /> */}
+            {/* <ConfirmPassword /> */}
           </div>
         </div>
       </div>

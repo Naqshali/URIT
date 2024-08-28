@@ -161,7 +161,7 @@ export default function page() {
                         Create Account <i className="fal fa-arrow-right-long" />
                       </button>
                     </div>
-                    <div className="hr_content mb20">
+                    {/* <div className="hr_content mb20">
                       <hr />
                       <span className="hr_top_text">OR</span>
                     </div>
@@ -185,7 +185,7 @@ export default function page() {
                       >
                         <i className="fab fa-apple" /> Continue Apple
                       </button>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>

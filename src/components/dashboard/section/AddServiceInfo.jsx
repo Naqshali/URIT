@@ -18,14 +18,14 @@ export default function AddServiceInfo() {
               <h2>Add Services</h2>
             </div>
           </div>
-          <div className="col-lg-3">
+          {/* <div className="col-lg-3">
             <div className="text-lg-end">
               <a className="ud-btn btn-dark">
                 Save &amp; Publish
                 <i className="fal fa-arrow-right-long" />
               </a>
             </div>
-          </div>
+          </div> */}
         </div>
         <div className="row">
           <div className="col-xl-12">

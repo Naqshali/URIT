@@ -7,7 +7,7 @@ export default function ShopListInfo1({ length }) {
         <div className="col-sm-6">
           <div className="text-center text-sm-start">
             <p className="text mb-0">
-              <span className="fw500">{length}</span> services available
+              <span className="fw500">{length}</span> Services Available
             </p>
           </div>
         </div>
