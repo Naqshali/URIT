@@ -69,8 +69,8 @@ export default function TrendingService1() {
                       },
                     }}
                   >
-                    {product1.slice(0, 6).map((item,i) => (
-                      <SwiperSlide key={ i }>
+                    {product1.slice(0, 6).map((item, i) => (
+                      <SwiperSlide key={i}>
                         <TrendingServiceCard1 data={item} />
                       </SwiperSlide>
                     ))}

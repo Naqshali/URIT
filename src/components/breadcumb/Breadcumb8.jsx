@@ -3,7 +3,7 @@ import { product1 } from "@/data/product";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 
-export default function Breadcumb8() {
+export default function Breadcumb8({ service }) {
   const { id } = useParams();
 
   const data = product1.find((item) => item.id == id);
@@ -37,12 +37,8 @@ export default function Breadcumb8() {
             <div className="row wow fadeInUp">
               <div className="col-xl-7">
                 <div className="position-relative">
-                  {data ? (
-                    <h2>{data.title}</h2>
-                  ) : (
-                    <h2>I will design website UI UX in adobe xd or figma</h2>
-                  )}
-                  <div className="list-meta mt30">
+                  {<h2>{service.title}</h2>}
+                  {/* <div className="list-meta mt30">
                     {data ? (
                       <a className="list-inline-item mb5-sm">
                         <span className="position-relative mr10">
@@ -85,7 +81,7 @@ export default function Breadcumb8() {
                       <i className="flaticon-website vam fz20 me-2" />
                       902 Views
                     </p>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>

@@ -77,6 +77,17 @@ export default function globalMixin() {
     }
   };
 
+  const firstCharacterCapital = (str) => {
+    if (!str) {
+      return;
+    }
+
+    return str
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  };
+
   return {
     getService,
     getSkill,
@@ -86,5 +97,6 @@ export default function globalMixin() {
     getLanguageLevel,
     getGender,
     allListSize,
+    firstCharacterCapital,
   };
 }

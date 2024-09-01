@@ -3,7 +3,8 @@ import Link from "next/link";
 import globalMixin from "@/mixins/global";
 
 export default function FreelancerCard1({ data }) {
-  const { getCountry, getSkill } = globalMixin();
+  const { getCountry, getSkill, firstCharacterCapital, getLanguage } =
+    globalMixin();
   return (
     <>
       <div className="freelancer-style1 text-center bdr1 hover-box-shadow">
@@ -19,13 +20,13 @@ export default function FreelancerCard1({ data }) {
         </div>
         <div className="details">
           <h5 className="title mb-1">{data.name}</h5>
-          <p className="mb-0">{data.profession}</p>
-          <div className="review">
+          <p className="mb-0">{firstCharacterCapital(data.gender)}</p>
+          {/* <div className="review">
             <p>
               <i className="fas fa-star fz10 review-color pr10" />
               <span className="dark-color fw500">4 </span>( reviews)
             </p>
-          </div>
+          </div> */}
           <div className="skill-tags d-flex align-items-center justify-content-center mb5">
             {data.userSkills?.map((item) => (
               <span className="tag ml5">{getSkill(item.name)}</span>
@@ -41,12 +42,12 @@ export default function FreelancerCard1({ data }) {
             <a className="meta fw500 text-start">
               Rate
               <br />
-              <span className="fz14 fw400">${data.hourlyRate} / hr</span>
+              <span className="fz14 fw400">${data.hourlyRate}</span>
             </a>
             <a className="meta fw500 text-start">
-              Job Success
+              Languages
               <br />
-              <span className="fz14 fw400">%98</span>
+              <span className="fz14 fw400">{getLanguage(data.language)}</span>
             </a>
           </div>
           <div className="d-grid mt15">

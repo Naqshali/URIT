@@ -21,6 +21,16 @@ const servicesStore = create((set) => ({
       return null;
     }
   },
+  getServiceById: async (id) => {
+    try {
+      const res = await axiosInstance.get(`/api/v1/services/${id}`);
+      if (res.data) {
+        return res.data;
+      }
+    } catch (error) {
+      return null;
+    }
+  },
   saveService: async (data) => {
     try {
       const res = await axiosInstance.post("/api/v1/services", data);

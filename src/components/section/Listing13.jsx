@@ -41,7 +41,7 @@ export default function Listing13() {
     <>
       <section className="pt30 pb90">
         <div className="container">
-          <ListingOption6 />
+          {/* <ListingOption6 /> */}
           <div className="row">
             {providersList.serviceProviders.map((item, i) => (
               <div key={i} className="col-md-6 col-lg-4 col-xl-3">

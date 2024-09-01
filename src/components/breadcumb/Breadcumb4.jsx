@@ -61,7 +61,7 @@ export default function Breadcumb4() {
                   <p className="text mb30">
                     You can find all kind of services here
                   </p>
-                  <div className="d-flex align-items-center">
+                  {/* <div className="d-flex align-items-center">
                     <a
                       onClick={() => setToggler(!toggler)}
                       className="video-btn mr10 popup-iframe popup-youtube"
@@ -69,7 +69,7 @@ export default function Breadcumb4() {
                       <i className="fal fa-play" />
                     </a>
                     <h6 className="mb-0">How URIT Works</h6>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>

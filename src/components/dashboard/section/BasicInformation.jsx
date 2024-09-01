@@ -25,6 +25,7 @@ export default function BasicInformation() {
     languageLevel: "",
     serviceSkills: [],
     description: "",
+    deliveryTime: "",
   });
 
   const resetBasicInfoObj = () => {
@@ -186,7 +187,7 @@ export default function BasicInformation() {
                   />
                 </div>
               </div>
-              <div className="col-sm-8">
+              <div className="col-sm-6">
                 <div className="mb20">
                   <label className="heading-color ff-heading fw500 mb10">
                     Skills
@@ -198,6 +199,21 @@ export default function BasicInformation() {
                     name="serviceSkills"
                     options={meta.skills}
                     onChange={handleInputChange}
+                  />
+                </div>
+              </div>
+              <div className="col-sm-6">
+                <div className="mb20">
+                  <label className="heading-color ff-heading fw500 mb10">
+                    Dilivery Time (Days)
+                  </label>
+                  <CurrencyInput
+                    className="form-control"
+                    name="deliveryTime"
+                    placeholder="Please enter a number"
+                    value={basicInfoObj.deliveryTime}
+                    maxLength={3}
+                    onValueChange={handleCurrencyInputChange}
                   />
                 </div>
               </div>

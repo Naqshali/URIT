@@ -1,9 +1,11 @@
 "use client";
 import { useState } from "react";
-const tabs = ["Basic", "Standart", "Premium"];
+const tabs = ["Basic"];
+import globalMixin from "@/mixins/global";
 
-export default function ServiceDetailPrice1() {
+export default function ServiceDetailPrice1({ service }) {
   const [getTab, setTab] = useState(0);
+  const { getLanguage } = globalMixin();
 
   return (
     <>
@@ -25,7 +27,7 @@ export default function ServiceDetailPrice1() {
           <div className="tab-content" id="nav-tabContent">
             {getTab === 0 && (
               <div className="price-content">
-                <div className="price">$50</div>
+                <div className="price">${service?.price}</div>
                 <div className="h5 mb-2">High-converting Landing Pages</div>
                 <p className="text fz14">
                   I will redesign your current landing page or create one for
@@ -35,31 +37,33 @@ export default function ServiceDetailPrice1() {
                 <ul className="p-0 mb15 d-sm-flex align-items-center">
                   <li className="fz14 fw500 dark-color">
                     <i className="flaticon-sandclock fz20 text-thm2 me-2 vam" />
-                    3 Days Delivery
+                    {service?.deliveryTime} Days Delivery
                   </li>
-                  <li className="fz14 fw500 dark-color ml20 ml0-xs">
+                  {/* <li className="fz14 fw500 dark-color ml20 ml0-xs">
                     <i className="flaticon-recycle fz20 text-thm2 me-2 vam" />2
                     Revisions
-                  </li>
+                  </li> */}
                 </ul>
                 <div className="list-style1">
                   <ul>
-                    <li className="mb15">
-                      <i className="far fa-check text-thm3 bgc-thm3-light" />2
-                      Page / Screen
-                    </li>
+                    {service?.language && (
+                      <li className="mb15">
+                        <i className="far fa-check text-thm3 bgc-thm3-light" />
+                        {getLanguage(service?.language)}
+                      </li>
+                    )}
                     <li>
                       <i className="far fa-check text-thm3 bgc-thm3-light" />
                       Source file
                     </li>
                   </ul>
                 </div>
-                <div className="d-grid">
+                {/* <div className="d-grid">
                   <a className="ud-btn btn-thm">
                     Continue $50
                     <i className="fal fa-arrow-right-long" />
                   </a>
-                </div>
+                </div> */}
               </div>
             )}
             {getTab === 1 && (

@@ -20,6 +20,7 @@ export default function page() {
 
   const fetchProvider = async () => {
     const result = await getServiceProviderById(id);
+    console.log("fetchProvider ~ result:", result);
     if (result) {
       setProvider(result);
     }
@@ -27,8 +28,8 @@ export default function page() {
 
   return (
     <>
-      <TabSection1 />
-      <Breadcumb10 path={["Home", "Services", "Design & Creative"]} />
+      {/* <TabSection1 /> */}
+      {/* <Breadcumb10 path={["Home", "Services", "Design & Creative"]} /> */}
       <Breadcumb17 provider={provider} />
       <FreelancerDetail1 provider={provider} />
     </>

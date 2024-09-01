@@ -4,8 +4,12 @@ import notificationsStore from "@/store/notifications";
 import { useRouter } from "next/navigation";
 
 function Notifications() {
-  const { newNotification, saveNewNotification, getNotifications } =
-    notificationsStore();
+  const {
+    newNotification,
+    saveNewNotification,
+    getNotifications,
+    markNotificationAsRead,
+  } = notificationsStore();
   const [notifications, setNotifications] = useState([]);
   const router = useRouter();
 
@@ -33,8 +37,9 @@ function Notifications() {
     }
   };
 
-  const routeTo = (notification) => {
-    console.log("routeTo", notification);
+  const routeTo = async (notification) => {
+    await markNotificationAsRead(notification.id);
+
     if (notification.notificationType === "Message") {
       router.push("/chats");
     } else {

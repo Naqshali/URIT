@@ -58,17 +58,6 @@ export default function ManageServiceInfo() {
               <h2>Manage Services</h2>
             </div>
           </div>
-          <div className="col-lg-3">
-            <div className="text-lg-end">
-              <Link
-                href="/dashboard-add-service"
-                className="ud-btn btn-dark default-box-shadow2"
-              >
-                Add Service
-                <i className="fal fa-arrow-right-long" />
-              </Link>
-            </div>
-          </div>
         </div>
         <div className="row">
           <div className="col-xl-12">

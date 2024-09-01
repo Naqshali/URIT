@@ -191,7 +191,7 @@ export default function FreelancerDetail3() {
                   </div>
                   {/* <hr className="opacity-100 mb60" /> */}
                   <div className="px30 pt30 pb-0 mb30 bg-white bdrs12 wow fadeInUp default-box-shadow1 bdr1">
-                    <h4 className="mb30">Awards adn Certificates</h4>
+                    <h4 className="mb30">Awards & Certificates</h4>
                     <div className="educational-quality ps-0">
                       <div className="wrapper mb40">
                         <span className="tag">2012 - 2014</span>
@@ -223,8 +223,8 @@ export default function FreelancerDetail3() {
                   <div className="px30 pt30 pb-0 mb30 bg-white bdrs12 wow fadeInUp default-box-shadow1 bdr1">
                     <h4 className="mb30">Featured Services</h4>
                     <div className="row mb35">
-                      {product1.slice(0, 3).map((item,i) => (
-                        <div className="col-sm-6 col-xl-4" key={ i }>
+                      {product1.slice(0, 3).map((item, i) => (
+                        <div className="col-sm-6 col-xl-4" key={i}>
                           <FreelancerFutureCard1 data={item} />
                         </div>
                       ))}

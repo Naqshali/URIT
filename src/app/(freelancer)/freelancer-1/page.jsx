@@ -11,8 +11,8 @@ export const metadata = {
 export default function page() {
   return (
     <>
-      <TabSection1 />
-      <Breadcumb3 path={["Home", "Services", "Design & Creative"]} />
+      {/* <TabSection1 />
+      <Breadcumb3 path={["Home", "Services", "Design & Creative"]} /> */}
       <Breadcumb16 />
       <Listing13 />
     </>

@@ -1,7 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
+import globalMixin from "@/mixins/global";
 
-export default function ServiceContactWidget1() {
+export default function ServiceContactWidget1({ service }) {
+  const { getCountry, getLanguage } = globalMixin();
   return (
     <>
       <div className="freelancer-style1 service-single mb-0">
@@ -17,8 +19,8 @@ export default function ServiceContactWidget1() {
             <span className="online" />
           </div>
           <div className="ml20">
-            <h5 className="title mb-1">Kristin Watson</h5>
-            <p className="mb-0">Dog Trainer</p>
+            <h5 className="title mb-1">{service.serviceProvider?.name}</h5>
+            <p className="mb-0">{service.serviceProvider?.tagLine}</p>
             <div className="review">
               <p>
                 <i className="fas fa-star fz10 review-color pr10" />
@@ -33,22 +35,28 @@ export default function ServiceContactWidget1() {
             <a className="meta fw500 text-start">
               Location
               <br />
-              <span className="fz14 fw400">London</span>
+              <span className="fz14 fw400">
+                {getCountry(service.serviceProvider?.country)}
+              </span>
             </a>
             <a className="meta fw500 text-start">
               Rate
               <br />
-              <span className="fz14 fw400">$90 / hr</span>
+              <span className="fz14 fw400">
+                ${service.serviceProvider?.hourlyRate}
+              </span>
             </a>
             <a className="meta fw500 text-start">
-              Job Success
+              Language
               <br />
-              <span className="fz14 fw400">%98</span>
+              <span className="fz14 fw400">
+                {getLanguage(service.serviceProvider?.language)}
+              </span>
             </a>
           </div>
         </div>
         <div className="d-grid mt30">
-          <Link href="/freelancer-single" className="ud-btn btn-thm-border">
+          <Link href="/chats" className="ud-btn btn-thm-border">
             Contact Me
             <i className="fal fa-arrow-right-long" />
           </Link>

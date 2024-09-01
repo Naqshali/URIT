@@ -7,6 +7,7 @@ import "swiper/css/navigation";
 import "swiper/css/thumbs";
 import { FreeMode, Navigation, Thumbs } from "swiper";
 import Image from "next/image";
+import globalMixin from "@/mixins/global";
 
 const gigImages = [
   "/images/listings/service-details-1.jpg",
@@ -14,9 +15,11 @@ const gigImages = [
   "/images/listings/service-details-1.jpg",
 ];
 
-export default function ServiceDetailSlider1() {
+export default function ServiceDetailSlider1({ service }) {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [showSwiper, setShowSwiper] = useState(false);
+  const { getCountry, firstCharacterCapital } = globalMixin();
+
   useEffect(() => {
     setShowSwiper(true);
   }, []);
@@ -32,7 +35,7 @@ export default function ServiceDetailSlider1() {
               </div>
               <div className="details">
                 <h5 className="title">Delivery Time</h5>
-                <p className="mb-0 text">1-3 Days</p>
+                <p className="mb-0 text">{service.rdeliveryTime} Days</p>
               </div>
             </div>
           </div>
@@ -43,7 +46,9 @@ export default function ServiceDetailSlider1() {
               </div>
               <div className="details">
                 <h5 className="title">English Level</h5>
-                <p className="mb-0 text">Professional</p>
+                <p className="mb-0 text">
+                  {firstCharacterCapital(service.languageLevel)}
+                </p>
               </div>
             </div>
           </div>
@@ -54,12 +59,14 @@ export default function ServiceDetailSlider1() {
               </div>
               <div className="details">
                 <h5 className="title">Location</h5>
-                <p className="mb-0 text">New York</p>
+                <p className="mb-0 text">
+                  {getCountry(service.country)}, {service.city}
+                </p>
               </div>
             </div>
           </div>
         </div>
-        <div className="service-single-sldier vam_nav_style slider-1-grid owl-carousel owl-theme mb60 owl-loaded owl-drag">
+        {/* <div className="service-single-sldier vam_nav_style slider-1-grid owl-carousel owl-theme mb60 owl-loaded owl-drag">
           <div className="thumb p50 p30-sm">
             {showSwiper && (
               <Swiper
@@ -122,7 +129,7 @@ export default function ServiceDetailSlider1() {
               ))}
             </Swiper>
           )}
-        </div>
+        </div> */}
       </div>
     </>
   );

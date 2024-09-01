@@ -198,7 +198,7 @@ export default function FreelancerDetail1() {
                     </div>
                   </div>
                   <hr className="opacity-100 mb60" />
-                  <h4 className="mb30">Awards adn Certificates</h4>
+                  <h4 className="mb30">Awards & Certificates</h4>
                   <div className="educational-quality ps-0">
                     <div className="wrapper mb40">
                       <span className="tag">2012 - 2014</span>
@@ -228,8 +228,8 @@ export default function FreelancerDetail1() {
                   <hr className="opacity-100 mb60" />
                   <h4 className="mb30">Featured Services</h4>
                   <div className="row mb35">
-                    {product1.slice(0, 3).map((item,i) => (
-                      <div className="col-sm-6 col-xl-4" key={ i }>
+                    {product1.slice(0, 3).map((item, i) => (
+                      <div className="col-sm-6 col-xl-4" key={i}>
                         <FreelancerFutureCard1 data={item} />
                       </div>
                     ))}

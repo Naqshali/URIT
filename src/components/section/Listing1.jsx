@@ -9,36 +9,53 @@ import servicesStore from "@/store/myprofile/services";
 import { useEffect, useState } from "react";
 import globalMixin from "@/mixins/global";
 
-export default function Listing1({ services }) {
+export default function Listing1() {
+  const { allListSize } = globalMixin();
+  const { getServices } = servicesStore();
   const [list, setList] = useState({
     services: [],
     totalCount: 0,
   });
 
   useEffect(() => {
-    if (services) {
-      console.log("useEffect ~ services:", services);
-      setList(services);
+    fetchServices();
+  }, []);
+
+  const fetchServices = async (pageNo) => {
+    const params = {
+      pageNumber: pageNo ?? 0,
+      pageSize: allListSize,
+    };
+    const result = await getServices(params);
+    if (result) {
+      setList(result);
     }
-  }, [services]);
+  };
+
+  const onSelectPage = (pageNo) => {
+    fetchServices(pageNo);
+  };
 
   return (
     <>
       <section className="pt30 pb90">
         <div className="container">
-          <ListingOption1 />
+          {/* <ListingOption1 /> */}
           <div className="row">
-            {product1.map((item, i) => (
+            {list?.services.map((item, i) => (
               <div key={i} className="col-sm-6 col-xl-3">
-                {item?.gallery ? (
+                {/* {item?.gallery ? (
                   <PopularServiceSlideCard1 data={item} />
                 ) : (
-                  <TrendingServiceCard1 data={item} />
-                )}
+                )} */}
+                <TrendingServiceCard1 data={item ? item : {}} />
               </div>
             ))}
           </div>
-          <Pagination1 />
+          <Pagination1
+            totalCount={list.totalCount ?? 1}
+            onSelectPage={onSelectPage}
+          />
         </div>
       </section>
       <ListingSidebarModal1 />

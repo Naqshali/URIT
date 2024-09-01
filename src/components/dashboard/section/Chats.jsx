@@ -320,7 +320,6 @@ export default function Chats() {
       projectId: chat.projectId,
       proposalId: chat.proposalId,
     });
-    console.log("startCallSession ~ meeting:", meeting, chat);
 
     if (meeting) {
       const participant = await addParticipantInMeeting(meeting.id, {
@@ -329,51 +328,9 @@ export default function Chats() {
         proposalId: chat.proposalId,
       });
 
-      console.log("startCallSession ~ participant:", participant);
       if (participant) {
         window.open(
           `https://app.dyte.io/v2/meeting?id=${meeting.id}&authToken=${participant.token}`
-        );
-      }
-    }
-
-    return;
-
-    // const meeting = await axios.post(
-    //   "https://api.dyte.io/v2/meetings",
-    //   {
-    //     title: "Test",
-    //     preferred_region: "ap-south-1",
-    //     record_on_start: false,
-    //     live_stream_on_start: false,
-    //   },
-    //   {
-    //     headers: {
-    //       Authorization: `Basic ${token}`,
-    //       "Content-Type": "application/json",
-    //     },
-    //   }
-    // );
-
-    if (meeting) {
-      const addHostInMeeting = await axios.post(
-        `https://api.dyte.io/v2/meetings/${meeting.data.data.id}/participants`,
-        {
-          name: "Usman Javaid",
-          picture: "https://www.svgrepo.com/show/452030/avatar-default.svg",
-          custom_participant_id: "2038",
-          preset_name: "group_call_host",
-        },
-        {
-          headers: {
-            Authorization: `Basic ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      if (addHostInMeeting) {
-        window.open(
-          `https://app.dyte.io/v2/meeting?id=${meeting.data.data.id}&authToken=${addHostInMeeting.data.data.token}`
         );
       }
     }

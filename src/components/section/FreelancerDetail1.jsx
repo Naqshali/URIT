@@ -44,7 +44,7 @@ export default function FreelancerDetail1({ provider }) {
         <div className="container">
           <div className="row wow fadeInUp">
             <div className="col-lg-8">
-              <div className="row">
+              {/* <div className="row">
                 <div className="col-sm-6 col-xl-3">
                   <div className="iconbox-style1 contact-style d-flex align-items-start mb30">
                     <div className="icon flex-shrink-0">
@@ -89,7 +89,7 @@ export default function FreelancerDetail1({ provider }) {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
               <div className="service-about">
                 <h4>Description</h4>
                 <p className="text mb30">{provider.description}</p>
@@ -133,7 +133,7 @@ export default function FreelancerDetail1({ provider }) {
                   ))}
                 </div>
                 <hr className="opacity-100 mb60" />
-                <h4 className="mb30">Awards adn Certificates</h4>
+                <h4 className="mb30">Awards & Certificates</h4>
                 <div className="educational-quality">
                   {provider.awards?.map((item, i) => (
                     <div key={i}>
@@ -150,7 +150,7 @@ export default function FreelancerDetail1({ provider }) {
                   ))}
                 </div>
 
-                <hr className="opacity-100 mb60" />
+                {/* <hr className="opacity-100 mb60" />
                 <h4 className="mb30">Featured Services</h4>
                 <div className="row mb35">
                   {providerServices.services.map((item, i) => (
@@ -161,7 +161,7 @@ export default function FreelancerDetail1({ provider }) {
                 </div>
                 <hr className="opacity-100" />
                 <ServiceDetailReviewInfo1 />
-                <ServiceDetailComment1 />
+                <ServiceDetailComment1 /> */}
               </div>
             </div>
             <div className="col-lg-4">

@@ -30,7 +30,10 @@ export default function ProjectCard1({ data }) {
                 <i className="flaticon-contract fz16 vam text-thm2 me-1 bdrl1 pl15 pl0-xs bdrn-xs" />{" "}
                 1 Received
               </p>
-              <p className="text mt10">{data.description}</p>
+              <p className="text mt10">
+                {" "}
+                {data.description?.slice(0, 350) + "..."}
+              </p>
               <div className="skill-tags d-flex align-items-center justify-content-start">
                 {data.projectSkills.map((item, i) => (
                   <span key={i} className={`tag ${i === 1 ? "mx10" : ""}`}>
