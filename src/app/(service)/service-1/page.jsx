@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 
 export default function page() {
   const [services, setServices] = useState({});
-  const { allListSize } = globalMixin();
+  const { getAllListSize } = globalMixin();
 
   return (
     <>

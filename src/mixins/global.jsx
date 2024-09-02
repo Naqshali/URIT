@@ -4,7 +4,7 @@ import globalStore from "@/store/global";
 import { localMetaData } from "@/utils/localMetaData";
 
 export default function globalMixin() {
-  const allListSize = 10;
+  const getAllListSize = 10;
   const { meta } = globalStore();
 
   const getService = (id) => {
@@ -77,7 +77,7 @@ export default function globalMixin() {
     }
   };
 
-  const firstCharacterCapital = (str) => {
+  const getFirstCharacterCapital = (str) => {
     if (!str) {
       return;
     }
@@ -88,6 +88,14 @@ export default function globalMixin() {
       .join(" ");
   };
 
+  const getfileName = (file) => {
+    return file.split(".")[0];
+  };
+
+  const getfileType = (file) => {
+    return file.split(".")[1]?.toUpperCase();
+  };
+
   return {
     getService,
     getSkill,
@@ -96,7 +104,9 @@ export default function globalMixin() {
     getLanguage,
     getLanguageLevel,
     getGender,
-    allListSize,
-    firstCharacterCapital,
+    getAllListSize,
+    getFirstCharacterCapital,
+    getfileName,
+    getfileType,
   };
 }

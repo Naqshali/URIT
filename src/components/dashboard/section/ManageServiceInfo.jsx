@@ -14,7 +14,7 @@ import signUpStore from "@/store/signUp";
 const tab = ["Active Services"];
 
 export default function ManageServiceInfo() {
-  const { allListSize } = globalMixin();
+  const { getAllListSize } = globalMixin();
   const [selectedTab, setSelectedTab] = useState(0);
   const [serviceList, setServiceList] = useState([]);
   const { allServices, getServices } = servicesStore();
@@ -34,7 +34,7 @@ export default function ManageServiceInfo() {
     const params = {
       userId: loggedInUser.userId,
       pageNumber: pageNo ?? 0,
-      pageSize: allListSize,
+      pageSize: getAllListSize,
     };
 
     await getServices(params);

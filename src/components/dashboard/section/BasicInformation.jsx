@@ -205,7 +205,7 @@ export default function BasicInformation() {
               <div className="col-sm-6">
                 <div className="mb20">
                   <label className="heading-color ff-heading fw500 mb10">
-                    Dilivery Time (Days)
+                    Delivery Time (Days)
                   </label>
                   <CurrencyInput
                     className="form-control"

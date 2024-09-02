@@ -12,7 +12,7 @@ export default function ListingOption2({ itemLength }) {
         <div className="col-md-6">
           <div className="text-center text-md-start">
             <p className="text mb-0 mb10-sm">
-              <span className="fw500">{itemLength}</span> Services Available
+              <span className="fw500">{itemLength}</span> Projects Available
             </p>
           </div>
         </div>

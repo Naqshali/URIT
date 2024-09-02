@@ -8,9 +8,12 @@ import ServiceDetailSlider1 from "../element/ServiceDetailSlider1";
 import { Sticky, StickyContainer } from "react-sticky";
 import useScreen from "@/hook/useScreen";
 import ServiceContactWidget1 from "../element/ServiceContactWidget1";
+import globalMixin from "@/mixins/global";
 
 export default function ServiceDetail1({ service }) {
+  console.log("ServiceDetail1 ~ service:", service);
   const isMatchedScreen = useScreen(1216);
+  const { getSkill } = globalMixin();
 
   return (
     <>
@@ -25,11 +28,11 @@ export default function ServiceDetail1({ service }) {
                     <h4>About</h4>
                     <p className="text mb30">{service.description}</p>
                     <p className="text mb-0">Services I provide:</p>
-                    <p className="text mb-0">1) Website Design</p>
-                    <p className="text mb-0">2) Mobile App Design</p>
-                    <p className="text mb-0">3) Brochure Design</p>
-                    <p className="text mb-0">4) Business Card Design</p>
-                    <p className="text mb30">5) Flyer Design</p>
+                    {service.serviceSkills?.map((serv, index) => (
+                      <p className="text mb-0" key={index}>
+                        {index + 1}) {getSkill(serv)}
+                      </p>
+                    ))}
                     {/* <p className="text mb30">
                       Many desktop publishing packages and web page editors now
                       use Lorem Ipsum as their default model text, and a search

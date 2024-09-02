@@ -31,12 +31,12 @@ export default function Breadcumb9() {
               <div className="col-xl-7">
                 <div className="position-relative">
                   <h2>Projects List</h2>
-                  <p className="text mb30">
+                  {/* <p className="text mb30">
                     All the Lorem Ipsum generators on the Internet tend to
                     repeat.
-                  </p>
+                  </p> */}
                 </div>
-                <div className="advance-search-tab bgc-white p10 bdrs4 zi1 position-relative">
+                {/* <div className="advance-search-tab bgc-white p10 bdrs4 zi1 position-relative">
                   <div className="row">
                     <div className="col-md-8 col-xl-9">
                       <div className="advance-search-field ">
@@ -61,7 +61,7 @@ export default function Breadcumb9() {
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

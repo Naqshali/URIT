@@ -18,7 +18,7 @@ const gigImages = [
 export default function ServiceDetailSlider1({ service }) {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [showSwiper, setShowSwiper] = useState(false);
-  const { getCountry, firstCharacterCapital } = globalMixin();
+  const { getCountry, getFirstCharacterCapital } = globalMixin();
 
   useEffect(() => {
     setShowSwiper(true);
@@ -35,7 +35,7 @@ export default function ServiceDetailSlider1({ service }) {
               </div>
               <div className="details">
                 <h5 className="title">Delivery Time</h5>
-                <p className="mb-0 text">{service.rdeliveryTime} Days</p>
+                <p className="mb-0 text">{service.deliveryTime} Days</p>
               </div>
             </div>
           </div>
@@ -47,7 +47,7 @@ export default function ServiceDetailSlider1({ service }) {
               <div className="details">
                 <h5 className="title">English Level</h5>
                 <p className="mb-0 text">
-                  {firstCharacterCapital(service.languageLevel)}
+                  {getFirstCharacterCapital(service.languageLevel)}
                 </p>
               </div>
             </div>

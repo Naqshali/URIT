@@ -13,6 +13,7 @@ import CurrencyInput from "react-currency-input-field";
 import { useParams } from "next/navigation";
 import globalMixin from "@/mixins/global";
 import { useRouter } from "next/navigation";
+import FileViewer from "../dashboard/modal/fileViewerModal";
 
 export default function ProjectDetail1() {
   const router = useRouter();
@@ -20,7 +21,8 @@ export default function ProjectDetail1() {
   const isMatchedScreen = useScreen(1216);
   const { submitProposal } = proposalsStore();
   const { singleProject, getSingleProject } = projectsStore();
-  const { getService, getSkill } = globalMixin();
+  const { getService, getSkill, getfileName, getfileType } = globalMixin();
+  const [file, setFile] = useState(null);
 
   const [project, setProject] = useState({});
   const [propodalObj, setProposalObj] = useState({
@@ -32,6 +34,10 @@ export default function ProjectDetail1() {
   useEffect(() => {
     findSingleProject();
   }, []);
+
+  useEffect(() => {
+    console.log("file", file);
+  }, [file]);
 
   useEffect(() => {
     if (singleProject) {
@@ -155,24 +161,34 @@ export default function ProjectDetail1() {
                       <h4>Description</h4>
                       <p className="text mb30">{project.description}</p>
                       <hr className="opacity-100 mb60 mt60" />
-                      {/* <h4 className="mb30">Attachments</h4>
+                      <h4 className="mb30">Attachments</h4>
                       <div className="row">
-                        <div className="col-6 col-lg-3">
-                          <div className="project-attach">
-                            <h6 className="title">Project Brief</h6>
-                            <p>PDF</p>
-                            <span className="icon flaticon-page" />
-                          </div>
-                        </div>
-                        <div className="col-6 col-lg-3">
-                          <div className="project-attach">
-                            <h6 className="title">Project Brief</h6>
-                            <p>PDF</p>
-                            <span className="icon flaticon-page" />
-                          </div>
-                        </div>
-                      </div> */}
-                      {/* <hr className="opacity-100 mb60 mt30" /> */}
+                        {project.projectAttachments?.map(
+                          (attachment, index) => (
+                            <div
+                              className="col-6 col-lg-3 cursor-pointer"
+                              key={index}
+                              data-bs-toggle="modal"
+                              data-bs-target="#fileViewerModal"
+                              onClick={() => setFile(attachment)}
+                            >
+                              <div className="project-attach">
+                                <h6 className="title">
+                                  {getfileName(attachment.originalFileName)}
+                                </h6>
+                                <p>
+                                  {getfileType(
+                                    attachment.originalFileName,
+                                    "type"
+                                  )}
+                                </p>
+                                <span className="icon flaticon-page" />
+                              </div>
+                            </div>
+                          )
+                        )}
+                      </div>
+                      <hr className="opacity-100 mb60 mt30" />
                       <h4 className="mb30">Skills Required</h4>
                       <div className="mb60">
                         {project?.projectSkills &&
@@ -293,6 +309,7 @@ export default function ProjectDetail1() {
               </div>
             </div>
           </div>
+          <FileViewer file={file} />
         </section>
       </StickyContainer>
     </>

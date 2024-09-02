@@ -12,7 +12,7 @@ import globalMixin from "@/mixins/global";
 
 export default function Listing13() {
   const { getServiceProviders } = providersStore();
-  const { allListSize } = globalMixin();
+  const { getAllListSize } = globalMixin();
   const [providersList, setProvidersList] = useState({
     serviceProviders: [],
     totalCount: 0,
@@ -25,7 +25,7 @@ export default function Listing13() {
   const fetchProviders = async () => {
     const params = {
       pageNumber: 0,
-      PageSize: allListSize,
+      PageSize: getAllListSize,
     };
     const result = await getServiceProviders(params);
     if (result) {

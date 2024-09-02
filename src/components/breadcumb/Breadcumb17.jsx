@@ -39,7 +39,11 @@ export default function Breadcumb17({ provider }) {
                         height={90}
                         width={90}
                         className="rounded-circle w-100 wa-sm mb15-sm"
-                        src="/images/team/fl-1.png"
+                        src={
+                          provider.profilePhotoUrl
+                            ? provider.profilePhotoUrl
+                            : "/images/team/fl-1.png"
+                        }
                         alt="Freelancer Photo"
                       />
                     </a>

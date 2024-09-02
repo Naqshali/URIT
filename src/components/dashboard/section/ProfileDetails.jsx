@@ -12,8 +12,12 @@ import CurrencyInput from "react-currency-input-field";
 export default function ProfileDetails({ meta }) {
   const { loggedInUser } = signUpStore();
 
-  const { profileDetails, getProfileDetails, updateProfileDetails } =
-    profileStore();
+  const {
+    profileDetails,
+    getProfileDetails,
+    updateProfileDetails,
+    updateProfilPhoto,
+  } = profileStore();
 
   const { isRequired, validateForm } = validations();
 
@@ -40,6 +44,7 @@ export default function ProfileDetails({ meta }) {
 
   useEffect(() => {
     if (profileDetails) {
+      setSelectedImage(profileDetails.profilePhotoUrl);
       setProfileObj(profileDetails);
     }
   }, [profileDetails]);
@@ -93,6 +98,10 @@ export default function ProfileDetails({ meta }) {
         delete details.userType;
       }
 
+      if (details.profilePhotoUrl) {
+        delete details.profilePhotoUrl;
+      }
+
       const result = await updateProfileDetails(details);
       if (result) {
         setShowToastr(result);
@@ -109,10 +118,12 @@ export default function ProfileDetails({ meta }) {
     handleInputChange(obj);
   };
 
-  const handleImageChange = (event) => {
+  const handleImageChange = async (event) => {
     const file = event.target.files[0];
-    console.log(event);
     setSelectedImage(URL.createObjectURL(file));
+    const formData = new FormData();
+    formData.append("photo", file);
+    await updateProfilPhoto(formData);
   };
 
   return (
@@ -139,12 +150,12 @@ export default function ProfileDetails({ meta }) {
             </div>
             <div className="profile-content ml20 ml0-xs">
               <div className="d-flex align-items-center my-3">
-                <a
+                {/* <a
                   className="tag-delt text-thm2"
                   onClick={() => setSelectedImage(null)}
                 >
                   <span className="flaticon-delete text-thm2" />
-                </a>
+                </a> */}
                 <label>
                   <input
                     type="file"

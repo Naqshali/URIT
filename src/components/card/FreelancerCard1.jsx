@@ -3,7 +3,7 @@ import Link from "next/link";
 import globalMixin from "@/mixins/global";
 
 export default function FreelancerCard1({ data }) {
-  const { getCountry, getSkill, firstCharacterCapital, getLanguage } =
+  const { getCountry, getSkill, getFirstCharacterCapital, getLanguage } =
     globalMixin();
   return (
     <>
@@ -13,14 +13,18 @@ export default function FreelancerCard1({ data }) {
             height={90}
             width={90}
             className="rounded-circle mx-auto"
-            src="/images/team/fl-1.png"
+            src={
+              data.profilePhotoUrl
+                ? data.profilePhotoUrl
+                : "/images/team/fl-1.png"
+            }
             alt="thumb"
           />
           <span className="online" />
         </div>
         <div className="details">
           <h5 className="title mb-1">{data.name}</h5>
-          <p className="mb-0">{firstCharacterCapital(data.gender)}</p>
+          <p className="mb-0">{getFirstCharacterCapital(data.gender)}</p>
           {/* <div className="review">
             <p>
               <i className="fas fa-star fz10 review-color pr10" />

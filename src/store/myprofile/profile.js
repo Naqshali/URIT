@@ -24,6 +24,14 @@ const profileStore = create((set) => ({
       return null;
     }
   },
+  updateProfilPhoto: async (data) => {
+    try {
+      const res = await axiosInstance.put("/api/v1/users/profile-photo", data);
+      return res.data;
+    } catch (error) {
+      return null;
+    }
+  },
   getSkills: async () => {
     const res = await axiosInstance.get("/api/v1/users/skills");
     if (res.data) {

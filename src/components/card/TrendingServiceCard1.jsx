@@ -70,7 +70,11 @@ export default function TrendingServiceCard1({ data }) {
                   height={24}
                   width={24}
                   className="rounded-circle wa"
-                  src="/images/team/fl-s-1.png"
+                  src={
+                    data.serviceProvider?.profilePhotoUrl
+                      ? data.serviceProvider.profilePhotoUrl
+                      : "/images/team/fl-s-1.png"
+                  }
                   alt="Freelancer Photo"
                 />
                 <span className="online-badges" />

@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 
 export default function FreelancerDetail1({ provider }) {
-  const { getDegree, allListSize } = globalMixin();
+  const { getDegree, getAllListSize } = globalMixin();
   const { getServices } = servicesStore();
   const { id } = useParams();
 
@@ -30,7 +30,7 @@ export default function FreelancerDetail1({ provider }) {
     const params = {
       userId: id,
       pageNumber: pageNo ?? 0,
-      pageSize: allListSize,
+      pageSize: getAllListSize,
     };
     const result = await getServices(params);
     if (result) {

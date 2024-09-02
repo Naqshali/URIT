@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import globalMixin from "@/mixins/global";
 
 export default function Listing1() {
-  const { allListSize } = globalMixin();
+  const { getAllListSize } = globalMixin();
   const { getServices } = servicesStore();
   const [list, setList] = useState({
     services: [],
@@ -24,7 +24,7 @@ export default function Listing1() {
   const fetchServices = async (pageNo) => {
     const params = {
       pageNumber: pageNo ?? 0,
-      pageSize: allListSize,
+      pageSize: getAllListSize,
     };
     const result = await getServices(params);
     if (result) {

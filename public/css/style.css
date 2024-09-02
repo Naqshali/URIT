@@ -8583,6 +8583,10 @@ li.mm-listitem:focus {
   max-width: 60% !important;
 }
 
+.modal-llg{
+  max-width: 80%;
+}
+
 .modal:before {
   background: rgba(34, 34, 34, 0.7);
   bottom: 0;
@@ -13193,4 +13197,12 @@ hr {
   border-radius: 50%;
   border: 2px solid white; /* Optional: Add a white border to make the dot more visible */
   box-sizing: border-box;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.fileViewer {
+  padding: 45px 0 !important;
 }
