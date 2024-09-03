@@ -4,7 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import profileStore from "@/store/myprofile/profile";
 import Toastr from "@/components/toastr/toastr";
 
-export default function workExperianceModal({
+export default function WorkExperianceModal({
   editRecord,
   workExperianceAdded,
 }) {

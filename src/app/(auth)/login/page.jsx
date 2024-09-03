@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import signUpStore from "@/store/signUp";
 import globalStore from "@/store/global";
 
-export default function page() {
+export default function Page() {
   const router = useRouter();
   const { login } = signUpStore();
   const { getMetaData } = globalStore();

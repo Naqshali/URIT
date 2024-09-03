@@ -9,7 +9,7 @@ import providersStore from "@/store/providers";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function page() {
+export default function Page() {
   const { getServiceProviderById } = providersStore();
   const { id } = useParams();
   const [provider, setProvider] = useState({});

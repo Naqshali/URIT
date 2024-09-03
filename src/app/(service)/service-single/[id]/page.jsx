@@ -11,7 +11,7 @@ import servicesStore from "@/store/myprofile/services";
 
 import { useParams } from "next/navigation";
 
-export default function page() {
+export default function Page() {
   const { getServiceById } = servicesStore();
   const [service, setservice] = useState({});
   const routeParams = useParams();

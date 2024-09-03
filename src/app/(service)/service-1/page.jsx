@@ -8,7 +8,7 @@ import servicesStore from "@/store/myprofile/services";
 import globalMixin from "@/mixins/global";
 import { useEffect, useState } from "react";
 
-export default function page() {
+export default function Page() {
   const [services, setServices] = useState({});
   const { getAllListSize } = globalMixin();
 

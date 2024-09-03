@@ -32,8 +32,10 @@ export default function FreelancerCard1({ data }) {
             </p>
           </div> */}
           <div className="skill-tags d-flex align-items-center justify-content-center mb5">
-            {data.userSkills?.map((item) => (
-              <span className="tag ml5">{getSkill(item.name)}</span>
+            {data.userSkills?.map((item, index) => (
+              <span className="tag ml5" key={index}>
+                {getSkill(item.name)}
+              </span>
             ))}
           </div>
           <hr className="opacity-100 mt20 mb15" />
