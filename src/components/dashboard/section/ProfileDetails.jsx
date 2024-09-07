@@ -249,7 +249,7 @@ export default function ProfileDetails({ meta }) {
                       type="text"
                       className="form-control"
                       name="tagLine"
-                      value={profileObj.tagLine}
+                      value={profileObj?.tagLine}
                       onChange={handleInputChange}
                     />
                   </div>

@@ -12,7 +12,7 @@ import servicesStore from "@/store/myprofile/services";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 
-export default function FreelancerDetail1({ provider }) {
+export default function FreelancerDetail1({ provider = {} }) {
   const { getDegree, getAllListSize } = globalMixin();
   const { getServices } = servicesStore();
   const { id } = useParams();

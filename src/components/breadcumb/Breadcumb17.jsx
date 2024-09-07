@@ -3,7 +3,7 @@ import Image from "next/image";
 import globalMixin from "@/mixins/global";
 import { dateInStringFormat } from "@/utils/global";
 
-export default function Breadcumb17({ provider }) {
+export default function Breadcumb17({ provider = {} }) {
   const { getCountry, getSkill } = globalMixin();
 
   const skills = () => {
@@ -31,7 +31,7 @@ export default function Breadcumb17({ provider }) {
             <div className="row wow fadeInUp">
               <div className="col-xl-7">
                 <div className="position-relative">
-                  <h2>{provider.tagLine}</h2>
+                  <h2>{provider?.tagLine}</h2>
                   <div className="list-meta d-sm-flex align-items-center mt30">
                     <a className="position-relative freelancer-single-style">
                       <span className="online" />
@@ -40,8 +40,8 @@ export default function Breadcumb17({ provider }) {
                         width={90}
                         className="rounded-circle w-100 wa-sm mb15-sm"
                         src={
-                          provider.profilePhotoUrl
-                            ? provider.profilePhotoUrl
+                          provider?.profilePhotoUrl
+                            ? provider?.profilePhotoUrl
                             : "/images/team/fl-1.png"
                         }
                         alt="Freelancer Photo"

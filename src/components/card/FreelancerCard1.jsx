@@ -14,8 +14,8 @@ export default function FreelancerCard1({ data }) {
             width={90}
             className="rounded-circle mx-auto"
             src={
-              data.profilePhotoUrl
-                ? data.profilePhotoUrl
+              data?.profilePhotoUrl
+                ? data?.profilePhotoUrl
                 : "/images/team/fl-1.png"
             }
             alt="thumb"

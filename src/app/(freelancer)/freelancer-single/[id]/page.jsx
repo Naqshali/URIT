@@ -30,8 +30,8 @@ export default function Page() {
     <>
       {/* <TabSection1 /> */}
       {/* <Breadcumb10 path={["Home", "Services", "Design & Creative"]} /> */}
-      <Breadcumb17 provider={provider} />
-      <FreelancerDetail1 provider={provider} />
+      <Breadcumb17 provider={provider ? provider : {}} />
+      <FreelancerDetail1 provider={provider ? provider : {}} />
     </>
   );
 }

@@ -72,7 +72,7 @@ export default function TrendingServiceCard1({ data }) {
                   className="rounded-circle wa"
                   src={
                     data.serviceProvider?.profilePhotoUrl
-                      ? data.serviceProvider.profilePhotoUrl
+                      ? data.serviceProvider?.profilePhotoUrl
                       : "/images/team/fl-s-1.png"
                   }
                   alt="Freelancer Photo"
