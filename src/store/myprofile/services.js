@@ -41,6 +41,16 @@ const servicesStore = create((set) => ({
       return null;
     }
   },
+  updateService: async (data, id) => {
+    try {
+      const res = await axiosInstance.put(`/api/v1/services/${id}`, data);
+      if (res.data) {
+        return res.data;
+      }
+    } catch (error) {
+      return null;
+    }
+  },
 }));
 
 export default servicesStore;

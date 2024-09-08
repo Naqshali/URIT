@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import notificationsStore from "@/store/notifications";
 import { useRouter } from "next/navigation";
+import chatStore from "@/store/chat";
 
 function Notifications() {
   const {
@@ -10,6 +11,8 @@ function Notifications() {
     getNotifications,
     markNotificationAsRead,
   } = notificationsStore();
+  const { addParticipantInMeeting } = chatStore();
+
   const [notifications, setNotifications] = useState([]);
   const router = useRouter();
 
@@ -39,6 +42,24 @@ function Notifications() {
 
   const routeTo = async (notification) => {
     await markNotificationAsRead(notification.id);
+
+    if (notification.notificationType === "Call" && notification.meetingId) {
+      const participant = await addParticipantInMeeting(
+        notification.meetingId,
+        {
+          picture: "https://www.svgrepo.com/show/452030/avatar-default.s",
+          projectId: notification.projectId,
+          proposalId: notification.proposalId,
+        }
+      );
+
+      if (participant) {
+        window.open(
+          `https://app.dyte.io/v2/meeting?id=${notification.meetingId}&authToken=${participant.token}`
+        );
+      }
+      return;
+    }
 
     if (notification.notificationType === "Message") {
       router.push("/chats");
@@ -80,8 +101,11 @@ function Notifications() {
                       </div> */}
                     </div>
                     <span className="ms-auto mb-auto">
-                      <div className="btn-group">
-                        {/* <button
+                      <button type="button" className="btn btn-light">
+                        Join
+                      </button>
+                      {/* <div className="btn-group">
+                        <button
                           type="button"
                           className="btn btn-light btn-sm rounded"
                           data-bs-toggle="dropdown"
@@ -89,16 +113,16 @@ function Notifications() {
                           aria-expanded="false"
                         >
                           <i className="mdi mdi-dots-vertical"></i>
-                        </button> */}
-                        {/* <div className="dropdown-menu dropdown-menu-end">
+                        </button>
+                        <div className="dropdown-menu dropdown-menu-end">
                           <button className="dropdown-item" type="button">
                             <i className="mdi mdi-delete"></i> Delete
                           </button>
                           <button className="dropdown-item" type="button">
                             <i className="mdi mdi-close"></i> Turn Off
                           </button>
-                        </div> */}
-                      </div>
+                        </div>
+                      </div> */}
                       <br />
                       {/* <div className="text-end text-muted pt-1">3d</div> */}
                     </span>

@@ -6,6 +6,7 @@ import Pagination1 from "@/components/section/Pagination1";
 import ManageServiceCard1 from "../card/ManageServiceCard1";
 import { manageService } from "@/data/dashboard";
 import ProposalModal1 from "../modal/ProposalModal1";
+import EditServiceModal from "../modal/editServiceModal";
 import DeleteModal from "../modal/DeleteModal";
 import servicesStore from "@/store/myprofile/services";
 import globalMixin from "@/mixins/global";
@@ -19,6 +20,7 @@ export default function ManageServiceInfo() {
   const [serviceList, setServiceList] = useState([]);
   const { allServices, getServices } = servicesStore();
   const { loggedInUser } = signUpStore();
+  const [editRecord, setEditRecord] = useState(null);
 
   useEffect(() => {
     if (loggedInUser) {
@@ -40,10 +42,18 @@ export default function ManageServiceInfo() {
     await getServices(params);
   };
 
-  const openEditProjectModal = () => {};
-
   const onSelectPage = (pageNo) => {
     fetchServices(pageNo);
+  };
+
+  const openEditServiceModal = (item) => {
+    console.log("openEditServiceModal ~ item:", item);
+    setEditRecord(item);
+  };
+
+  const onCloseModal = () => {
+    setEditRecord(null);
+    fetchServices();
   };
 
   return (
@@ -93,7 +103,7 @@ export default function ManageServiceInfo() {
                         <ManageServiceCard1
                           key={ind}
                           item={item}
-                          openEditProjectModal={openEditProjectModal}
+                          openEditServiceModal={openEditServiceModal}
                         />
                       ))}
                     </tbody>
@@ -115,7 +125,7 @@ export default function ManageServiceInfo() {
           </div>
         </div>
       </div>
-      <ProposalModal1 />
+      <EditServiceModal editRecord={editRecord} onCloseModal={onCloseModal} />
       <DeleteModal />
     </>
   );

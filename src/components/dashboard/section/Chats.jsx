@@ -311,10 +311,6 @@ export default function Chats() {
   };
 
   const startCallSession = async (chat) => {
-    const apiKey = "cefa6144-8367-435a-b054-25ed0d0dde73";
-    const apiSecret = "c6403f8f69cc7ccb287b";
-    const token = Buffer.from(`${apiKey}:${apiSecret}`).toString("base64");
-
     const meeting = await startMeeting({
       userId: loggedInUser?.userId,
       projectId: chat.projectId,

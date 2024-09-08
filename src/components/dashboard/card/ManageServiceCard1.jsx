@@ -3,8 +3,13 @@ import Image from "next/image";
 import { Tooltip } from "react-tooltip";
 import globalMixin from "@/mixins/global";
 
-export default function ManageServiceCard1({ item }) {
+export default function ManageServiceCard1({ item, openEditServiceModal }) {
   const { getService } = globalMixin();
+
+  const onEditService = () => {
+    openEditServiceModal(item);
+  };
+
   return (
     <>
       <tr>
@@ -21,20 +26,21 @@ export default function ManageServiceCard1({ item }) {
         <td className="align-top">
           <span className="fz14 fw400">${item.price}/Fixed</span>
         </td>
-        {/* <td className="align-top">
+        <td className="align-top">
           <div className="d-flex">
             <a
               className="icon me-2"
               id="edit"
               data-bs-toggle="modal"
-              data-bs-target="#proposalModal"
+              data-bs-target="#editServiceModal"
+              onClick={() => onEditService()}
             >
               <Tooltip anchorSelect="#edit" className="ui-tooltip" place="top">
                 Edit
               </Tooltip>
               <span className="flaticon-pencil" />
             </a>
-            <a
+            {/* <a
               className="icon"
               id="delete"
               data-bs-toggle="modal"
@@ -48,9 +54,9 @@ export default function ManageServiceCard1({ item }) {
                 Delete
               </Tooltip>
               <span className="flaticon-delete" />
-            </a>
+            </a> */}
           </div>
-        </td> */}
+        </td>
       </tr>
     </>
   );

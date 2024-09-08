@@ -1,45 +1,43 @@
-import { useEffect, useState, useRef } from "react";
-import Select from "react-select";
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import globalStore from "@/store/global";
+import servicesStore from "@/store/myprofile/services";
 import { localMetaData } from "@/utils/localMetaData";
-import CurrencyInput from "react-currency-input-field";
-import projectsStore from "@/store/myprofile/projects";
+import Select from "react-select";
 import Toastr from "@/components/toastr/toastr";
+import CurrencyInput from "react-currency-input-field";
+import { useRouter } from "next/navigation";
 
-export default function EditProjectModal({ editRecord, onCloseModal }) {
+export default function EditServiceModal({ editRecord, onCloseModal }) {
+  const router = useRouter();
   const { meta } = globalStore();
-  const { updateProject } = projectsStore();
-
+  const { updateService } = servicesStore();
   const buttonRef = useRef(null);
   const [showToastr, setShowToastr] = useState(false);
   const [basicInfoObj, setBasicInfoObj] = useState({
     title: "",
-    projectCategory: "",
-    freelancerType: "",
-    priceType: "",
-    cost: "",
+    serviceCategory: "",
+    price: "",
     description: "",
-    projectDuration: "",
-    level: "",
-    language: "",
+    country: "",
+    city: "",
     languageLevel: "",
-    projectSkills: [],
+    serviceSkills: [],
     description: "",
+    deliveryTime: "",
   });
 
   const resetBasicInfoObj = () => {
     const obj = {
       title: "",
-      projectCategory: "",
-      freelancerType: "",
-      priceType: "",
-      cost: "",
+      serviceCategory: "",
+      price: "",
       description: "",
-      projectDuration: "",
-      level: "",
-      language: "",
+      country: "",
+      city: "",
       languageLevel: "",
-      projectSkills: [],
+      serviceSkills: [],
       description: "",
     };
     setBasicInfoObj(obj);
@@ -48,11 +46,15 @@ export default function EditProjectModal({ editRecord, onCloseModal }) {
   useEffect(() => {
     if (editRecord) {
       const record = { ...editRecord };
-      let skillsValueOnly = [];
-      if (record.projectSkills.length) {
-        skillsValueOnly = record.projectSkills.map((item) => item.name);
+      if (record.serviceProvider) {
+        delete record.serviceProvider;
       }
-      record.projectSkills = skillsValueOnly;
+
+      let skillsValueOnly = [];
+      if (record.serviceSkills.length) {
+        skillsValueOnly = record.serviceSkills.map((item) => item);
+      }
+      record.serviceSkills = skillsValueOnly;
       setBasicInfoObj(record);
     }
   }, [editRecord]);
@@ -92,7 +94,7 @@ export default function EditProjectModal({ editRecord, onCloseModal }) {
 
   const getSkillObject = () => {
     const result = meta.skills.filter((option) =>
-      basicInfoObj.projectSkills.some((pSkill) => pSkill === option.value)
+      basicInfoObj.serviceSkills.some((pSkill) => pSkill === option.value)
     );
     return result;
   };
@@ -102,7 +104,7 @@ export default function EditProjectModal({ editRecord, onCloseModal }) {
   };
 
   const onSubmitForm = async () => {
-    const result = await updateProject(basicInfoObj, editRecord.id);
+    const result = await updateService(basicInfoObj, editRecord.id);
     if (result) {
       setShowToastr(result);
       resetBasicInfoObj();
@@ -114,16 +116,16 @@ export default function EditProjectModal({ editRecord, onCloseModal }) {
     <>
       <div
         className="modal fade"
-        id="editProjectModal"
+        id="editServiceModal"
         tabIndex={-1}
-        aria-labelledby="editProjectModalLabel"
+        aria-labelledby="editServiceModalLabel"
         aria-hidden="true"
       >
         <div className="modal-dialog modal-dialog-centered modal-md">
           <div className="modal-content position-relative">
             <div className="modal-header sticky-header">
               <h5 className="modal-title">
-                Edit Project
+                Edit Service
                 <button
                   type="button"
                   className="btn-close position-absolute"
@@ -136,122 +138,16 @@ export default function EditProjectModal({ editRecord, onCloseModal }) {
             <div className="modal-body p-4">
               <form className="form-style1">
                 <div className="row">
-                  <div className="col">
+                  <div className="col-sm-6">
                     <div className="mb20">
                       <label className="heading-color ff-heading fw500 mb10">
-                        Project Title
+                        Service Title
                       </label>
                       <input
                         type="text"
                         className="form-control"
-                        name="title"
                         value={basicInfoObj.title}
-                        onChange={handleInputChange}
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col">
-                    <div className="mb20">
-                      <label className="heading-color ff-heading fw500 mb10">
-                        Category
-                      </label>
-                      <Select
-                        classNamePrefix="custom"
-                        isClearable
-                        name="projectCategory"
-                        value={meta.services.find(
-                          (option) =>
-                            option.value === basicInfoObj.projectCategory
-                        )}
-                        options={meta.services}
-                        onChange={handleInputChange}
-                      />
-                    </div>
-                  </div>
-                  <div className="col">
-                    <div className="mb20">
-                      <label className="heading-color ff-heading fw500 mb10">
-                        Freelancer Type
-                      </label>
-                      <Select
-                        classNamePrefix="custom"
-                        isClearable
-                        name="freelancerType"
-                        value={localMetaData.freeLancerType.find(
-                          (option) =>
-                            option.value === basicInfoObj.freelancerType
-                        )}
-                        options={localMetaData.freeLancerType}
-                        onChange={handleInputChange}
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col">
-                    <div className="mb20">
-                      <label className="heading-color ff-heading fw500 mb10">
-                        Price type
-                      </label>
-                      <Select
-                        classNamePrefix="custom"
-                        isClearable
-                        name="priceType"
-                        value={localMetaData.priceTypes.find(
-                          (option) => option.value === basicInfoObj.priceType
-                        )}
-                        options={localMetaData.priceTypes}
-                        onChange={handleInputChange}
-                      />
-                    </div>
-                  </div>
-                  <div className="col">
-                    <div className="mb20">
-                      <label className="heading-color ff-heading fw500 mb10">
-                        Cost
-                      </label>
-                      <CurrencyInput
-                        className="form-control"
-                        prefix="$"
-                        name="cost"
-                        placeholder="Please enter a number"
-                        value={basicInfoObj.cost}
-                        onValueChange={handleCurrencyInputChange}
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-sm-3">
-                    <div className="mb20">
-                      <label className="heading-color ff-heading fw500 mb10">
-                        Project Duration
-                      </label>
-                      <CurrencyInput
-                        className="form-control"
-                        maxLength={3}
-                        name="projectDuration"
-                        value={basicInfoObj.projectDuration}
-                        onValueChange={handleCurrencyInputChange}
-                      />
-                    </div>
-                  </div>
-                  <div className="col-sm-3">
-                    <div className="mb20">
-                      <label className="heading-color ff-heading fw500 mb10">
-                        Project Duration
-                      </label>
-                      <Select
-                        classNamePrefix="custom"
-                        isClearable
-                        name="projectDurationType"
-                        value={localMetaData.projectDurationTypes.find(
-                          (option) =>
-                            option.value === basicInfoObj.projectDurationType
-                        )}
-                        options={localMetaData.projectDurationTypes}
+                        name="title"
                         onChange={handleInputChange}
                       />
                     </div>
@@ -259,43 +155,70 @@ export default function EditProjectModal({ editRecord, onCloseModal }) {
                   <div className="col-sm-6">
                     <div className="mb20">
                       <label className="heading-color ff-heading fw500 mb10">
-                        Level
+                        Price
+                      </label>
+                      <CurrencyInput
+                        className="form-control"
+                        prefix="$"
+                        name="price"
+                        placeholder="Please enter a number"
+                        value={basicInfoObj.price}
+                        onValueChange={handleCurrencyInputChange}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-sm-6">
+                    <div className="mb20">
+                      <label className="heading-color ff-heading fw500 mb10">
+                        Country
                       </label>
                       <Select
                         classNamePrefix="custom"
                         isClearable
-                        name="level"
-                        value={localMetaData.levels.find(
-                          (option) => option.value === basicInfoObj.level
+                        name="country"
+                        value={meta.countries.find(
+                          (option) => option.value === basicInfoObj.country
                         )}
-                        options={localMetaData.levels}
+                        options={meta.countries}
                         onChange={handleInputChange}
                       />
                     </div>
                   </div>
-                </div>
-                <div className="row">
-                  <div className="col">
+                  <div className="col-sm-6">
                     <div className="mb20">
                       <label className="heading-color ff-heading fw500 mb10">
-                        Language
+                        City
+                      </label>
+                      <input
+                        className="form-control"
+                        name="city"
+                        value={basicInfoObj.city}
+                        onChange={handleInputChange}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-sm-6">
+                    <div className="mb20">
+                      <label className="heading-color ff-heading fw500 mb10">
+                        Category
                       </label>
                       <Select
                         classNamePrefix="custom"
                         isClearable
-                        name="language"
-                        value={meta.languages.find(
-                          (option) => option.value === basicInfoObj.language
+                        name="serviceCategory"
+                        value={meta.services.find(
+                          (option) =>
+                            option.value === basicInfoObj.serviceCategory
                         )}
-                        options={meta.languages}
+                        options={meta.services}
                         onChange={handleInputChange}
                       />
                     </div>
                   </div>
-                  <div className="col">
+                  <div className="col-sm-6">
                     <div className="mb20">
                       <label className="heading-color ff-heading fw500 mb10">
-                        Language Level
+                        English Level
                       </label>
                       <Select
                         classNamePrefix="custom"
@@ -310,30 +233,41 @@ export default function EditProjectModal({ editRecord, onCloseModal }) {
                       />
                     </div>
                   </div>
-                </div>
-                <div className="row">
-                  <div className="col">
+                  <div className="col-sm-6">
                     <div className="mb20">
                       <label className="heading-color ff-heading fw500 mb10">
-                        Required Skills on Project
+                        Skills
                       </label>
                       <Select
                         classNamePrefix="custom"
                         isClearable
                         isMulti
-                        name="projectSkills"
-                        value={getSkillObject()}
+                        name="serviceSkills"
                         options={meta.skills}
+                        value={getSkillObject()}
                         onChange={handleInputChange}
                       />
                     </div>
                   </div>
-                </div>
-                <div className="row">
-                  <div className="col">
+                  <div className="col-sm-6">
+                    <div className="mb20">
+                      <label className="heading-color ff-heading fw500 mb10">
+                        Delivery Time (Days)
+                      </label>
+                      <CurrencyInput
+                        className="form-control"
+                        name="deliveryTime"
+                        placeholder="Please enter a number"
+                        value={basicInfoObj.deliveryTime}
+                        maxLength={3}
+                        onValueChange={handleCurrencyInputChange}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-12">
                     <div className="mb10">
                       <label className="heading-color ff-heading fw500 mb10">
-                        Project Detail
+                        Services Detail
                       </label>
                       <textarea
                         cols={30}
@@ -373,6 +307,7 @@ export default function EditProjectModal({ editRecord, onCloseModal }) {
           </div>
         </div>
       </div>
+
       {showToastr && <Toastr showToastr={showToastr} />}
     </>
   );
