@@ -38,7 +38,7 @@ export default function ListingOption2({ itemLength }) {
                 </li>
               </ul>
             </div>
-            <SortOption1 />
+            {/* <SortOption1 /> */}
           </div>
         </div>
       </div>

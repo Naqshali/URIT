@@ -98,7 +98,7 @@ export default function ProfileDetails({ meta }) {
         delete details.userType;
       }
 
-      if (details.profilePhotoUrl) {
+      if (details.profilePhotoUrl !== null) {
         delete details.profilePhotoUrl;
       }
 

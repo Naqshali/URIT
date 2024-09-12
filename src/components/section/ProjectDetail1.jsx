@@ -36,10 +36,6 @@ export default function ProjectDetail1() {
   }, []);
 
   useEffect(() => {
-    console.log("file", file);
-  }, [file]);
-
-  useEffect(() => {
     if (singleProject) {
       setProject(singleProject);
     }
@@ -125,7 +121,8 @@ export default function ProjectDetail1() {
                           <div className="details">
                             <h5 className="title">Project Duration</h5>
                             <p className="mb-0 text">
-                              {project.projectDuration} Hours
+                              {project.projectDuration}{" "}
+                              {project.projectDurationType}
                             </p>
                           </div>
                         </div>

@@ -945,6 +945,122 @@ export default function Mega({ staticMenuClass }) {
               </div>
             </div>
           </li>
+          <li>
+            <a className="dropdown">
+              <span className="menu-icn flaticon-goal" />
+              <span className="menu-title">AI Recognition</span>
+            </a>
+            <div className="drop-menu d-flex justify-content-between">
+              <div className="one-third">
+                <div className="h6 cat-title">Language Understanding AI</div>
+                <ul className="ps-0 mb40">
+                  <li>
+                    <Link href="/">Text Generation</Link>
+                  </li>
+                  <li>
+                    <Link href="/">Sentiment Analysis</Link>
+                  </li>
+                  <li>
+                    <Link href="/">Named Entity Recognition (NER)</Link>
+                  </li>
+                  <li>
+                    <Link href="/">Translation</Link>
+                  </li>
+                </ul>
+                <div className="h6 cat-title">Marketing Design</div>
+                <ul className="ps-0 mb-0">
+                  <li>
+                    <Link href="/">Social Media Design</Link>
+                  </li>
+                  <li>
+                    <Link href="/">Email Design</Link>
+                  </li>
+                  <li>
+                    <Link href="/">Web Banners</Link>
+                  </li>
+                  <li>
+                    <Link href="/">Signage Design</Link>
+                  </li>
+                </ul>
+              </div>
+              <div className="one-third">
+                <div className="h6 cat-title">Art &amp; Illustration</div>
+                <ul className="ps-0 mb40">
+                  <li>
+                    <Link href="/">Illustration</Link>
+                  </li>
+                  <li>
+                    <Link href="/">NFT Art</Link>
+                  </li>
+                  <li>
+                    <Link href="/">Pattern Design</Link>
+                  </li>
+                  <li>
+                    <Link href="/">Portraits &amp; Caricatures</Link>
+                  </li>
+                  <li>
+                    <Link href="/">Cartoons &amp; Comics</Link>
+                  </li>
+                  <li>
+                    <Link href="/">Tattoo Design</Link>
+                  </li>
+                  <li>
+                    <Link href="/">Storyboards</Link>
+                  </li>
+                </ul>
+                <div className="h6 cat-title">Gaming</div>
+                <ul className="ps-0 mb-0">
+                  <li>
+                    <Link href="/">Game Art</Link>
+                  </li>
+                  <li>
+                    <Link href="/">Graphics for Streamers</Link>
+                  </li>
+                  <li>
+                    <Link href="/">Twitch Store</Link>
+                  </li>
+                </ul>
+              </div>
+              <div className="one-third">
+                <div className="h6 cat-title">Visual Design</div>
+                <ul className="ps-0 mb40">
+                  <li>
+                    <Link href="/">Image Editing</Link>
+                  </li>
+                  <li>
+                    <Link href="/">Presentation Design</Link>
+                  </li>
+                  <li>
+                    <Link href="/">Infographic Design</Link>
+                  </li>
+                  <li>
+                    <Link href="/">Vector Tracing</Link>
+                  </li>
+                  <li>
+                    <Link href="/">Resume Design</Link>
+                  </li>
+                </ul>
+                <div className="h6 cat-title">Print Design</div>
+                <ul className="ps-0 mb-0">
+                  <li>
+                    <Link href="/">T-Shirts &amp; Merchandise</Link>
+                  </li>
+                  <li>
+                    <Link href="/">Flyer Design</Link>
+                  </li>
+                  <li>
+                    <Link href="/">Brochure Design</Link>
+                  </li>
+                  <li>
+                    <Link href="/">Poster Design</Link>
+                  </li>
+                  <li>
+                    <Link href="/">Catalog Design</Link>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </li>
         </ul>
       </div>
     </>

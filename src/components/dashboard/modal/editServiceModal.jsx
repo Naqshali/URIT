@@ -104,6 +104,11 @@ export default function EditServiceModal({ editRecord, onCloseModal }) {
   };
 
   const onSubmitForm = async () => {
+    delete basicInfoObj.id;
+    delete basicInfoObj.createdAt;
+    delete basicInfoObj.updatedAt;
+    delete basicInfoObj.updatedAt;
+
     const result = await updateService(basicInfoObj, editRecord.id);
     if (result) {
       setShowToastr(result);

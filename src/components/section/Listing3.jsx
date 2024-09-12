@@ -65,8 +65,8 @@ export default function Listing3() {
     .filter(sortByFilter)
     .filter(designToolFilter)
     .filter(speakFilter)
-    .map((item,i) => (
-      <div key={ i } className="col-sm-6 col-xl-4">
+    .map((item, i) => (
+      <div key={i} className="col-sm-6 col-xl-4">
         {item?.gallery ? (
           <PopularServiceSlideCard1 data={item} />
         ) : (

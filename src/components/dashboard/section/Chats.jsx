@@ -78,7 +78,9 @@ export default function Chats() {
 
   useEffect(() => {
     if (client && projectId && providerName) {
-      setDefaultMessage();
+      setTimeout(() => {
+        setDefaultMessage();
+      }, 1000);
     }
   }, [client]);
 
@@ -210,6 +212,7 @@ export default function Chats() {
       msg: messageInput,
       senderId: loggedInUser.userId,
       proposalId: selectedChat?.proposalId,
+      chatType: "Project Chat",
     });
     setMessageInput("");
     const prevSelectedChat = { ...selectedChat };
@@ -242,15 +245,15 @@ export default function Chats() {
       type: "msg",
     };
     setChatsList(obj);
-    sendMessage({
-      msg: "Proposal Accepted",
-      senderId: loggedInUser.userId,
-      proposalId: proposalId,
-    });
+    // sendMessage({
+    //   msg: "Proposal Accepted",
+    //   senderId: loggedInUser.userId,
+    //   proposalId: proposalId,
+    //   chatType: "Project Chat",
+    // });
   };
 
   const setChatsList = (notification) => {
-    console.log("setChatsList", notification);
     const chatExists = chats.find(
       (chat) => chat.proposalId == notification.proposalId
     );
@@ -299,13 +302,11 @@ export default function Chats() {
         name: notification.senderName,
       };
       chatExists.msgs.push(msgObj);
-      console.log("chatExists", chatExists);
       const prevChats = [...chats];
 
       const updatedUserMsgs = prevChats.map((chat) =>
         chat.userId == notification.senderId ? chatExists : chat
       );
-      console.log("Hrer at alse", updatedUserMsgs);
       setChats(updatedUserMsgs);
     }
   };

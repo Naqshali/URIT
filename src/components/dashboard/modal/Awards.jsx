@@ -3,6 +3,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import profileStore from "@/store/myprofile/profile";
 import Toastr from "@/components/toastr/toastr";
+import moment from "moment";
 
 export default function AwardsModal({ editRecord, awardsAdded }) {
   const { saveAwards, updateAwards } = profileStore();
@@ -52,6 +53,10 @@ export default function AwardsModal({ editRecord, awardsAdded }) {
 
   const onSubmitForm = async () => {
     let result = null;
+
+    if (awardsObj.issueDate != "") {
+      awardsObj.issueDate = moment(awardsObj.issueDate).format("YYYY-MM-DD");
+    }
     if (editRecord) {
       result = await updateAwards(awardsObj);
     } else {

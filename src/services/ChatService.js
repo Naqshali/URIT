@@ -39,6 +39,7 @@ export function sendMessage(obj) {
           text: messageContent,
           senderId: obj.senderId,
           proposalId: obj.proposalId,
+          chatType: obj.chatType,
         })
       );
     }

@@ -10,7 +10,7 @@ export default function ProjectCard1({ data }) {
       <div className="freelancer-style1 bdr1 hover-box-shadow row ms-0 align-items-lg-center">
         <div className="col-lg-8 ps-0">
           <div className="d-lg-flex bdrr1 bdrn-xl pr15 pr0-lg">
-            <div className="thumb w60 position-relative rounded-circle mb15-md">
+            {/* <div className="thumb w60 position-relative rounded-circle mb15-md">
               <Image
                 height={60}
                 width={60}
@@ -19,7 +19,7 @@ export default function ProjectCard1({ data }) {
                 alt="rounded-circle"
               />
               <span className="online-badge2" />
-            </div>
+            </div> */}
             <div className="details ml15 ml0-md mb15-md">
               <h5 className="title mb-3">{data.title}</h5>
               <p className="mb-0 fz14 list-inline-item mb5-sm pe-1">

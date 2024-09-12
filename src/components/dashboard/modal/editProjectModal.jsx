@@ -102,6 +102,31 @@ export default function EditProjectModal({ editRecord, onCloseModal }) {
   };
 
   const onSubmitForm = async () => {
+    if (basicInfoObj.id) {
+      delete basicInfoObj.id;
+    }
+
+    if (basicInfoObj.client) {
+      delete basicInfoObj.client;
+    }
+
+    if (basicInfoObj.projectAttachments) {
+      delete basicInfoObj.projectAttachments;
+    }
+
+    if (Object.keys(a).includes("serviceProvider")) {
+      delete basicInfoObj.serviceProvider;
+    }
+
+    if (basicInfoObj.updatedAt) {
+      delete basicInfoObj.updatedAt;
+    }
+
+    if (basicInfoObj.createdAt) {
+      delete basicInfoObj.createdAt;
+    }
+
+    console.log("onSubmitForm ~ basicInfoObj:", basicInfoObj);
     const result = await updateProject(basicInfoObj, editRecord.id);
     if (result) {
       setShowToastr(result);

@@ -13,6 +13,7 @@ export default function Breadcumb11() {
   const [project, setProject] = useState({});
 
   useEffect(() => {
+    console.log("useEffect ~ singleProject:", singleProject);
     if (singleProject) {
       setProject(singleProject);
     }
@@ -40,7 +41,7 @@ export default function Breadcumb11() {
             <div className="row wow fadeInUp">
               <div className="col-xl-7">
                 <div className="position-relative">
-                  {data ? <h2>{data.title}</h2> : <h2>{project.title}</h2>}
+                  {<h2>{project.title}</h2>}
 
                   <div className="list-meta mt15">
                     <p className="mb-0 dark-color fz15 fw500 list-inline-item mb5-sm">

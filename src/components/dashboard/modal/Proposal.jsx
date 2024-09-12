@@ -15,8 +15,6 @@ export default function ProposalModal({
   };
 
   const onAcceptProposal = (proposal) => {
-    console.log("proposal", proposal);
-    console.log("record", record);
     closeModalButtonRef.current.click();
     router.push(
       `/chats?projectId=${proposal.projectId}&providerName=${proposal.serviceProvider.name}&projectName=${proposal.projectName}&proposalId=${proposal.id}&serviceProviderId=${proposal.serviceProviderId}`

@@ -10,10 +10,12 @@ import ListingSidebarModal2 from "../modal/ListingSidebarModal2";
 import projectsStore from "@/store/myprofile/projects";
 import profileStore from "@/store/myprofile/profile";
 import { useEffect, useState } from "react";
+import proposalsStore from "@/store/myprofile/proposals";
 
 export default function Listing8() {
   const { size, allProjects, getProjects } = projectsStore();
   const { getProfileDetails } = profileStore();
+  const { getProjectProposal } = proposalsStore;
   const [projectsList, setProjectsList] = useState({ projects: [] });
 
   useEffect(() => {
