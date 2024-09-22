@@ -320,16 +320,16 @@ export default function DashboardHeader() {
                               Organize and Manage
                             </p>
                             {dasboardNavigation.slice(8, 13).map((item, i) => (
-                              <Link
+                              <a
                                 key={i}
                                 className={`dropdown-item ${
                                   path === item.path ? "active" : ""
                                 }`}
-                                href={item.path}
+                                onClick={() => routeToLink(item)}
                               >
                                 <i className={`${item.icon} mr10`} />
                                 {item.name}
-                              </Link>
+                              </a>
                             ))}
                             <p className="fz15 fw400 ff-heading mt30 pl30">
                               Account

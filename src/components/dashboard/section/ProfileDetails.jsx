@@ -8,6 +8,7 @@ import { localMetaData } from "@/utils/localMetaData";
 import validations from "@/utils/validations";
 import Select from "react-select";
 import CurrencyInput from "react-currency-input-field";
+import { InfinitySpin } from "react-loader-spinner";
 
 export default function ProfileDetails({ meta }) {
   const { loggedInUser } = signUpStore();
@@ -20,7 +21,7 @@ export default function ProfileDetails({ meta }) {
   } = profileStore();
 
   const { isRequired, validateForm } = validations();
-
+  const [loader, setLoader] = useState(false);
   const [profileObj, setProfileObj] = useState({
     name: "",
     email: "",
@@ -102,7 +103,9 @@ export default function ProfileDetails({ meta }) {
         delete details.profilePhotoUrl;
       }
 
+      setLoader(true);
       const result = await updateProfileDetails(details);
+      setLoader(false);
       if (result) {
         setShowToastr(result);
       }
@@ -128,6 +131,16 @@ export default function ProfileDetails({ meta }) {
 
   return (
     <>
+      {loader && (
+        <div className="loader-overlay">
+          <InfinitySpin
+            height={200}
+            width={200}
+            color="#00BFFF"
+            ariaLabel="loading"
+          />
+        </div>
+      )}
       <div className="ps-widget bgc-white bdrs4 p30 mb30 overflow-hidden position-relative">
         <div className="bdrb1 pb15 mb25">
           <h5 className="list-title">Profile Details</h5>

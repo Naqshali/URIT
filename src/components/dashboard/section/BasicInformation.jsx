@@ -8,11 +8,13 @@ import Select from "react-select";
 import Toastr from "@/components/toastr/toastr";
 import CurrencyInput from "react-currency-input-field";
 import { useRouter } from "next/navigation";
+import { InfinitySpin } from "react-loader-spinner";
 
 export default function BasicInformation() {
   const router = useRouter();
   const { meta } = globalStore();
   const { saveService } = servicesStore();
+  const [loader, setLoader] = useState(false);
 
   const [showToastr, setShowToastr] = useState(false);
   const [basicInfoObj, setBasicInfoObj] = useState({
@@ -77,7 +79,9 @@ export default function BasicInformation() {
   };
 
   const onSubmitForm = async () => {
+    setLoader(true);
     const result = await saveService(basicInfoObj);
+    setLoader(false);
     if (result) {
       setShowToastr(result);
       resetBasicInfoObj();
@@ -87,6 +91,16 @@ export default function BasicInformation() {
 
   return (
     <>
+      {loader && (
+        <div className="loader-overlay">
+          <InfinitySpin
+            height={200}
+            width={200}
+            color="#00BFFF"
+            ariaLabel="loading"
+          />
+        </div>
+      )}
       <div className="ps-widget bgc-white bdrs4 p30 mb30 overflow-hidden position-relative">
         <div className="bdrb1 pb15 mb25">
           <h5 className="list-title">Basic Information</h5>

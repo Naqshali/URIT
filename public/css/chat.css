@@ -231,3 +231,18 @@
   font-size: 12px;
   color: grey;
 }
+
+.freelancer-chat {
+  .freelancer-chat-msg-width {
+    width: 100%;
+  }
+  .received_msg {
+    padding: 0;
+  }
+  .write_msg {
+    width: 85%;
+  }
+  .msg_history {
+    height: 300px;
+  }
+}

@@ -1,10 +1,82 @@
 import Link from "next/link";
 import globalMixin from "@/mixins/global";
+import signUpStore from "@/store/signUp";
 import { dateInStringFormat } from "@/utils/global";
+import {
+  connectChat,
+  disconnectChat,
+  sendMessage,
+} from "@/services/ChatService";
+import { useEffect, useRef, useState } from "react";
+import moment from "moment";
+import { chatMsgItemDateFormat } from "@/utils/global";
 
 export default function FreelancerAbout1({ provider }) {
+  const { loggedInUser } = signUpStore();
   const { getCountry, getGender, getLanguage, getLanguageLevel } =
     globalMixin();
+
+  const [messageInput, setMessageInput] = useState("");
+  const messagesEndRef = useRef(null);
+  let client = null;
+  const token = loggedInUser?.token;
+  const channel = `/topic/urit/chat/${loggedInUser?.userId}`;
+  const [chats, setChats] = useState([]);
+
+  useEffect(() => {
+    if (!token) {
+      return;
+    }
+
+    if (client) {
+      return;
+    }
+
+    client = connectChat(token, channel, messageReceivedHandler);
+    return () => {
+      disconnectChat();
+    };
+  }, [token]);
+
+  const messageReceivedHandler = (msg) => {
+    console.log("msgmsg", msg);
+  };
+
+  useEffect(() => {
+    console.log("chats", chats);
+  }, [chats]);
+
+  const onSendMsg = () => {
+    sendMessage({
+      msg: messageInput,
+      senderId: loggedInUser.userId,
+      chatType: "Direct Chat",
+    });
+    setMessageInput("");
+    setScrolToBottom();
+    onSetChat();
+  };
+
+  const onSetChat = () => {
+    const msg = {
+      text: messageInput,
+      dateTime: moment(),
+      type: "outgoing",
+      name: loggedInUser.name,
+    };
+
+    const prevChats = [...chats];
+    setChats([msg, ...prevChats]);
+  };
+
+  const setScrolToBottom = () => {
+    setTimeout(() => {
+      if (messagesEndRef.current) {
+        messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
+      }
+    }, 100);
+  };
+
   return (
     <>
       <div className="price-widget pt25 bdrs8">
@@ -58,6 +130,66 @@ export default function FreelancerAbout1({ provider }) {
             </span>
             <span>{getLanguageLevel(provider.languageLevel)}</span>
           </a>
+        </div>
+
+        <div className="messaging freelancer-chat">
+          <div className="inbox_msg">
+            <div className="mesgs freelancer-chat-msg-width">
+              <div className="msg_history" ref={messagesEndRef}>
+                {chats.map((msg, index) => (
+                  <div key={index}>
+                    {msg.type === "incoming" ? (
+                      <div className="incoming_msg mt10">
+                        <div className="received_msg">
+                          <div>{msg.name}</div>
+                          <div className="received_withd_msg">
+                            <p>{msg.text}</p>
+                            <span className="time_date">
+                              {" "}
+                              {chatMsgItemDateFormat(msg.dateTime)}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="outgoing_msg">
+                        <div className="sent_msg">
+                          <p>{msg.text}</p>
+                          <span className="time_date">
+                            {" "}
+                            {chatMsgItemDateFormat(msg.dateTime)}
+                          </span>{" "}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+              <div className="type_msg">
+                <div className="input_msg_write">
+                  <input
+                    type="text"
+                    className="write_msg"
+                    placeholder="Type a message"
+                    value={messageInput}
+                    onChange={(e) => setMessageInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.keyCode === 13) {
+                        onSendMsg();
+                      }
+                    }}
+                  />
+                  <button
+                    className="msg_send_btn"
+                    type="button"
+                    onClick={onSendMsg}
+                  >
+                    <i className="fa fa-paper-plane" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div className="d-grid">
           <Link href="/contact" className="ud-btn btn-thm">

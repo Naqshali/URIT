@@ -4,12 +4,14 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import signUpStore from "@/store/signUp";
 import notificationsStore from "@/store/notifications";
+import { useRouter } from "next/navigation";
 
 export default function DashboardSidebar() {
   const path = usePathname();
-  const { loggedInUser } = signUpStore();
+  const { loggedInUser, logout } = signUpStore();
   const { setShowNotificationIcon, showNotificationIcon } =
     notificationsStore();
+  const router = useRouter();
 
   const showNavigationItem = (navItem) => {
     return (
@@ -28,6 +30,21 @@ export default function DashboardSidebar() {
           navItem.key === "notifications")) ||
       !loggedInUser
     );
+  };
+
+  const routeToLink = (item) => {
+    if (item.key !== "logout") {
+      router.push(item.path);
+    } else {
+      handleLogout();
+    }
+  };
+
+  const handleLogout = async () => {
+    const result = await logout({ refreshToken: loggedInUser?.refreshToken });
+    if (result) {
+      router.push("/login");
+    }
   };
 
   return (
@@ -66,15 +83,15 @@ export default function DashboardSidebar() {
 
           {dasboardNavigation.slice(8, 13).map((item, i) => (
             <div key={i} className="sidebar_list_item mb-1">
-              <Link
-                href={item.path}
+              <a
+                onClick={() => routeToLink(item)}
                 className={`items-center ${
                   path === item.path ? "-is-active" : ""
                 }`}
               >
                 <i className={`${item.icon} mr15`} />
                 {item.name}
-              </Link>
+              </a>
             </div>
           ))}
 
