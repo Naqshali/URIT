@@ -11,12 +11,16 @@ import projectsStore from "@/store/myprofile/projects";
 import profileStore from "@/store/myprofile/profile";
 import { useEffect, useState } from "react";
 import proposalsStore from "@/store/myprofile/proposals";
+import { useSearchParams } from "next/navigation";
 
 export default function Listing8() {
   const { size, allProjects, getProjects } = projectsStore();
   const { getProfileDetails } = profileStore();
   const { getProjectProposal } = proposalsStore;
   const [projectsList, setProjectsList] = useState({ projects: [] });
+  const searchParams = useSearchParams();
+  const filter = searchParams.get("filter");
+  console.log("Listing8 ~ filter:", filter);
 
   useEffect(() => {
     fetchProfileDetails();
@@ -33,7 +37,7 @@ export default function Listing8() {
       pageSize: size,
       ...(status && { status: status }),
     };
-    await getProjects(params);
+    await getProjects(params, filter);
   };
 
   useEffect(() => {

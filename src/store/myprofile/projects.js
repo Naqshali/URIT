@@ -9,13 +9,20 @@ const projectsStore = create((set) => ({
     totalCount: 0,
   },
   singleProject: null,
-  getProjects: async (params) => {
+  getProjects: async (params, filter) => {
     try {
       const res = await axiosInstance.get(
         "/api/v1/projects?" + queryString(params)
       );
       if (res.data) {
-        set({ allProjects: res.data });
+        if (filter) {
+          const filteredProjects = res.data.projects.filter((project) => {
+            return project.projectCategory == filter;
+          });
+          set({ allProjects: { ...res.data, projects: filteredProjects } });
+        } else {
+          set({ allProjects: res.data });
+        }
       }
     } catch (error) {
       return null;

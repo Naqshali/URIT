@@ -1,13 +1,20 @@
 import Link from "next/link";
 import globalStore from "@/store/global";
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Mega({ staticMenuClass }) {
   const { meta } = globalStore();
+  const router = useRouter();
 
   useEffect(() => {
     console.log("meta", meta);
   }, [meta]);
+
+  const routeTo = (service) => {
+    console.log("routeTo ~ service:", service);
+    router.push(`/project-1?filter=${service.value}`);
+  };
 
   return (
     <>
@@ -25,8 +32,8 @@ export default function Mega({ staticMenuClass }) {
           Categories
         </a>
         <ul className="menu ps-0 categories-menu">
-          {meta.services.map((service) => (
-            <li>
+          {meta.services.map((service, index) => (
+            <li key={index} onClick={() => routeTo(service)}>
               {/* <a className="dropdown"></a> */}
               <a>
                 <span className="menu-icn flaticon-developer" />
