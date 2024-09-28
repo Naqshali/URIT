@@ -59,32 +59,33 @@ export default function ContactInfo1() {
       setEmailSent(false);
     }, 5000);
 
-    // const apiKey = process.env.NEXT_PUBLIC_BREVO_API_KEY;
-    // const endpoint = process.env.NEXT_PUBLIC_BREVO_ENDPOINT;
+    const apiKey =
+      "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";
+    const endpoint = "https://api.brevo.com/v3/smtp/email";
 
-    // const emailData = {
-    //   sender: { name: "URIT", email: form.email }, // Use your own domain
-    //   to: [{ email: "osamakhan.se@gmail.com", name: "Urit Help" }], // Where you want to receive the email
-    //   replyTo: { email: form.email, name: form.name }, // This is the user's email, so you can reply to it
-    //   subject: `Contact`,
-    //   htmlContent: `<p>${form.message}</p>`,
-    // };
+    const emailData = {
+      sender: { name: "URIT", email: form.email }, // Use your own domain
+      to: [{ email: "osamakhan.se@gmail.com", name: "Urit Help" }], // Where you want to receive the email
+      replyTo: { email: form.email, name: form.name }, // This is the user's email, so you can reply to it
+      subject: `Contact`,
+      htmlContent: `<p>${form.message}</p>`,
+    };
 
-    // try {
-    //   const response = await axios.post(endpoint, emailData, {
-    //     headers: {
-    //       "api-key": apiKey,
-    //       "Content-Type": "application/json",
-    //     },
-    //   });
-    //   resetForm();
-    //   console.log("Email sent successfully:", response.data);
-    // } catch (error) {
-    //   console.error(
-    //     "Error sending email:",
-    //     error.response ? error.response.data : error.message
-    //   );
-    // }
+    try {
+      const response = await axios.post(endpoint, emailData, {
+        headers: {
+          "api-key": apiKey,
+          "Content-Type": "application/json",
+        },
+      });
+      resetForm();
+      console.log("Email sent successfully:", response.data);
+    } catch (error) {
+      console.error(
+        "Error sending email:",
+        error.response ? error.response.data : error.message
+      );
+    }
   };
 
   return (
