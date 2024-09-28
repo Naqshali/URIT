@@ -59,8 +59,9 @@ export default function ContactInfo1() {
       setEmailSent(false);
     }, 5000);
 
-    const apiKey = process.env.NEXT_PUBLIC_BREVO_API_KEY;
-    const endpoint = process.env.NEXT_PUBLIC_BREVO_ENDPOINT;
+    const apiKey =
+      "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";
+    const endpoint = "https://api.brevo.com/v3/smtp/email";
 
     const emailData = {
       sender: { name: "URIT", email: form.email }, // Use your own domain
