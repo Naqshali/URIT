@@ -85,7 +85,12 @@ export default function AwardsModal({ editRecord, awardsAdded }) {
               className="btn-close position-absolute"
               data-bs-dismiss="modal"
               aria-label="Close"
-              style={{ top: "10px", right: "10px", zIndex: "9" }}
+              style={{
+                top: "28px",
+                right: "25px",
+                zIndex: "9",
+                fontSize: "16px",
+              }}
               onClick={() => onCloseModal()}
             />
             <div className="modal-body p-4">

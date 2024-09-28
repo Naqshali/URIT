@@ -77,35 +77,36 @@ function Notifications() {
               <div className="box-title border-bottom p-3">
                 <h6 className="m-0">Recent</h6>
               </div>
-              <div className="box-body p-0">
-                {notifications.map((notification, index) => (
-                  <div
-                    className="p-3 d-flex align-items-center bg-light border-bottom osahan-post-header"
-                    key={index}
-                    onClick={() => routeTo(notification)}
-                  >
-                    {/* <div className="dropdown-list-image me-3">
+              {notifications.length ? (
+                <div className="box-body p-0">
+                  {notifications.map((notification, index) => (
+                    <div
+                      className="p-3 d-flex align-items-center bg-light border-bottom osahan-post-header"
+                      key={index}
+                      onClick={() => routeTo(notification)}
+                    >
+                      {/* <div className="dropdown-list-image me-3">
                       <img
                         className="rounded-circle"
                         src="https://bootdey.com/img/Content/avatar/avatar3.png"
                         alt=""
                       />
                     </div> */}
-                    <div className="fw-bold me-3">
-                      <div className="text-truncate">
-                        {notification.message}
-                      </div>
-                      {/* <div className="small">
+                      <div className="fw-bold me-3">
+                        <div className="text-truncate">
+                          {notification.message}
+                        </div>
+                        {/* <div className="small">
                         Income tax sops on the cards, The bias in VC funding,
                         and other top news for you
                       </div> */}
-                    </div>
-                    {notification.notificationType === "Call" && (
-                      <span className="ms-auto mb-auto">
-                        <button type="button" className="btn btn-light">
-                          Join
-                        </button>
-                        {/* <div className="btn-group">
+                      </div>
+                      {notification.notificationType === "Call" && (
+                        <span className="ms-auto mb-auto">
+                          <button type="button" className="btn btn-light">
+                            Join
+                          </button>
+                          {/* <div className="btn-group">
                         <button
                           type="button"
                           className="btn btn-light btn-sm rounded"
@@ -124,13 +125,16 @@ function Notifications() {
                           </button>
                         </div>
                       </div> */}
-                        <br />
-                        {/* <div className="text-end text-muted pt-1">3d</div> */}
-                      </span>
-                    )}
-                  </div>
-                ))}
-              </div>
+                          <br />
+                          {/* <div className="text-end text-muted pt-1">3d</div> */}
+                        </span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="no-notifications">No Notifications</div>
+              )}
             </div>
           </div>
         </div>

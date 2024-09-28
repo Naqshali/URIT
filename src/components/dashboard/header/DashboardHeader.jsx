@@ -6,11 +6,14 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import signUpStore from "@/store/signUp";
 import { useRouter } from "next/navigation";
+import profileStore from "@/store/myprofile/profile";
+import { useEffect } from "react";
 
 export default function DashboardHeader() {
   const toggle = toggleStore((state) => state.dashboardSlidebarToggleHandler);
   const path = usePathname();
   const { loggedInUser, logout } = signUpStore();
+  const { profileDetails } = profileStore();
   const router = useRouter();
 
   const routeToLink = (item) => {
@@ -27,6 +30,10 @@ export default function DashboardHeader() {
       router.push("/login");
     }
   };
+
+  useEffect(() => {
+    console.log("profileDetails", profileDetails);
+  }, [profileDetails]);
 
   return (
     <>
@@ -66,7 +73,7 @@ export default function DashboardHeader() {
                   >
                     <span className="flaticon-loupe" />
                   </a>
-                  <div className="ml40 d-none d-xl-block">
+                  {/* <div className="ml40 d-none d-xl-block">
                     <div className="search_area dashboard-style">
                       <input
                         type="text"
@@ -77,13 +84,13 @@ export default function DashboardHeader() {
                         <span className="flaticon-loupe" />
                       </label>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className="col-6 col-lg-auto">
                 <div className="text-center text-lg-end header_right_widgets">
                   <ul className="dashboard_dd_menu_list d-flex align-items-center justify-content-center justify-content-sm-end mb-0 p-0">
-                    <li className="d-none d-sm-block">
+                    {/* <li className="d-none d-sm-block">
                       <a
                         className="text-center mr5 text-thm2 dropdown-toggle fz20"
                         type="button"
@@ -288,14 +295,18 @@ export default function DashboardHeader() {
                           </div>
                         </div>
                       </div>
-                    </li>
+                    </li> */}
                     <li className="user_setting">
                       <div className="dropdown">
                         <a className="btn" data-bs-toggle="dropdown">
                           <Image
                             height={50}
                             width={50}
-                            src="/images/resource/user.png"
+                            src={
+                              profileDetails?.profilePhotoUrl
+                                ? profileDetails?.profilePhotoUrl
+                                : "/images/resource/user.png"
+                            }
                             alt="user.png"
                           />
                         </a>

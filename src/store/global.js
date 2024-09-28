@@ -3,6 +3,7 @@ import axiosInstance from "@/axios/axios.config";
 import { transformMetaData } from "@/utils/global";
 
 const globalStore = create((set) => ({
+  globalToastr: null,
   meta: {
     skills: [],
     countries: [],
@@ -40,6 +41,9 @@ const globalStore = create((set) => ({
     } catch (error) {
       return null;
     }
+  },
+  setGlobalToastr: (toastr) => {
+    set({ globalToastr: toastr });
   },
 }));
 

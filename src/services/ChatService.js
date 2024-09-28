@@ -32,16 +32,16 @@ export function sendMessage(obj) {
     const messageContent = obj.msg.trim();
 
     if (messageContent !== "") {
-      stompClient.send(
-        "/app/chat.sendMessage",
-        {},
-        JSON.stringify({
-          text: messageContent,
-          senderId: obj.senderId,
-          proposalId: obj.proposalId,
-          chatType: obj.chatType,
-        })
-      );
+      let data = {
+        text: messageContent,
+        senderId: obj.senderId,
+        proposalId: obj.proposalId,
+        chatType: obj.chatType,
+      };
+      if (obj.receiverId) {
+        data.receiverId = obj.receiverId;
+      }
+      stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(data));
     }
   }
 }

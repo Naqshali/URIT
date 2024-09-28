@@ -1,4 +1,93 @@
+"use client";
+
+import { Oval } from "react-loader-spinner";
+import axios from "axios";
+import { useState } from "react";
+
 export default function ContactInfo1() {
+  const [loader, setLoader] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
+  const resetForm = () => {
+    setForm({
+      name: "",
+      email: "",
+      message: "",
+    });
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
+  };
+
+  const sendEmail = async () => {
+    if (form.name === "") {
+      alert("Name is required");
+      return;
+    }
+
+    if (form.email === "") {
+      alert("Email is required");
+      return;
+    }
+
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(form.email)) {
+      alert("Email is not valid");
+      return;
+    }
+
+    if (form.message === "") {
+      alert("Message is required");
+      return;
+    }
+
+    setLoader(true);
+
+    setTimeout(() => {
+      setLoader(false);
+      setEmailSent(true);
+    }, 3000);
+
+    setTimeout(() => {
+      setEmailSent(false);
+    }, 5000);
+
+    const apiKey =
+      "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";
+    const endpoint = "https://api.brevo.com/v3/smtp/email";
+
+    const emailData = {
+      sender: { name: "URIT", email: form.email }, // Use your own domain
+      to: [{ email: "osamakhan.se@gmail.com", name: "Urit Help" }], // Where you want to receive the email
+      replyTo: { email: form.email, name: form.name }, // This is the user's email, so you can reply to it
+      subject: `Contact`,
+      htmlContent: `<p>${form.message}</p>`,
+    };
+
+    try {
+      const response = await axios.post(endpoint, emailData, {
+        headers: {
+          "api-key": apiKey,
+          "Content-Type": "application/json",
+        },
+      });
+      resetForm();
+      console.log("Email sent successfully:", response.data);
+    } catch (error) {
+      console.error(
+        "Error sending email:",
+        error.response ? error.response.data : error.message
+      );
+    }
+  };
+
   return (
     <>
       <section className="pt-0">
@@ -63,6 +152,9 @@ export default function ContactInfo1() {
                           type="text"
                           className="form-control"
                           placeholder="Name"
+                          name="name"
+                          value={form.name}
+                          onChange={handleInputChange}
                         />
                       </div>
                     </div>
@@ -75,6 +167,9 @@ export default function ContactInfo1() {
                           type="email"
                           className="form-control"
                           placeholder="Enter Email"
+                          name="email"
+                          value={form.email}
+                          onChange={handleInputChange}
                         />
                       </div>
                     </div>
@@ -87,14 +182,40 @@ export default function ContactInfo1() {
                           cols={30}
                           rows={6}
                           placeholder="Description"
+                          name="message"
+                          value={form.message}
+                          onChange={handleInputChange}
                         />
                       </div>
                     </div>
                     <div className="col-md-12">
                       <div>
-                        <button type="button" className="ud-btn btn-thm">
-                          Send Messages
-                          <i className="fal fa-arrow-right-long" />
+                        <button
+                          type="button"
+                          className="ud-btn btn-thm"
+                          onClick={sendEmail}
+                        >
+                          {!loader && !emailSent ? (
+                            <span>
+                              Send Messages
+                              <i className="fal fa-arrow-right-long" />
+                            </span>
+                          ) : emailSent ? (
+                            <span>
+                              Email Sent <i class="fa-solid fa-check"></i>
+                            </span>
+                          ) : (
+                            <span>
+                              <Oval
+                                height="25"
+                                width="25"
+                                color="#ffffff"
+                                secondaryColor="ffffff"
+                                ariaLabel="oval-loading"
+                                wrapperClass="loader-wrapper"
+                              />
+                            </span>
+                          )}
                         </button>
                       </div>
                     </div>

@@ -13224,3 +13224,12 @@ hr {
   overflow: auto;
   height: 500px;
 }
+
+.no-notifications {
+  padding: 15px;
+}
+
+.incorrect-credentials {
+  color: red;
+  text-align: center;
+}

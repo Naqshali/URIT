@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import signUpStore from "@/store/signUp";
 import globalStore from "@/store/global";
@@ -9,6 +9,7 @@ export default function Page() {
   const router = useRouter();
   const { login } = signUpStore();
   const { getMetaData } = globalStore();
+  const [error, setError] = useState(false);
 
   const [loginUserObj, setLoginUserObj] = useState({
     email: "",
@@ -23,12 +24,21 @@ export default function Page() {
     });
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      loginAccount();
+    }
+  };
+
   const loginAccount = async () => {
+    setError(false);
     const result = await login(loginUserObj);
     if (result) {
       router.push("/");
+      await getMetaData();
+    } else {
+      setError(true);
     }
-    await getMetaData();
   };
 
   return (
@@ -68,6 +78,7 @@ export default function Page() {
                     name="email"
                     value={loginUserObj.email}
                     onChange={handleInputChange}
+                    onKeyDown={handleKeyPress}
                   />
                 </div>
                 <div className="mb15">
@@ -81,6 +92,7 @@ export default function Page() {
                     name="password"
                     value={loginUserObj.password}
                     onChange={handleInputChange}
+                    onKeyDown={handleKeyPress}
                   />
                 </div>
                 {/* <div className="checkbox-style1 d-block d-sm-flex align-items-center justify-content-between mb20">
@@ -105,6 +117,11 @@ export default function Page() {
                     Log In <i className="fal fa-arrow-right-long" />
                   </button>
                 </div>
+                {error && (
+                  <div className="incorrect-credentials">
+                    Incorrect Credentials
+                  </div>
+                )}
                 {/* <div className="hr_content mb20">
                   <hr />
                   <span className="hr_top_text">OR</span>

@@ -21,7 +21,12 @@ export default function FileViewer({ file }) {
               className="btn-close position-absolute"
               data-bs-dismiss="modal"
               aria-label="Close"
-              style={{ top: "10px", right: "10px", zIndex: "9" }}
+              style={{
+                top: "28px",
+                right: "25px",
+                zIndex: "9",
+                fontSize: "16px",
+              }}
             />
             <div className="modal-body fileViewer">
               {file && (

@@ -29,6 +29,18 @@ const proposalsStore = create((set) => ({
       return null;
     }
   },
+  acceptProposal: async (data, id) => {
+    try {
+      const res = await axiosInstance.put(
+        `/api/v1/projects/${id}/accept-proposal?proposalId=${data.proposalId}`
+      );
+      if (res.data) {
+        return res.data;
+      }
+    } catch (error) {
+      return null;
+    }
+  },
 }));
 
 export default proposalsStore;

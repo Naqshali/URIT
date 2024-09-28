@@ -1,12 +1,19 @@
 "use client";
 import Link from "next/link";
 import FooterHeader from "./FooterHeader";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import FooterSelect2 from "./FooterSelect2";
-import { about, category, support } from "@/data/footer";
+import { about, support } from "@/data/footer";
+import globalStore from "@/store/global";
 
 export default function Footer() {
   const path = usePathname();
+  const { meta } = globalStore();
+  const router = useRouter();
+
+  const routeTo = (service) => {
+    router.push(`/project-1?filter=${service.value}`);
+  };
 
   return (
     <>
@@ -28,7 +35,7 @@ export default function Footer() {
                  `}
       >
         <div className="container">
-          <FooterHeader />
+          {/* <FooterHeader /> */}
           <div className="row">
             <div className="col-sm-6 col-lg-3">
               <div
@@ -69,12 +76,15 @@ export default function Footer() {
                 >
                   Categories
                 </h5>
-                <ul className="ps-0">
-                  {category.map((item, i) => (
-                    <li key={i}>
-                      <Link href={item.path}>{item.name}</Link>
-                    </li>
-                  ))}
+                <ul className="ps-0 cursor-pointer">
+                  {meta.services.map(
+                    (service, i) =>
+                      i <= 10 && (
+                        <li key={i} onClick={() => routeTo(service)}>
+                          <span>{service.label}</span>
+                        </li>
+                      )
+                  )}
                 </ul>
               </div>
             </div>

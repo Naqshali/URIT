@@ -34,13 +34,13 @@ export default function TrendingServiceCard1({ data }) {
                 ${path === "/home-8" ? "style5" : ""}`}
       >
         <div className="list-thumb">
-          <Image
+          {/* <Image
             height={190}
             width={255}
             className="w-100 h-100 object-fit-cover"
             src="/images/listings/g-1.jpg"
             alt="thumbnail"
-          />
+          /> */}
           {/* <a
             onClick={() => setFavActive(!isFavActive)}
             className={`listing-fav fz12 ${isFavActive ? "ui-fav-active" : ""}`}
@@ -49,7 +49,9 @@ export default function TrendingServiceCard1({ data }) {
           </a> */}
         </div>
         <div className={`list-content ${path === "/home-8" ? "px-0" : ""}`}>
-          <p className="list-text body-color fz14 mb-1">{data.title}</p>
+          <p className="list-text body-color fz14 mb-1">
+            {data.title?.slice(0, 30) + "..."}
+          </p>
           <h5 className="list-title">
             <Link href={`/service-single/${data.id}`}>
               {data.description?.slice(0, 40) + "..."}

@@ -147,16 +147,20 @@ export default function EditProjectModal({ editRecord, onCloseModal }) {
         <div className="modal-dialog modal-dialog-centered modal-md">
           <div className="modal-content position-relative">
             <div className="modal-header sticky-header">
-              <h5 className="modal-title">
-                Edit Project
-                <button
-                  type="button"
-                  className="btn-close position-absolute"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                  onClick={() => onCloseProjectModal()}
-                />
-              </h5>
+              <h5 className="modal-title">Edit Project</h5>
+              <button
+                type="button"
+                className="btn-close position-absolute"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                style={{
+                  top: "25px",
+                  right: "25px",
+                  zIndex: "9",
+                  fontSize: "16px",
+                }}
+                onClick={() => onCloseProjectModal()}
+              />
             </div>
             <div className="modal-body p-4">
               <form className="form-style1">

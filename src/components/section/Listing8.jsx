@@ -20,7 +20,6 @@ export default function Listing8() {
   const [projectsList, setProjectsList] = useState({ projects: [] });
   const searchParams = useSearchParams();
   const filter = searchParams.get("filter");
-  console.log("Listing8 ~ filter:", filter);
 
   useEffect(() => {
     fetchProfileDetails();

@@ -2,6 +2,7 @@ import ProjectContactWidget1 from "@/components/element/ProjectContactWidget1";
 import Pagination1 from "@/components/section/Pagination1";
 import { useRouter } from "next/navigation";
 import React, { useRef } from "react";
+import proposalsStore from "@/store/myprofile/proposals";
 
 export default function ProposalModal({
   record,
@@ -9,13 +10,15 @@ export default function ProposalModal({
   onCloseProposalModal,
 }) {
   const router = useRouter();
+  const { acceptProposal } = proposalsStore();
   const closeModalButtonRef = useRef(null);
   const onSelectPage = (page) => {
     getNextProposalsList(page);
   };
 
-  const onAcceptProposal = (proposal) => {
+  const onAcceptProposal = async (proposal) => {
     closeModalButtonRef.current.click();
+    await acceptProposal({ proposalId: proposal.id }, proposal.projectId);
     router.push(
       `/chats?projectId=${proposal.projectId}&providerName=${proposal.serviceProvider.name}&projectName=${proposal.projectName}&proposalId=${proposal.id}&serviceProviderId=${proposal.serviceProviderId}`
     );
@@ -40,7 +43,12 @@ export default function ProposalModal({
                   className="btn-close position-absolute"
                   data-bs-dismiss="modal"
                   aria-label="Close"
-                  style={{ top: "10px", right: "10px", zIndex: "9" }}
+                  style={{
+                    top: "28px",
+                    right: "25px",
+                    zIndex: "9",
+                    fontSize: "16px",
+                  }}
                   ref={closeModalButtonRef}
                   onClick={() => onCloseProposalModal()}
                 />

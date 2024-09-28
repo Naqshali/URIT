@@ -19,6 +19,7 @@ import NavSidebar from "@/components/sidebar/NavSidebar";
 import globalStore from "@/store/global";
 import { useRouter } from "next/navigation";
 import PusherInit from "@/components/pusher/pusher";
+import Toastr from "@/components/toastr/toastr";
 
 if (typeof window !== "undefined") {
   import("bootstrap");
@@ -34,7 +35,7 @@ export default function RootLayout({ children }) {
   const isListingActive = toggleStore((state) => state.isListingActive);
   const { loggedInUser, setUserLoggedInData } = signUpStore();
   const path = usePathname();
-  const { getMetaData } = globalStore();
+  const { getMetaData, globalToastr } = globalStore();
   const router = useRouter();
 
   useEffect(() => {
@@ -125,6 +126,9 @@ export default function RootLayout({ children }) {
         {/* sidebar mobile navigation */}
         <PusherInit />
         <NavSidebar />
+        {globalToastr && (
+          <Toastr showToastr={globalToastr} action={true}></Toastr>
+        )}
       </body>
     </html>
   );

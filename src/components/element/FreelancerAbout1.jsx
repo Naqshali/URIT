@@ -10,8 +10,10 @@ import {
 import { useEffect, useRef, useState } from "react";
 import moment from "moment";
 import { chatMsgItemDateFormat } from "@/utils/global";
+import { useParams } from "next/navigation";
 
 export default function FreelancerAbout1({ provider }) {
+  const { id } = useParams();
   const { loggedInUser } = signUpStore();
   const { getCountry, getGender, getLanguage, getLanguageLevel } =
     globalMixin();
@@ -51,6 +53,7 @@ export default function FreelancerAbout1({ provider }) {
       msg: messageInput,
       senderId: loggedInUser.userId,
       chatType: "Direct Chat",
+      receiverId: id,
     });
     setMessageInput("");
     setScrolToBottom();
@@ -66,7 +69,7 @@ export default function FreelancerAbout1({ provider }) {
     };
 
     const prevChats = [...chats];
-    setChats([msg, ...prevChats]);
+    setChats([...prevChats, msg]);
   };
 
   const setScrolToBottom = () => {
@@ -191,12 +194,12 @@ export default function FreelancerAbout1({ provider }) {
             </div>
           </div>
         </div>
-        <div className="d-grid">
+        {/* <div className="d-grid">
           <Link href="/contact" className="ud-btn btn-thm">
             Contact Me
             <i className="fal fa-arrow-right-long" />
           </Link>
-        </div>
+        </div> */}
       </div>
     </>
   );
