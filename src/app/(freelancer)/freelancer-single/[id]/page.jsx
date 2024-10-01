@@ -20,7 +20,6 @@ export default function Page() {
 
   const fetchProvider = async () => {
     const result = await getServiceProviderById(id);
-    console.log("fetchProvider ~ result:", result);
     if (result) {
       setProvider(result);
     }

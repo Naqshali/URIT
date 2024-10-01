@@ -37,7 +37,7 @@ export default function Footer() {
         <div className="container">
           {/* <FooterHeader /> */}
           <div className="row">
-            <div className="col-sm-6 col-lg-3">
+            {/* <div className="col-sm-6 col-lg-3">
               <div
                 className={`link-style1 mb-4 mb-sm-5 ${
                   path === "/home-4"
@@ -60,7 +60,7 @@ export default function Footer() {
                   ))}
                 </div>
               </div>
-            </div>
+            </div> */}
             <div className="col-sm-6 col-lg-3">
               <div
                 className={`link-style1 mb-4 mb-sm-5 ${
@@ -88,7 +88,7 @@ export default function Footer() {
                 </ul>
               </div>
             </div>
-            <div className="col-sm-6 col-lg-3">
+            {/* <div className="col-sm-6 col-lg-3">
               <div
                 className={`link-style1 mb-4 mb-sm-5 ${
                   path === "/home-4"
@@ -111,8 +111,8 @@ export default function Footer() {
                   ))}
                 </ul>
               </div>
-            </div>
-            <div className="col-sm-6 col-lg-3">
+            </div> */}
+            {/* <div className="col-sm-6 col-lg-3">
               <div className="footer-widget">
                 <div className="footer-widget mb-4 mb-sm-5">
                   <div className="mailchimp-widget">
@@ -159,10 +159,10 @@ export default function Footer() {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
-        <div className="container white-bdrt1 py-4">
+        {/* <div className="container white-bdrt1 py-4">
           <div className="row align-items-center">
             <div className="col-md-6">
               <div className="text-center text-lg-start">
@@ -189,7 +189,7 @@ export default function Footer() {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </section>
     </>
   );

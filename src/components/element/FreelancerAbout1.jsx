@@ -11,12 +11,14 @@ import { useEffect, useRef, useState } from "react";
 import moment from "moment";
 import { chatMsgItemDateFormat } from "@/utils/global";
 import { useParams } from "next/navigation";
+import chatStore from "@/store/chat";
 
 export default function FreelancerAbout1({ provider }) {
   const { id } = useParams();
   const { loggedInUser } = signUpStore();
   const { getCountry, getGender, getLanguage, getLanguageLevel } =
     globalMixin();
+  const { getProjectChat } = chatStore();
 
   const [messageInput, setMessageInput] = useState("");
   const messagesEndRef = useRef(null);
@@ -24,6 +26,7 @@ export default function FreelancerAbout1({ provider }) {
   const token = loggedInUser?.token;
   const channel = `/topic/urit/chat/${loggedInUser?.userId}`;
   const [chats, setChats] = useState([]);
+  const [newChat, setNewChat] = useState(null);
 
   useEffect(() => {
     if (!token) {
@@ -40,13 +43,51 @@ export default function FreelancerAbout1({ provider }) {
     };
   }, [token]);
 
-  const messageReceivedHandler = (msg) => {
-    console.log("msgmsg", msg);
-  };
+  useEffect(() => {
+    getChat();
+  }, []);
 
   useEffect(() => {
-    console.log("chats", chats);
-  }, [chats]);
+    if (newChat) {
+      setChatsList(newChat);
+    }
+  }, [newChat]);
+
+  const getChat = async () => {
+    const result = await getProjectChat({
+      pageNumber: 0,
+      pageSize: 10,
+      chatType: "Direct Chat",
+      userId: id,
+    });
+    console.log("result", result);
+    if (result) {
+      const updatedMsgs = result.messages.map((msg) => ({
+        ...msg,
+        type: msg.senderId === loggedInUser?.userId ? "outgoing" : "incoming",
+        name: msg.senderName,
+      }));
+      setChats(updatedMsgs.reverse());
+    }
+  };
+
+  const messageReceivedHandler = (msg) => {
+    setNewChat(msg);
+  };
+
+  const setChatsList = () => {
+    const obj = {
+      text: newChat.text,
+      dateTime: newChat.createdAt,
+      type: "incoming",
+      name: newChat.senderName,
+    };
+
+    const prevChats = [...chats];
+    console.log("messageReceivedHandler ~ prevChats:", prevChats);
+    setChats([...prevChats, obj]);
+    setScrolToBottom();
+  };
 
   const onSendMsg = () => {
     sendMessage({

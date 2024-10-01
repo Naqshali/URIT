@@ -1,5 +1,5 @@
 import { decode } from "jwt-js-decode";
-import moment from "moment";
+import moment from "moment-timezone";
 
 export const decodeJWT = (token) => {
   try {
@@ -43,27 +43,39 @@ export const transformData = (data) => {
 
 export const dateFormat = (date) => {
   if (!date) return;
-  return moment(date).format("D MMMM YYYY");
+
+  // Convert the date from UTC to the user's local timezone and format it
+  return moment.utc(date).tz(moment.tz.guess()).format("D MMMM YYYY");
 };
 
 export const dateInStringFormat = (date) => {
   if (!date) return;
-  return moment(date).fromNow();
+
+  // Convert the date from UTC to the user's local timezone and return the relative time
+  return moment.utc(date).tz(moment.tz.guess()).fromNow();
 };
 
 export const chatMsgDateFormat = (date) => {
   if (!date) return;
-  return moment(date).format("MMM DD");
+
+  // Convert UTC to local timezone and format as "MMM DD"
+  return moment.utc(date).tz(moment.tz.guess()).format("MMM DD");
 };
 
+// Chat message item date format: "HH:mm | MMMM D"
 export const chatMsgItemDateFormat = (date) => {
   if (!date) return;
-  return moment(date).format("HH:mm | MMMM D");
+
+  // Convert UTC to local timezone and format as "HH:mm | MMMM D"
+  return moment.utc(date).tz(moment.tz.guess()).format("HH:mm | MMMM D");
 };
 
+// Year only format: "YYYY"
 export const dateInYearFormatOnly = (date) => {
   if (!date) return;
-  return moment(date).format("YYYY");
+
+  // Convert UTC to local timezone and format as "YYYY"
+  return moment.utc(date).tz(moment.tz.guess()).format("YYYY");
 };
 
 export const transformMetaData = (array, valueKey) => {

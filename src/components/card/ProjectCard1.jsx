@@ -4,6 +4,7 @@ import globalMixin from "@/mixins/global";
 import { dateInStringFormat } from "@/utils/global";
 
 export default function ProjectCard1({ data }) {
+  console.log("ProjectCard1 ~ data:", data);
   const { getSkill } = globalMixin();
   return (
     <>
@@ -51,13 +52,20 @@ export default function ProjectCard1({ data }) {
               <p className="text">Hourly Rate</p>
             </div>
             <div className="d-grid mt15">
-              <Link
-                href={`/project-single/${data.id}`}
-                className="ud-btn btn-light-thm"
-              >
-                Send Proposal
-                <i className="fal fa-arrow-right-long" />
-              </Link>
+              {data.status === "OPEN_FOR_PROPOSALS" ? (
+                <Link
+                  href={`/project-single/${data.id}`}
+                  className="ud-btn btn-light-thm"
+                  aria-disabled
+                >
+                  Send Proposal
+                  <i className="fal fa-arrow-right-long" />
+                </Link>
+              ) : (
+                <div className="ud-btn btn-light-thm">
+                  Proposal Already Accepted
+                </div>
+              )}
             </div>
           </div>
         </div>

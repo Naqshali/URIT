@@ -97,6 +97,7 @@ export default function Chats() {
       newNotification.notificationType === "Message"
     ) {
       const newChat = chats.map((chat) => {
+        console.log("newChat ~ chat:", chat);
         if (
           chat.proposalId == newNotification.proposalId &&
           chat.chatId !== selectedChat.chatId
@@ -123,6 +124,7 @@ export default function Chats() {
       pageSize: 10,
     };
     const result = await getChats(params);
+    if (!result.chats) return;
     const list = [];
     result.chats.forEach((row, index) => {
       let obj = {
@@ -134,12 +136,14 @@ export default function Chats() {
         projectId: row.projectId,
         projectTitle: row.projectTitle,
         proposalId: row.proposalId,
+        serviceProviderId: row.serviceProviderId,
         receiverName: row.serviceProviderName,
         date: "",
         clientIsActive: row.clientIsActive,
         readByClient: row.readByClient,
         readByServiceProvider: row.readByServiceProvider,
         msgs: [],
+        chatType: row.chatType,
       };
       list.push(obj);
     });
@@ -157,12 +161,29 @@ export default function Chats() {
   };
 
   const fetchProjectChat = async (chat) => {
-    const params = {
-      projectId: chat.projectId,
-      proposalId: chat.proposalId,
-      pageNumber: 0,
-      pageSize: 10,
-    };
+    let params = {};
+
+    if (chat.chatType === "Direct Chat") {
+      params = {
+        pageNumber: 0,
+        pageSize: 10,
+        chatType: chat.chatType,
+      };
+      if (loggedInUser?.userId === chat.senderId) {
+        params.userId = chat.serviceProviderId;
+      } else {
+        params.userId = chat.senderId;
+      }
+    } else {
+      params = {
+        projectId: chat.projectId,
+        proposalId: chat.proposalId,
+        pageNumber: 0,
+        pageSize: 10,
+        chatType: chat.chatType,
+      };
+    }
+
     const result = await getProjectChat(params);
     if (result) {
       result.messages = result.messages.reverse();
@@ -171,6 +192,7 @@ export default function Chats() {
         ...msg,
         type: msg.senderId === loggedInUser?.userId ? "outgoing" : "incoming",
         name: msg.senderName,
+        dateTime: msg.createdAt,
       }));
       prevSelectedChat.msgs = updatedMsgs;
       setSelectedChat(prevSelectedChat);
@@ -186,6 +208,7 @@ export default function Chats() {
               : chatTo.readByServiceProvider,
         };
       });
+      console.log("chatToUpdateMsgs", chatToUpdateMsgs);
 
       setChats(chatToUpdateMsgs);
       setScrolToBottom();
@@ -208,12 +231,28 @@ export default function Chats() {
   };
 
   const onSendMsg = () => {
-    sendMessage({
-      msg: messageInput,
-      senderId: loggedInUser.userId,
-      proposalId: selectedChat?.proposalId,
-      chatType: "Project Chat",
-    });
+    if (selectedChat.chatType === "Direct Chat") {
+      const msg = {
+        msg: messageInput,
+        senderId: loggedInUser.userId,
+        chatType: "Direct Chat",
+      };
+      console.log("onSendMsg ~ loggedInUser:", loggedInUser);
+      console.log("onSendMsg ~ selectedChat:", selectedChat);
+      if (loggedInUser?.userId === selectedChat.senderId) {
+        msg.receiverId = selectedChat.serviceProviderId;
+      } else {
+        msg.receiverId = selectedChat.senderId;
+      }
+      sendMessage(msg);
+    } else {
+      sendMessage({
+        msg: messageInput,
+        senderId: loggedInUser.userId,
+        proposalId: selectedChat?.proposalId,
+        chatType: selectedChat.chatType,
+      });
+    }
     setMessageInput("");
     const prevSelectedChat = { ...selectedChat };
     prevSelectedChat.msgs.push({

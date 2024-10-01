@@ -16,7 +16,7 @@ export default function FreelancerCard1({ data }) {
             src={
               data?.profilePhotoUrl
                 ? data?.profilePhotoUrl
-                : "/images/team/fl-1.png"
+                : "/images/default.png"
             }
             alt="thumb"
           />

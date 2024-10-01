@@ -36,6 +36,10 @@ export default function Listing8() {
       pageSize: size,
       ...(status && { status: status }),
     };
+
+    if (filter) {
+      params.projectCategory = filter;
+    }
     await getProjects(params, filter);
   };
 

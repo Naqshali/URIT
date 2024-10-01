@@ -17,8 +17,8 @@ export default function page() {
         isBtnActive={false}
       />
       <ContactInfo1 />
-      <GoogleMap1 />
-      <OurFaq1 />
+      {/* <GoogleMap1 />
+      <OurFaq1 /> */}
     </>
   );
 }

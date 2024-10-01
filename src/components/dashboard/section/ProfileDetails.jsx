@@ -152,7 +152,7 @@ export default function ProfileDetails({ meta }) {
                 height={71}
                 width={71}
                 className="rounded-circle wa-xs"
-                src={selectedImage ? selectedImage : "/images/team/fl-1.png"}
+                src={selectedImage ? selectedImage : "/images/default.png"}
                 style={{
                   height: "71px",
                   width: "71px",

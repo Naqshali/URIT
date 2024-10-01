@@ -305,7 +305,7 @@ export default function DashboardHeader() {
                             src={
                               profileDetails?.profilePhotoUrl
                                 ? profileDetails?.profilePhotoUrl
-                                : "/images/resource/user.png"
+                                : "/images/default.png"
                             }
                             alt="user.png"
                           />

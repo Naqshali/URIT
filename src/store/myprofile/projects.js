@@ -15,14 +15,14 @@ const projectsStore = create((set) => ({
         "/api/v1/projects?" + queryString(params)
       );
       if (res.data) {
-        if (filter) {
-          const filteredProjects = res.data.projects.filter((project) => {
-            return project.projectCategory == filter;
-          });
-          set({ allProjects: { ...res.data, projects: filteredProjects } });
-        } else {
-          set({ allProjects: res.data });
-        }
+        // if (filter) {
+        //   const filteredProjects = res.data.projects.filter((project) => {
+        //     return project.projectCategory == filter;
+        //   });
+        //   set({ allProjects: { ...res.data, projects: filteredProjects } });
+        // } else {
+        // }
+        set({ allProjects: res.data });
       }
     } catch (error) {
       return null;
