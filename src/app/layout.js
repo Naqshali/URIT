@@ -20,6 +20,7 @@ import globalStore from "@/store/global";
 import { useRouter } from "next/navigation";
 import PusherInit from "@/components/pusher/pusher";
 import Toastr from "@/components/toastr/toastr";
+import Script from "next/script";
 
 if (typeof window !== "undefined") {
   import("bootstrap");
@@ -68,6 +69,25 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
+      <head>
+        {/* Moyasar stylesheet */}
+        <link
+          rel="stylesheet"
+          href="https://cdn.moyasar.com/mpf/1.14.0/moyasar.css"
+        />
+
+        {/* Moyasar script */}
+        <Script
+          src="https://cdn.moyasar.com/mpf/1.14.0/moyasar.js"
+          strategy="afterInteractive"
+        />
+
+        {/* Polyfill script */}
+        <Script
+          src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?version=4.8.0&features=fetch"
+          strategy="beforeInteractive"
+        />
+      </head>
       <body
         className={`${dmSans.className} ${
           path === "/register" || path === "/login"
@@ -79,22 +99,6 @@ export default function RootLayout({ children }) {
             : ""
         }`}
       >
-        {/* <script
-          src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-          integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-          crossOrigin="anonymous"
-        ></script>
-        <script
-          src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-          integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-          crossOrigin="anonymous"
-        ></script>
-        <script
-          src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-          integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-          crossOrigin="anonymous"
-        ></script> */}
-
         {!footer.includes(path) ? (
           <div className="wrapper ovh mm-page mm-slideout">
             {header1.find(

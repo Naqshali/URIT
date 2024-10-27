@@ -63,6 +63,18 @@ export default function ManageProjectCard({
               </Tooltip>
               <i className="fa-regular fa-handshake"></i>
             </a>
+            <a
+              className="icon me-2"
+              id="view"
+              data-bs-toggle="modal"
+              data-bs-target="#viewProjectModal"
+              onClick={() => onEditProject()}
+            >
+              <Tooltip anchorSelect="#view" className="ui-tooltip" place="top">
+                View
+              </Tooltip>
+              <span className="fas fa-eye" />
+            </a>
             {loggedInUser?.userType === "CLIENT" && (
               <a
                 className="icon me-2"

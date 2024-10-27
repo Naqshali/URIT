@@ -18,6 +18,12 @@ export default function Page() {
     email: "",
   });
 
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   const setAccType = (param) => {
     setUserObj({
       ...userObj,
@@ -64,31 +70,35 @@ export default function Page() {
           <div>
             {userObj.userType === "" ? (
               <div
-                className="row w50p wow fadeInRight mx-auto log-reg-form search-modal form-style1 bgc-white p50 p30-sm default-box-shadow1 bdrs12"
-                data-wow-delay="300ms"
+                className="row wow fadeInRight mx-auto log-reg-form search-modal form-style1 bgc-white p50 p30-sm default-box-shadow1 bdrs12"
+                data-wow-delay="300ms container"
               >
-                <h4 className="text-center">Choose your account type</h4> <br />
-                <div className="col-md-6">
-                  <div className="d-grid mb20">
-                    <button
-                      className="ud-btn btn-thm default-box-shadow2"
-                      type="button"
-                      onClick={() => setAccType("CLIENT")}
-                    >
-                      As a Client <i className="fal fa-arrow-right-long" />
-                    </button>
-                  </div>
+                <div className="row">
+                  <h4 className="text-center">Choose your account type</h4>
                 </div>
-                <div className="col-md-6 mx-auto">
-                  <div className="d-grid mb20">
-                    <button
-                      className="ud-btn btn-thm2 default-box-shadow2"
-                      type="button"
-                      onClick={() => setAccType("SERVICE_PROVIDER")}
-                    >
-                      As a Service Provider
-                      <i className="fal fa-arrow-right-long" />
-                    </button>
+                <div className="row">
+                  <div className="col-md-6  col-sm-12">
+                    <div className="d-grid mb20">
+                      <button
+                        className="ud-btn btn-thm default-box-shadow2"
+                        type="button"
+                        onClick={() => setAccType("CLIENT")}
+                      >
+                        As a Client <i className="fal fa-arrow-right-long" />
+                      </button>
+                    </div>
+                  </div>
+                  <div className="col-md-6 col-sm-12 mx-auto">
+                    <div className="d-grid mb20">
+                      <button
+                        className="ud-btn btn-thm2 default-box-shadow2"
+                        type="button"
+                        onClick={() => setAccType("SERVICE_PROVIDER")}
+                      >
+                        As a Service Provider
+                        <i className="fal fa-arrow-right-long" />
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -144,13 +154,31 @@ export default function Page() {
                       <label className="form-label fw500 dark-color">
                         Password
                       </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="password"
-                        value={userObj.password}
-                        onChange={handleInputChange}
-                      />
+                      <span className="password-input">
+                        <input
+                          type={showPassword ? "text" : "password"}
+                          className="form-control"
+                          name="password"
+                          value={userObj.password}
+                          onChange={handleInputChange}
+                        />
+                        <span
+                          className="input-group-text"
+                          onClick={togglePasswordVisibility}
+                          style={{ cursor: "pointer" }}
+                        >
+                          <Image
+                            height={25}
+                            width={25}
+                            src={
+                              showPassword
+                                ? "/images/eye-hidden.png"
+                                : "/images/eye.png"
+                            }
+                            alt="right-bottom"
+                          />
+                        </span>
+                      </span>
                     </div>
                     <div className="d-grid mb20">
                       <button

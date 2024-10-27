@@ -300,6 +300,7 @@ export default function DashboardHeader() {
                       <div className="dropdown">
                         <a className="btn" data-bs-toggle="dropdown">
                           <Image
+                            className="border-radius-50"
                             height={50}
                             width={50}
                             src={

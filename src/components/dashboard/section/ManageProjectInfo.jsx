@@ -9,6 +9,7 @@ import DeleteModal from "../modal/DeleteModal";
 import projectsStore from "@/store/myprofile/projects";
 import proposalsStore from "@/store/myprofile/proposals";
 import EditProjectModal from "@/components/dashboard/modal/editProjectModal";
+import ViewProjectModal from "../modal/viewProjectModal";
 import signUpStore from "@/store/signUp";
 
 export default function ManageProjectInfo() {
@@ -72,6 +73,7 @@ export default function ManageProjectInfo() {
   };
 
   const openEditProjectModal = (item) => {
+    console.log("openEditProjectModal ~ item:", item);
     setEditRecord(item);
   };
 
@@ -205,6 +207,7 @@ export default function ManageProjectInfo() {
         </div>
       </div>
       <EditProjectModal editRecord={editRecord} onCloseModal={onCloseModal} />
+      <ViewProjectModal project={editRecord} onCloseModal={onCloseModal} />
       <ProposalModal
         record={proposal}
         getNextProposalsList={getNextProposalsList}

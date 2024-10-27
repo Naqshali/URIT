@@ -13233,3 +13233,21 @@ hr {
   color: red;
   text-align: center;
 }
+
+.border-radius-50 {
+  border-radius: 50%;
+}
+
+.search-service {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-service-btn {
+  padding: 5px 15px;
+}
+
+.mb40 {
+  margin-bottom: 40px;
+}

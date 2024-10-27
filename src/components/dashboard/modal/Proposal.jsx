@@ -1,8 +1,15 @@
 import ProjectContactWidget1 from "@/components/element/ProjectContactWidget1";
 import Pagination1 from "@/components/section/Pagination1";
 import { useRouter } from "next/navigation";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import proposalsStore from "@/store/myprofile/proposals";
+import signUpStore from "@/store/signUp";
+
+import {
+  connectChat,
+  disconnectChat,
+  sendMessage,
+} from "@/services/ChatService";
 
 export default function ProposalModal({
   record,
@@ -10,8 +17,28 @@ export default function ProposalModal({
   onCloseProposalModal,
 }) {
   const router = useRouter();
+  const { loggedInUser } = signUpStore();
   const { acceptProposal } = proposalsStore();
   const closeModalButtonRef = useRef(null);
+  const channel = `/topic/urit/chat/${loggedInUser?.userId}`;
+  const token = loggedInUser?.token;
+  let client = null;
+
+  useEffect(() => {
+    if (!token) {
+      return;
+    }
+
+    if (client) {
+      return;
+    }
+
+    client = connectChat(token, channel);
+    return () => {
+      disconnectChat();
+    };
+  }, [token]);
+
   const onSelectPage = (page) => {
     getNextProposalsList(page);
   };
@@ -19,9 +46,13 @@ export default function ProposalModal({
   const onAcceptProposal = async (proposal) => {
     closeModalButtonRef.current.click();
     await acceptProposal({ proposalId: proposal.id }, proposal.projectId);
-    router.push(
-      `/chats?projectId=${proposal.projectId}&providerName=${proposal.serviceProvider.name}&projectName=${proposal.projectName}&proposalId=${proposal.id}&serviceProviderId=${proposal.serviceProviderId}`
-    );
+    sendMessage({
+      msg: "Proposal Accepted",
+      senderId: loggedInUser.userId,
+      proposalId: proposal.id,
+      chatType: "Project Chat",
+    });
+    router.push("/chats");
   };
 
   return (

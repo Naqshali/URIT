@@ -14,6 +14,7 @@ import { useParams } from "next/navigation";
 import globalMixin from "@/mixins/global";
 import { useRouter } from "next/navigation";
 import FileViewer from "../dashboard/modal/fileViewerModal";
+import { InfinitySpin } from "react-loader-spinner";
 
 export default function ProjectDetail1() {
   const router = useRouter();
@@ -31,6 +32,8 @@ export default function ProjectDetail1() {
     estimatedHours: "",
   });
 
+  const [loader, setLoader] = useState(false);
+
   useEffect(() => {
     findSingleProject();
   }, []);
@@ -42,7 +45,9 @@ export default function ProjectDetail1() {
   }, [singleProject]);
 
   const findSingleProject = async () => {
+    setLoader(true);
     await getSingleProject(routeParams.id);
+    setLoader(false);
   };
 
   const formatString = (input) => {
@@ -79,6 +84,16 @@ export default function ProjectDetail1() {
 
   return (
     <>
+      {loader && (
+        <div className="loader-overlay">
+          <InfinitySpin
+            height={200}
+            width={200}
+            color="#00BFFF"
+            ariaLabel="loading"
+          />
+        </div>
+      )}
       <StickyContainer>
         <section className="pt30">
           <div className="container">

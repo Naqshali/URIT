@@ -12,7 +12,6 @@ import { useSearchParams } from "next/navigation";
 import moment from "moment";
 import chatStore from "@/store/chat";
 import notificationsStore from "@/store/notifications";
-import axios from "axios";
 
 export default function Chats() {
   const { loggedInUser } = signUpStore();
@@ -26,12 +25,6 @@ export default function Chats() {
   const { newNotification } = notificationsStore();
   const [messageInput, setMessageInput] = useState("");
   const searchParams = useSearchParams();
-
-  const projectId = searchParams.get("projectId");
-  let proposalId = searchParams.get("proposalId");
-  const providerName = searchParams.get("providerName");
-  const projectName = searchParams.get("projectName");
-  const serviceProviderId = searchParams.get("serviceProviderId");
 
   const token = loggedInUser?.token;
   const channel = `/topic/urit/chat/${loggedInUser?.userId}`;
@@ -75,14 +68,6 @@ export default function Chats() {
   useEffect(() => {
     fetchChats();
   }, []);
-
-  useEffect(() => {
-    if (client && projectId && providerName) {
-      setTimeout(() => {
-        setDefaultMessage();
-      }, 1000);
-    }
-  }, [client]);
 
   useEffect(() => {
     if (newChat) {
@@ -237,8 +222,6 @@ export default function Chats() {
         senderId: loggedInUser.userId,
         chatType: "Direct Chat",
       };
-      console.log("onSendMsg ~ loggedInUser:", loggedInUser);
-      console.log("onSendMsg ~ selectedChat:", selectedChat);
       if (loggedInUser?.userId === selectedChat.senderId) {
         msg.receiverId = selectedChat.serviceProviderId;
       } else {
@@ -267,29 +250,6 @@ export default function Chats() {
 
   const messageReceivedHandler = (msg) => {
     setNewChat(msg);
-  };
-
-  const setDefaultMessage = () => {
-    const obj = {
-      senderId: loggedInUser.userId,
-      senderName: loggedInUser.name,
-      members: [parseInt(loggedInUser.userId), parseInt(serviceProviderId)],
-      projectId: projectId,
-      projectTitle: projectName,
-      proposalId: proposalId,
-      receiverId: serviceProviderId,
-      receiverName: providerName,
-      createdAt: moment(),
-      text: "Proposal Accepted",
-      type: "msg",
-    };
-    setChatsList(obj);
-    // sendMessage({
-    //   msg: "Proposal Accepted",
-    //   senderId: loggedInUser.userId,
-    //   proposalId: proposalId,
-    //   chatType: "Project Chat",
-    // });
   };
 
   const setChatsList = (notification) => {

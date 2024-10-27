@@ -57,8 +57,38 @@ export default function globalMixin() {
     }
   };
 
+  const getFreelancerType = (id) => {
+    const itemFound = localMetaData.freeLancerType.find((level) => {
+      return level.value === id;
+    });
+
+    if (itemFound) {
+      return itemFound.label;
+    }
+  };
+
+  const getPriceType = (id) => {
+    const itemFound = localMetaData.priceTypes.find((level) => {
+      return level.value === id;
+    });
+
+    if (itemFound) {
+      return itemFound.label;
+    }
+  };
+
   const getLanguageLevel = (id) => {
     const itemFound = localMetaData.languageLevels.find((level) => {
+      return level.value === id;
+    });
+
+    if (itemFound) {
+      return itemFound.label;
+    }
+  };
+
+  const getLevel = (id) => {
+    const itemFound = localMetaData.levels.find((level) => {
       return level.value === id;
     });
 
@@ -101,8 +131,11 @@ export default function globalMixin() {
     getSkill,
     getCountry,
     getDegree,
+    getFreelancerType,
+    getPriceType,
     getLanguage,
     getLanguageLevel,
+    getLevel,
     getGender,
     getAllListSize,
     getFirstCharacterCapital,

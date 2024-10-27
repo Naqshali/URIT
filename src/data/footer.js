@@ -46,4 +46,5 @@ export const footer = [
   "/create-projects",
   "/chats",
   "/notifications",
+  "/payments",
 ];

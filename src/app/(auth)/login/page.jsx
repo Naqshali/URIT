@@ -4,12 +4,19 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import signUpStore from "@/store/signUp";
 import globalStore from "@/store/global";
+import Image from "next/image";
 
 export default function Page() {
   const router = useRouter();
   const { login } = signUpStore();
   const { getMetaData } = globalStore();
   const [error, setError] = useState(false);
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const [loginUserObj, setLoginUserObj] = useState({
     email: "",
@@ -85,15 +92,33 @@ export default function Page() {
                   <label className="form-label fw600 dark-color">
                     Password
                   </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="*******"
-                    name="password"
-                    value={loginUserObj.password}
-                    onChange={handleInputChange}
-                    onKeyDown={handleKeyPress}
-                  />
+                  <span className="password-input">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      className="form-control"
+                      placeholder="*******"
+                      name="password"
+                      value={loginUserObj.password}
+                      onChange={handleInputChange}
+                      onKeyDown={handleKeyPress}
+                    />
+                    <span
+                      className="input-group-text"
+                      onClick={togglePasswordVisibility}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <Image
+                        height={25}
+                        width={25}
+                        src={
+                          showPassword
+                            ? "/images/eye-hidden.png"
+                            : "/images/eye.png"
+                        }
+                        alt="right-bottom"
+                      />
+                    </span>
+                  </span>
                 </div>
                 {/* <div className="checkbox-style1 d-block d-sm-flex align-items-center justify-content-between mb20">
                   <label className="custom_checkbox fz14 ff-heading">

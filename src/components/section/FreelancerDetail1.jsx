@@ -11,6 +11,7 @@ import globalMixin from "@/mixins/global";
 import servicesStore from "@/store/myprofile/services";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import { InfinitySpin } from "react-loader-spinner";
 
 export default function FreelancerDetail1({ provider = {} }) {
   const { getDegree, getAllListSize } = globalMixin();
@@ -22,6 +23,8 @@ export default function FreelancerDetail1({ provider = {} }) {
     totalCount: 0,
   });
 
+  const [loader, setLoader] = useState(false);
+
   useEffect(() => {
     fetchServices();
   }, []);
@@ -32,7 +35,9 @@ export default function FreelancerDetail1({ provider = {} }) {
       pageNumber: pageNo ?? 0,
       pageSize: getAllListSize,
     };
+    setLoader(true);
     const result = await getServices(params);
+    setLoader(false);
     if (result) {
       setProviderServices(result);
     }
@@ -40,6 +45,16 @@ export default function FreelancerDetail1({ provider = {} }) {
 
   return (
     <>
+      {loader && (
+        <div className="loader-overlay">
+          <InfinitySpin
+            height={200}
+            width={200}
+            color="#00BFFF"
+            ariaLabel="loading"
+          />
+        </div>
+      )}
       <section className="pt10 pb90 pb30-md">
         <div className="container">
           <div className="row wow fadeInUp">
