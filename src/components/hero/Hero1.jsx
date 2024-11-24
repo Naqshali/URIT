@@ -28,7 +28,11 @@ const popular = [
   "Engineer",
 ];
 
-const hero = ["/images/home/home-1.jpg", "/images/home/home-2.jpg"];
+const hero = [
+  // "/images/home/main-img1.jpg",
+  // "/images/home/main-img2.jpg",
+  "/images/home/main-img3.jpg",
+];
 
 export default function Hero1() {
   const [getSelectedRole, setSelectedRole] = useState(null);

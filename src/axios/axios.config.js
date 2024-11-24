@@ -3,7 +3,7 @@ import signUpStore from "@/store/signUp";
 import Router from "next/router";
 
 const axiosInstance = axios.create({
-  baseURL: "http://157.175.52.228:80/", // Your API base URL
+  baseURL: "http://15.185.76.40/", // Your API base URL
 });
 
 // Request interceptor

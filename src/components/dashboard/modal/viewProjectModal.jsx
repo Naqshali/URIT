@@ -41,7 +41,6 @@ export default function ViewProjectModal({ project }) {
                   zIndex: "9",
                   fontSize: "16px",
                 }}
-                onClick={() => onCloseProjectModal()}
               />
             </div>
             <div className="modal-body p-4">
@@ -177,7 +176,6 @@ export default function ViewProjectModal({ project }) {
                 className="ud-btn btn-thm close-btn"
                 data-bs-dismiss="modal"
                 aria-label="Close"
-                onClick={() => onCloseModal()}
               >
                 Close
                 <i className="fal fa-arrow-right-long" />

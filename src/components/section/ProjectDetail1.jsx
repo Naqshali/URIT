@@ -15,12 +15,14 @@ import globalMixin from "@/mixins/global";
 import { useRouter } from "next/navigation";
 import FileViewer from "../dashboard/modal/fileViewerModal";
 import { InfinitySpin } from "react-loader-spinner";
+import signUpStore from "@/store/signUp";
 
 export default function ProjectDetail1() {
   const router = useRouter();
   const routeParams = useParams();
   const isMatchedScreen = useScreen(1216);
   const { submitProposal } = proposalsStore();
+  const { loggedInUser } = signUpStore();
   const { singleProject, getSingleProject } = projectsStore();
   const { getService, getSkill, getfileName, getfileType } = globalMixin();
   const [file, setFile] = useState(null);
@@ -32,6 +34,9 @@ export default function ProjectDetail1() {
     estimatedHours: "",
   });
 
+  const [proposalAlreadySubmitted, setProposalAlreadySubmitted] =
+    useState(false);
+
   const [loader, setLoader] = useState(false);
 
   useEffect(() => {
@@ -40,6 +45,13 @@ export default function ProjectDetail1() {
 
   useEffect(() => {
     if (singleProject) {
+      console.log("useEffect ~ singleProject:", singleProject);
+      if (
+        singleProject.status === "IN_PROCESS" ||
+        singleProject.status === "COMPLETED"
+      ) {
+        setProposalAlreadySubmitted(true);
+      }
       setProject(singleProject);
     }
   }, [singleProject]);
@@ -224,70 +236,75 @@ export default function ProjectDetail1() {
                           </div>
                         ))}
                       </div> */}
-                      <div className="bsp_reveiw_wrt mt25">
-                        <h4>Send Your Proposal</h4>
-                        <form className="comments_form mt30 mb30-md">
-                          <div className="row">
-                            <div className="col-md-6">
-                              <div className="mb20">
-                                <label className="heading-color ff-heading fw500 mb10">
-                                  Your hourly price
-                                </label>
-                                <CurrencyInput
-                                  className="form-control"
-                                  prefix="$"
-                                  placeholder="Please enter a number"
-                                  name="hourlyRate"
-                                  value={propodalObj.hourlyRate}
-                                  onValueChange={handleCurrencyInputChange}
-                                />
+                      {loggedInUser?.userType !== "CLIENT" &&
+                        !proposalAlreadySubmitted && (
+                          <div className="bsp_reveiw_wrt mt25">
+                            <h4>Send Your Proposal</h4>
+                            <form className="comments_form mt30 mb30-md">
+                              <div className="row">
+                                <div className="col-md-6">
+                                  <div className="mb20">
+                                    <label className="heading-color ff-heading fw500 mb10">
+                                      Your hourly price
+                                    </label>
+                                    <CurrencyInput
+                                      className="form-control"
+                                      prefix="$"
+                                      placeholder="Please enter a number"
+                                      name="hourlyRate"
+                                      value={propodalObj.hourlyRate}
+                                      onValueChange={handleCurrencyInputChange}
+                                    />
+                                  </div>
+                                </div>
+                                <div className="col-md-6">
+                                  <div className="mb20">
+                                    <label className="fw500 ff-heading dark-color mb-2">
+                                      Estimated Hours
+                                    </label>
+                                    <CurrencyInput
+                                      className="form-control"
+                                      placeholder="Please enter a number"
+                                      name="estimatedHours"
+                                      value={propodalObj.estimatedHours}
+                                      onValueChange={handleCurrencyInputChange}
+                                    />
+                                  </div>
+                                </div>
+                                <div className="col-md-12">
+                                  <div className="mb-4">
+                                    <label className="fw500 fz16 ff-heading dark-color mb-2">
+                                      Cover Letter
+                                    </label>
+                                    <textarea
+                                      className="pt15"
+                                      rows={6}
+                                      name="coverLetter"
+                                      value={propodalObj.coverLetter}
+                                      onChange={handleInputChange}
+                                    />
+                                  </div>
+                                </div>
+                                <div className="col-md-12">
+                                  {/* <ServiceDetailExtra1 /> */}
+                                </div>
+                                (
+                                <div className="col-md-12">
+                                  <div className="d-grid">
+                                    <a
+                                      className="ud-btn btn-thm"
+                                      onClick={() => onSubmitForm()}
+                                    >
+                                      Submit a Proposal
+                                      <i className="fal fa-arrow-right-long" />
+                                    </a>
+                                  </div>
+                                </div>
+                                )
                               </div>
-                            </div>
-                            <div className="col-md-6">
-                              <div className="mb20">
-                                <label className="fw500 ff-heading dark-color mb-2">
-                                  Estimated Hours
-                                </label>
-                                <CurrencyInput
-                                  className="form-control"
-                                  placeholder="Please enter a number"
-                                  name="estimatedHours"
-                                  value={propodalObj.estimatedHours}
-                                  onValueChange={handleCurrencyInputChange}
-                                />
-                              </div>
-                            </div>
-                            <div className="col-md-12">
-                              <div className="mb-4">
-                                <label className="fw500 fz16 ff-heading dark-color mb-2">
-                                  Cover Letter
-                                </label>
-                                <textarea
-                                  className="pt15"
-                                  rows={6}
-                                  name="coverLetter"
-                                  value={propodalObj.coverLetter}
-                                  onChange={handleInputChange}
-                                />
-                              </div>
-                            </div>
-                            <div className="col-md-12">
-                              {/* <ServiceDetailExtra1 /> */}
-                            </div>
-                            <div className="col-md-12">
-                              <div className="d-grid">
-                                <a
-                                  className="ud-btn btn-thm"
-                                  onClick={() => onSubmitForm()}
-                                >
-                                  Submit a Proposal
-                                  <i className="fal fa-arrow-right-long" />
-                                </a>
-                              </div>
-                            </div>
+                            </form>
                           </div>
-                        </form>
-                      </div>
+                        )}
                     </div>
                   </div>
                 </div>

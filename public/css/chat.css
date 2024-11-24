@@ -104,6 +104,16 @@
 .chat_people {
   overflow: hidden;
   clear: both;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  button {
+    height: 30px;
+    background-color: #0047ab;
+    border: 2px solid #0047ab;
+    color: #ffffff;
+    border-radius: 5px;
+  }
 }
 
 .chat_list {

@@ -121,6 +121,7 @@ export default function Chats() {
         projectId: row.projectId,
         projectTitle: row.projectTitle,
         proposalId: row.proposalId,
+        meetingId: row.meetingId,
         serviceProviderId: row.serviceProviderId,
         receiverName: row.serviceProviderName,
         date: "",
@@ -249,6 +250,7 @@ export default function Chats() {
   };
 
   const messageReceivedHandler = (msg) => {
+    console.log("messageReceivedHandler ~ msg:", msg);
     setNewChat(msg);
   };
 
@@ -310,7 +312,11 @@ export default function Chats() {
     }
   };
 
-  const startCallSession = async (chat) => {
+  const startCallSession = async (chat, index) => {
+    const prevChats = [...chats];
+    prevChats[index].meetingId = "valid";
+    console.log("startCallSession ~ prevChats:", prevChats);
+    setChats(prevChats);
     const meeting = await startMeeting({
       userId: loggedInUser?.userId,
       projectId: chat.projectId,
@@ -371,7 +377,8 @@ export default function Chats() {
                       <h5>
                         {chat.projectTitle}{" "}
                         <div className="members">
-                          {chat.senderName}, {chat.receiverName}
+                          {chat.senderName}, {chat.receiverName} -{" "}
+                          {chat.meetingId}
                         </div>
                         <span className="chat_date">{chat.date}</span>
                       </h5>
@@ -381,13 +388,22 @@ export default function Chats() {
                         <span className="notification-count-chat"></span>
                       )}
                     </div>
-                    <span class="call-icon">
-                      <i
-                        class="fa fa-phone"
-                        aria-hidden="true"
-                        onClick={() => startCallSession(chat)}
-                      ></i>
-                    </span>
+                    {chat.meetingId ? (
+                      <button
+                        type="button"
+                        onClick={() => startCallSession(chat, index)}
+                      >
+                        Join
+                      </button>
+                    ) : (
+                      <span class="call-icon">
+                        <i
+                          class="fa fa-phone"
+                          aria-hidden="true"
+                          onClick={() => startCallSession(chat, index)}
+                        ></i>
+                      </span>
+                    )}
                   </div>
                 </div>
               ))}

@@ -43,7 +43,7 @@ export default function Breadcumb11() {
                 <div className="position-relative">
                   {<h2>{project.title}</h2>}
 
-                  <div className="list-meta mt15">
+                  {/* <div className="list-meta mt15">
                     <p className="mb-0 dark-color fz15 fw500 list-inline-item mb5-sm">
                       <i className="flaticon-place vam fz20 text-thm2 me-2" />{" "}
                       London, UK
@@ -56,7 +56,7 @@ export default function Breadcumb11() {
                       <i className="flaticon-website text-thm2 vam fz20 me-2" />{" "}
                       902 Views
                     </p>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>

@@ -3,6 +3,7 @@ import { Tooltip } from "react-tooltip";
 import { dateInStringFormat } from "@/utils/global";
 import globalMixin from "@/mixins/global";
 import signUpStore from "@/store/signUp";
+import { useRouter } from "next/navigation";
 
 export default function ManageProjectCard({
   item,
@@ -11,9 +12,14 @@ export default function ManageProjectCard({
 }) {
   const { getService } = globalMixin();
   const { loggedInUser } = signUpStore();
+  const router = useRouter();
 
-  const onEditProject = () => {
+  const onEditProject = (data) => {
     openEditProjectModal(item);
+  };
+
+  const viewProject = (data) => {
+    router.push(`/project-single/${item.id}`);
   };
 
   const onViewProposal = () => {
@@ -31,10 +37,10 @@ export default function ManageProjectCard({
                   <i className="flaticon-30-days fz16 vam text-thm2 me-1" />{" "}
                   {dateInStringFormat(item.createdAt)}
                 </p>
-                <p className="mb-0 fz14 list-inline-item mb5-sm text-thm">
+                {/* <p className="mb-0 fz14 list-inline-item mb5-sm text-thm">
                   <i className="flaticon-contract fz16 vam me-1 bdrl1 pl15 pl0-xs bdrn-xs" />{" "}
                   1 Received
-                </p>
+                </p> */}
               </div>
             </div>
           </div>
@@ -65,10 +71,10 @@ export default function ManageProjectCard({
             </a>
             <a
               className="icon me-2"
-              id="view"
-              data-bs-toggle="modal"
-              data-bs-target="#viewProjectModal"
-              onClick={() => onEditProject()}
+              // id="view"
+              // data-bs-toggle="modal"
+              // data-bs-target="#viewProjectModal"
+              onClick={() => viewProject()}
             >
               <Tooltip anchorSelect="#view" className="ui-tooltip" place="top">
                 View

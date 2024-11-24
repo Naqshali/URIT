@@ -24,14 +24,14 @@ export default function ProjectProposalCard1({ data }) {
                   <span className="dark-color">{data.rating}</span> (
                   {data.reviews} reviews)
                 </p>
-                <p className="mb-0 fz14 list-inline-item mb5-sm pe-1">
+                {/* <p className="mb-0 fz14 list-inline-item mb5-sm pe-1">
                   <i className="flaticon-30-days fz16 vam text-thm2 me-1 bdrl1 bdrn-md pl15 pl0-md bdrn-xs" />{" "}
                   2 hours ago
                 </p>
                 <p className="mb-0 fz14 list-inline-item mb5-sm">
                   <i className="flaticon-contract fz16 vam text-thm2 me-1 bdrl1 bdrn-md pl15 pl0-md bdrn-xs" />{" "}
                   1 Received
-                </p>
+                </p> */}
               </div>
               <p className="text mb-0">{data.brief}</p>
             </div>

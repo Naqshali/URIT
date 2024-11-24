@@ -3,7 +3,7 @@ import Stomp from "stompjs";
 
 let stompClient = null;
 export function connectChat(token, channel, messageReceivedCallback) {
-  const socket = new SockJS("http://157.175.52.228:8085/ws");
+  const socket = new SockJS("http://15.185.76.40:8085/ws");
   const client = Stomp.over(socket);
   client.debug = () => {};
   client.connect(

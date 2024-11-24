@@ -35,14 +35,14 @@ export default function ProjectCard1({ data }) {
                 <i className="flaticon-place fz16 vam text-thm2 me-1" />{" "}
                 {data.location}
               </p>
-              <p className="mb-0 fz14 list-inline-item mb5-sm pe-1">
+              {/* <p className="mb-0 fz14 list-inline-item mb5-sm pe-1">
                 <i className="flaticon-30-days fz16 vam text-thm2 me-1 bdrl1 pl15 pl0-xs bdrn-xs" />{" "}
                 2 hours ago
               </p>
               <p className="mb-0 fz14 list-inline-item mb5-sm">
                 <i className="flaticon-contract fz16 vam text-thm2 me-1 bdrl1 pl15 pl0-xs bdrn-xs" />{" "}
                 1 Received
-              </p>
+              </p> */}
               <div className="skill-tags d-flex align-items-center justify-content-start mt-3">
                 {data.tags.map((item, i) => (
                   <span key={i} className={`tag ${i === 1 ? "mx10" : ""}`}>
