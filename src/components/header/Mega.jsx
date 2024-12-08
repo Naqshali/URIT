@@ -1,38 +1,45 @@
 import globalStore from "@/store/global";
 import { useRouter } from "next/navigation";
+import signUpStore from "@/store/signUp";
 
 export default function Mega({ staticMenuClass }) {
   const { meta } = globalStore();
   const router = useRouter();
+  const { loggedInUser } = signUpStore();
 
   const routeTo = (service) => {
-    router.push(`/project-1?filter=${service.value}`);
+    if (loggedInUser.userType === "CLIENT") {
+      router.push(`/service-1?filter=${service.value}`);
+    } else {
+      router.push(`/project-1?filter=${service.value}`);
+    }
   };
 
   return (
     <>
-      <div id="mega-menu">
-        <a
-          className={`btn-mega fw500 ${
-            staticMenuClass ? staticMenuClass : ""
-          } `}
-        >
-          <span
-            className={`pl30 pl10-xl pr5 fz15 vam flaticon-menu ${
+      {loggedInUser && (
+        <div id="mega-menu">
+          <a
+            className={`btn-mega fw500 ${
               staticMenuClass ? staticMenuClass : ""
             } `}
-          />
-          Categories
-        </a>
-        <ul className="menu ps-0 categories-menu">
-          {meta.services.map((service, index) => (
-            <li key={index} onClick={() => routeTo(service)}>
-              {/* <a className="dropdown"></a> */}
-              <a>
-                <span className="menu-icn flaticon-developer" />
-                <span className="menu-title">{service.label}</span>
-              </a>
-              {/* <div className="drop-menu d-flex justify-content-between">
+          >
+            <span
+              className={`pl30 pl10-xl pr5 fz15 vam flaticon-menu ${
+                staticMenuClass ? staticMenuClass : ""
+              } `}
+            />
+            Categories
+          </a>
+          <ul className="menu ps-0 categories-menu">
+            {meta.services.map((service, index) => (
+              <li key={index} onClick={() => routeTo(service)}>
+                {/* <a className="dropdown"></a> */}
+                <a>
+                  <span className="menu-icn flaticon-developer" />
+                  <span className="menu-title">{service.label}</span>
+                </a>
+                {/* <div className="drop-menu d-flex justify-content-between">
                 <div className="one-third">
                   <div className="h6 cat-title">Web &amp; App Design</div>
                   <ul className="ps-0 mb40">
@@ -142,10 +149,11 @@ export default function Mega({ staticMenuClass }) {
                   </ul>
                 </div>
               </div> */}
-            </li>
-          ))}
-        </ul>
-      </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </>
   );
 }

@@ -60,6 +60,7 @@ export default function Chats() {
     }
 
     client = connectChat(token, channel, messageReceivedHandler);
+    console.log("useEffect ~ client:", client);
     return () => {
       disconnectChat();
     };
