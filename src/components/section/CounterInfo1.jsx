@@ -22,7 +22,8 @@ export default function CounterInfo1(notBorder) {
                           end={834}
                           duration={2.75}
                           enableScrollSpy
-                        />
+                        />{" "}
+                        asde
                       </div>
                     </li>
                     <li>

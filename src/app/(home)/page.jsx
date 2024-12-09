@@ -20,11 +20,11 @@ export default function page() {
       {/* <TrendingService1 /> */}
       <NeedSomething1 />
       <CtaBanner1 />
-      <CounterInfo1 />
-      <Testimonial1 />
+      {/* <CounterInfo1 /> */}
+      {/* <Testimonial1 /> */}
       <About1 />
       {/* <OurBlog1 /> */}
-      <OurPartner1 />
+      {/* <OurPartner1 /> */}
       <OurCta1 />
     </>
   );

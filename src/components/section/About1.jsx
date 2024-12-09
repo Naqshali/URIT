@@ -9,20 +9,20 @@ export default function About1() {
           <div className="row align-items-center">
             <div className="col-xl-6">
               <div className="position-relative mb30-lg">
-                <div className="iconbox-small1 at-home1 d-none d-md-block wow fadeInRight">
+                {/* <div className="iconbox-small1 at-home1 d-none d-md-block wow fadeInRight">
                   <span className="icon flaticon-review" />
                   <div className="details">
                     <h6>4.9/5</h6>
                     <p className="text fz13 mb-0">Clients rate professionals</p>
                   </div>
-                </div>
-                <div className="iconbox-small2 d-none d-md-block wow fadeInLeft">
+                </div> */}
+                {/* <div className="iconbox-small2 d-none d-md-block wow fadeInLeft">
                   <span className="icon flaticon-review" />
                   <div className="details">
                     <h6>+12M</h6>
                     <p className="text fz13 mb-0">Project Completed</p>
                   </div>
-                </div>
+                </div> */}
                 <div
                   className="about-img wow fadeInRight"
                   data-wow-delay="300ms"
@@ -35,7 +35,7 @@ export default function About1() {
                     alt="object"
                   />
                 </div>
-                <div className="imgbox-1 default-box-shadow1 text-center wow fadeInUp">
+                {/* <div className="imgbox-1 default-box-shadow1 text-center wow fadeInUp">
                   <Image
                     height={68}
                     width={362}
@@ -43,7 +43,7 @@ export default function About1() {
                     src="/images/about/happy-client.png"
                     alt="object"
                   />
-                </div>
+                </div> */}
               </div>
             </div>
             <div className="col-xl-5 offset-xl-1">

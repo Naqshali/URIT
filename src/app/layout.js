@@ -67,6 +67,17 @@ export default function RootLayout({ children }) {
     getMetaData();
   };
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const link = document.createElement("link");
+      link.rel = "icon";
+      link.href = "/favicon.ico";
+      document.head.appendChild(link);
+    }, 5000); // Delay of 5 seconds
+
+    return () => clearTimeout(timer); // Cleanup timer on unmount
+  }, []);
+
   return (
     <html lang="en">
       <head>
@@ -75,6 +86,8 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
           href="https://cdn.moyasar.com/mpf/1.14.0/moyasar.css"
         />
+
+        <link rel="icon" href="/images/favicon.ico" />
 
         {/* Moyasar script */}
         <Script
@@ -113,7 +126,7 @@ export default function RootLayout({ children }) {
 
             <div className="body_content">
               {children}
-              <Footer />
+              {/* <Footer /> */}
 
               {/* bottom to top */}
               <BottomToTop />
