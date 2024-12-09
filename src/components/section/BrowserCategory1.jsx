@@ -33,18 +33,18 @@ export default function BrowserCategory1() {
                 </p>
               </div>
             </div>
-            <div className="col-lg-3">
+            {/* <div className="col-lg-3">
               <div className="text-start text-lg-end mb-4 mb-lg-2">
                 <Link className="ud-btn2" href="/service-2">
                   All Categories
                   <i className="fal fa-arrow-right-long" />
                 </Link>
               </div>
-            </div>
+            </div> */}
           </div>
           <div className="row d-none d-lg-flex wow fadeInUp">
-            {browserCategory.slice(0, 8).map((item,i) => (
-              <div key={ i } className="col-sm-6 col-lg-4 col-xl-3">
+            {browserCategory.slice(0, 8).map((item, i) => (
+              <div key={i} className="col-sm-6 col-lg-4 col-xl-3">
                 <BrowserCategoryCard1 data={item} />
               </div>
             ))}

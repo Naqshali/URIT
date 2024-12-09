@@ -70,8 +70,8 @@ export default function TrendingService13() {
                       },
                     }}
                   >
-                    {product1.map((item,i) => (
-                      <SwiperSlide key={ i }>
+                    {product1.map((item, i) => (
+                      <SwiperSlide key={i}>
                         <TrendingServiceCard1 data={item} />
                       </SwiperSlide>
                     ))}
