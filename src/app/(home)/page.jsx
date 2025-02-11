@@ -17,14 +17,9 @@ export default function page() {
     <>
       <Hero1 />
       <BrowserCategory1 />
-      {/* <TrendingService1 /> */}
       <NeedSomething1 />
       <CtaBanner1 />
-      {/* <CounterInfo1 /> */}
-      {/* <Testimonial1 /> */}
       <About1 />
-      {/* <OurBlog1 /> */}
-      {/* <OurPartner1 /> */}
       <OurCta1 />
     </>
   );
