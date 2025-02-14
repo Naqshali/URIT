@@ -7,15 +7,13 @@ import { useParams } from "next/navigation";
 import proposalsStore from "@/store/myprofile/proposals";
 
 const ProposalAccepted = () => {
-  const { proposalId, projectId } = useParams();
+  //   const { proposalId, projectId } = useParams();
   const searchParams = useSearchParams();
-  console.log("ProposalAccepted ~ searchParams:", searchParams);
-  console.log("ProposalAccepted ~ proposalId:", proposalId);
-  console.log("ProposalAccepted ~ projectId:", projectId);
+  const projectId = searchParams.get("projectId");
+  const proposalId = searchParams.get("proposalId");
   const { acceptProposal } = proposalsStore();
 
   useEffect(() => {
-    console.log("proposalId", proposalId);
     acceptProposal({ proposalId: proposalId }, projectId);
     // sendMessage({
     //   msg: "Proposal Accepted",
@@ -23,7 +21,7 @@ const ProposalAccepted = () => {
     //   proposalId: proposal.id,
     //   chatType: "Project Chat",
     // });
-  }, [proposalId]);
+  }, []);
 
   return (
     <>
