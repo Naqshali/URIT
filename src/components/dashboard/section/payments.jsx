@@ -1,28 +1,28 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { sendMessage } from "@/services/ChatService";
 
-export default function Payments() {
-  const paymentElementRef = useRef(null); // Reference to payment div
+export default function Payments({ selectedProposal }) {
+  const paymentElementRef = useRef(null);
 
   useEffect(() => {
     const initializeMoyasar = () => {
       if (window.Moyasar && paymentElementRef.current) {
-        // Initialize Moyasar when element is available
         window.Moyasar.init({
-          element: paymentElementRef.current, // Use ref instead of query selector
-          amount: 10000, // Amount in halalas (1 SAR = 100 halalas)
+          element: paymentElementRef.current,
+          amount: selectedProposal.hourlyRate * 100, // Amount in halalas (1 SAR = 100 halalas)
           currency: "SAR",
           description: "Your Order Description",
           publishable_api_key:
             "pk_test_ZnRduNbgek9zo8NCQb4seK2ALFByfDgaGrBp4rma",
-          callback_url: "http://localhost:3000/manage-projects",
+          callback_url: `http://localhost:3000//proposal-accepted?proposalId=${selectedProposal.id}&projectId=${selectedProposal.projectId}`,
           methods: ["creditcard"],
-          on_completed: function (payment) {
-            console.log(payment); // Handle the successful payment
+          on_completed: async (payment) => {
+            console.log("hahahahah", payment);
           },
           on_failed: function (error) {
-            console.error(error); // Handle any payment failure
+            console.error(error);
           },
         });
       } else {
@@ -30,25 +30,23 @@ export default function Payments() {
       }
     };
 
-    // Ensure Moyasar is loaded
     if (window.Moyasar) {
       console.log("useEffect ~ window:", window);
       initializeMoyasar();
     } else {
-      // Retry loading Moyasar if it wasn't ready at first
       const intervalId = setInterval(() => {
         if (window.Moyasar && paymentElementRef.current) {
           initializeMoyasar();
           clearInterval(intervalId);
         }
-      }, 500); // Retry every 500ms
+      }, 500);
     }
   }, []);
 
   return (
     <>
       <div>
-        <h2>Complete Your Payment</h2>
+        {/* <h2>Complete Your Payment</h2> */}
         <div ref={paymentElementRef} id="moyasar-payment"></div>{" "}
         {/* Ref added */}
       </div>
