@@ -97,13 +97,13 @@ export const dasboardNavigation = [
     icon: "flaticon-photo",
     path: "/notifications",
   },
-  {
-    id: 17,
-    name: "Payments",
-    key: "payments",
-    icon: "flaticon-logout",
-    path: "/payments",
-  },
+  // {
+  //   id: 17,
+  //   name: "Payments",
+  //   key: "payments",
+  //   icon: "flaticon-logout",
+  //   path: "/payments",
+  // },
   {
     id: 18,
     name: "Logout",
