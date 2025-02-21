@@ -13252,3 +13252,6 @@ hr {
   margin-bottom: 40px;
 }
 
+.react-datepicker-wrapper {
+  width: 100%;
+}

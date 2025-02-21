@@ -97,10 +97,10 @@ export default function ContactInfo1() {
               <div className="position-relative mt40">
                 <div className="main-title">
                   <h4 className="form-title mb25">Keep In Touch With Us.</h4>
-                  <p className="text">
+                  {/* <p className="text">
                     Neque convallis a cras semper auctor. Libero id faucibus
                     nisl tincidunt egetnvallis.
-                  </p>
+                  </p> */}
                 </div>
                 <div className="iconbox-style1 contact-style d-flex align-items-start mb30">
                   <div className="icon flex-shrink-0">
@@ -109,8 +109,9 @@ export default function ContactInfo1() {
                   <div className="details">
                     <h5 className="title">Address</h5>
                     <p className="mb-0 text">
-                      328 Queensberry Street, North <br /> Melbourne VIC 3051,
-                      Australia.
+                      2548 Ahmed Bin Al Mubarik Al khazafi St, Unit 7175 <br />
+                      Tuwaiq, Riyadh 14927, <br />
+                      Saudi Arabia.
                     </p>
                   </div>
                 </div>
@@ -120,7 +121,7 @@ export default function ContactInfo1() {
                   </div>
                   <div className="details">
                     <h5 className="title">Phone</h5>
-                    <p className="mb-0 text">+(0) 392 94 03 01</p>
+                    <p className="mb-0 text">+966 54 543 0104</p>
                   </div>
                 </div>
                 <div className="iconbox-style1 contact-style d-flex align-items-start mb30">
@@ -129,7 +130,23 @@ export default function ContactInfo1() {
                   </div>
                   <div className="details">
                     <h5 className="title">Email</h5>
-                    <p className="mb-0 text">hello@URIT</p>
+                    <p className="mb-0 text">support@urit.co</p>
+                  </div>
+                </div>
+                <div className="iconbox-style1 contact-style d-flex align-items-start mb30">
+                  <div className="icon flex-shrink-0">
+                    <span className="fab fa-linkedin" />
+                  </div>
+                  <div className="details">
+                    <h5 className="title">Media</h5>
+                    <p className="mb-0 text">
+                      <a
+                        href="https://www.linkedin.com/company/uritglobal/"
+                        target="_blank"
+                      >
+                        LinkedIn
+                      </a>
+                    </p>
                   </div>
                 </div>
               </div>

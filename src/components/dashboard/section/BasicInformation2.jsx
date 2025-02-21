@@ -10,6 +10,8 @@ import CurrencyInput from "react-currency-input-field";
 import { useRouter } from "next/navigation";
 import UploadAttachment from "./UploadAttachment";
 import { InfinitySpin } from "react-loader-spinner";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function BasicInformation2() {
   const router = useRouter();
@@ -26,8 +28,9 @@ export default function BasicInformation2() {
     priceType: "",
     cost: "",
     description: "",
-    projectDuration: "",
-    projectDurationType: "",
+    // projectDuration: "",
+    // projectDurationType: "",
+    expectedCompletionDate: "",
     level: "",
     language: "",
     languageLevel: "",
@@ -43,7 +46,9 @@ export default function BasicInformation2() {
       priceType: "",
       cost: "",
       description: "",
-      projectDuration: "",
+      // projectDuration: "",
+      // projectDurationType: "",
+      expectedCompletionDate: "",
       level: "",
       language: "",
       languageLevel: "",
@@ -79,6 +84,12 @@ export default function BasicInformation2() {
     setBasicInfoObj({
       ...basicInfoObj,
       [name]: value,
+    });
+  };
+  const handleInputChangeDate = (date, name) => {
+    setBasicInfoObj({
+      ...basicInfoObj,
+      [name]: date,
     });
   };
 
@@ -212,7 +223,25 @@ export default function BasicInformation2() {
                   />
                 </div>
               </div>
-              <div className="col-sm-3">
+              <div className="col-sm-6">
+                <div className="mb20">
+                  <label className="heading-color ff-heading fw500 mb10">
+                    Expected Completion Date
+                  </label>
+                  <div>
+                    <DatePicker
+                      className="form-control w-100"
+                      selected={basicInfoObj.expectedCompletionDate}
+                      dateFormat="MM-dd-yyyy"
+                      placeholderText="MM-DD-YYYY"
+                      onChange={(date) =>
+                        handleInputChangeDate(date, "expectedCompletionDate")
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+              {/* <div className="col-sm-3">
                 <div className="mb20">
                   <label className="heading-color ff-heading fw500 mb10">
                     Project Duration
@@ -243,7 +272,7 @@ export default function BasicInformation2() {
                     onChange={handleInputChange}
                   />
                 </div>
-              </div>
+              </div> */}
               <div className="col-sm-6">
                 <div className="mb20">
                   <label className="heading-color ff-heading fw500 mb10">

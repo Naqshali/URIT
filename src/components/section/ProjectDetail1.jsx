@@ -288,7 +288,7 @@ export default function ProjectDetail1() {
                                 <div className="col-md-12">
                                   {/* <ServiceDetailExtra1 /> */}
                                 </div>
-                                (
+
                                 <div className="col-md-12">
                                   <div className="d-grid">
                                     <a
@@ -300,7 +300,6 @@ export default function ProjectDetail1() {
                                     </a>
                                   </div>
                                 </div>
-                                )
                               </div>
                             </form>
                           </div>
