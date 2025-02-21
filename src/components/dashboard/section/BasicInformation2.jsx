@@ -12,6 +12,7 @@ import UploadAttachment from "./UploadAttachment";
 import { InfinitySpin } from "react-loader-spinner";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import moment from "moment/moment";
 
 export default function BasicInformation2() {
   const router = useRouter();
@@ -103,7 +104,11 @@ export default function BasicInformation2() {
 
   const onSubmitForm = async () => {
     setLoader(true);
-    const result = await saveProject(basicInfoObj);
+    const data = { ...basicInfoObj };
+    data.expectedCompletionDate = moment(data.expectedCompletionDate).format(
+      "YYYY-MM-DD"
+    );
+    const result = await saveProject(data);
     if (result) {
       if (attachments.length) {
         const formData = new FormData();
