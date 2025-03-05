@@ -31,9 +31,25 @@ export default function DashboardHeader() {
     }
   };
 
-  useEffect(() => {
-    console.log("profileDetails", profileDetails);
-  }, [profileDetails]);
+  const showNavigationItem = (navItem) => {
+    return (
+      (loggedInUser?.userType === "CLIENT" &&
+        (navItem.key === "create_project" ||
+          navItem.key === "manage_project" ||
+          navItem.key === "my_profile" ||
+          navItem.key === "chats" ||
+          navItem.key === "notifications" ||
+          navItem.key === "payments")) ||
+      (loggedInUser?.userType === "SERVICE_PROVIDER" &&
+        (navItem.key === "add_services" ||
+          navItem.key === "manage_service" ||
+          navItem.key === "my_profile" ||
+          navItem.key === "manage_project" ||
+          navItem.key === "chats" ||
+          navItem.key === "notifications")) ||
+      !loggedInUser
+    );
+  };
 
   return (
     <>
@@ -316,18 +332,21 @@ export default function DashboardHeader() {
                             <p className="fz15 fw400 ff-heading mb10 pl30">
                               Start
                             </p>
-                            {dasboardNavigation.slice(0, 8).map((item, i) => (
-                              <a
-                                key={i}
-                                className={`dropdown-item ${
-                                  path === item.path ? "active" : ""
-                                }`}
-                                onClick={() => routeToLink(item)}
-                              >
-                                <i className={`${item.icon} mr10`} />
-                                {item.name}
-                              </a>
-                            ))}
+                            {dasboardNavigation.slice(0, 8).map(
+                              (item, i) =>
+                                showNavigationItem(item) && (
+                                  <a
+                                    key={i}
+                                    className={`dropdown-item ${
+                                      path === item.path ? "active" : ""
+                                    }`}
+                                    onClick={() => routeToLink(item)}
+                                  >
+                                    <i className={`${item.icon} mr10`} />
+                                    {item.name}
+                                  </a>
+                                )
+                            )}
                             <p className="fz15 fw400 ff-heading mt30 pl30">
                               Organize and Manage
                             </p>

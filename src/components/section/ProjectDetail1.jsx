@@ -127,7 +127,7 @@ export default function ProjectDetail1() {
                           </div>
                         </div>
                       </div>
-                      <div className="col-sm-6 col-xl-4">
+                      {/* <div className="col-sm-6 col-xl-4">
                         <div className="iconbox-style1 contact-style d-flex align-items-start mb30">
                           <div className="icon flex-shrink-0">
                             <span className="flaticon-dollar" />
@@ -153,7 +153,7 @@ export default function ProjectDetail1() {
                             </p>
                           </div>
                         </div>
-                      </div>
+                      </div> */}
                       <div className="col-sm-6 col-xl-4">
                         <div className="iconbox-style1 contact-style d-flex align-items-start mb30">
                           <div className="icon flex-shrink-0">

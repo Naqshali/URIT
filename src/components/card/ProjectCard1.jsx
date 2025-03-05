@@ -27,10 +27,10 @@ export default function ProjectCard1({ data }) {
                 <i className="flaticon-place fz16 vam text-thm2 me-1" />{" "}
                 {dateInStringFormat(data.createdAt)}
               </p>
-              <p className="mb-0 fz14 list-inline-item mb5-sm">
+              {/* <p className="mb-0 fz14 list-inline-item mb5-sm">
                 <i className="flaticon-contract fz16 vam text-thm2 me-1 bdrl1 pl15 pl0-xs bdrn-xs" />{" "}
                 1 Received
-              </p>
+              </p> */}
               <p className="text mt10">
                 {" "}
                 {data.description?.slice(0, 350) + "..."}

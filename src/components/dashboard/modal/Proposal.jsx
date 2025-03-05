@@ -49,9 +49,10 @@ export default function ProposalModal({
   const onAcceptProposal = async (proposal) => {
     setProceedToPayment(true);
     setSelectedProposal(proposal);
-    return;
+  };
+
+  const onChat = () => {
     closeModalButtonRef.current.click();
-    await acceptProposal({ proposalId: proposal.id }, proposal.projectId);
     sendMessage({
       msg: "Proposal Accepted",
       senderId: loggedInUser.userId,
@@ -59,6 +60,11 @@ export default function ProposalModal({
       chatType: "Project Chat",
     });
     router.push("/chats");
+  };
+
+  const onCloseModal = (e) => {
+    setProceedToPayment(false);
+    onCloseProposalModal();
   };
 
   return (
@@ -70,28 +76,29 @@ export default function ProposalModal({
           tabIndex={-1}
           aria-labelledby="proposalModalLabel"
           aria-hidden="true"
+          // onClick={(e) => onCloseModal(e)}
         >
           <div className="modal-dialog modal-dialog-centered modal-md ">
             <div className="modal-content position-relative">
+              <div className="modal-header sticky-header">
+                <h3 className="modal-title">Proposal</h3>
+                <button
+                  type="button"
+                  className="btn-close position-absolute"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                  style={{
+                    top: "28px",
+                    right: "25px",
+                    zIndex: "9",
+                    fontSize: "16px",
+                  }}
+                  ref={closeModalButtonRef}
+                  onClick={() => onCloseModal()}
+                />
+              </div>
               {!proceedToPayment ? (
                 <div>
-                  <div className="modal-header sticky-header">
-                    <h3 className="modal-title">Proposal</h3>
-                    <button
-                      type="button"
-                      className="btn-close position-absolute"
-                      data-bs-dismiss="modal"
-                      aria-label="Close"
-                      style={{
-                        top: "28px",
-                        right: "25px",
-                        zIndex: "9",
-                        fontSize: "16px",
-                      }}
-                      ref={closeModalButtonRef}
-                      onClick={() => onCloseProposalModal()}
-                    />
-                  </div>
                   <div className="modal-body p-4">
                     <div>
                       {!record.noProposals &&
@@ -119,7 +126,14 @@ export default function ProposalModal({
                                     className="ud-btn btn-thm accept-proposal"
                                     onClick={() => onAcceptProposal(item)}
                                   >
-                                    Accept & Chat
+                                    Accept Proposal
+                                    <i className="fal fa-arrow-right-long fs12" />
+                                  </a>
+                                  <a
+                                    className="ud-btn btn-thm accept-proposal ml-4"
+                                    onClick={() => onChat(item)}
+                                  >
+                                    Chat
                                     <i className="fal fa-arrow-right-long fs12" />
                                   </a>
                                 </div>
