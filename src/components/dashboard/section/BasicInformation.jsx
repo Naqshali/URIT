@@ -15,8 +15,9 @@ export default function BasicInformation() {
   const { meta } = globalStore();
   const { saveService } = servicesStore();
   const [loader, setLoader] = useState(false);
-
+  const [errors, setErrors] = useState({});
   const [showToastr, setShowToastr] = useState(false);
+
   const [basicInfoObj, setBasicInfoObj] = useState({
     title: "",
     serviceCategory: "",
@@ -26,9 +27,25 @@ export default function BasicInformation() {
     city: "",
     languageLevel: "",
     serviceSkills: [],
-    description: "",
     deliveryTime: "",
   });
+
+  const validateForm = () => {
+    const newErrors = {};
+    
+    if (!basicInfoObj.title.trim()) newErrors.title = "Service title is required";
+    if (!basicInfoObj.serviceCategory) newErrors.serviceCategory = "Category is required";
+    if (!basicInfoObj.price) newErrors.price = "Price is required";
+    if (!basicInfoObj.country) newErrors.country = "Country is required";
+    if (!basicInfoObj.city.trim()) newErrors.city = "City is required";
+    if (!basicInfoObj.languageLevel) newErrors.languageLevel = "Language level is required";
+    if (!basicInfoObj.serviceSkills || basicInfoObj.serviceSkills.length === 0) newErrors.serviceSkills = "At least one skill is required";
+    if (!basicInfoObj.deliveryTime) newErrors.deliveryTime = "Delivery time is required";
+    if (!basicInfoObj.description.trim()) newErrors.description = "Service description is required";
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const resetBasicInfoObj = () => {
     const obj = {
@@ -40,7 +57,7 @@ export default function BasicInformation() {
       city: "",
       languageLevel: "",
       serviceSkills: [],
-      description: "",
+      deliveryTime: "",
     };
     setBasicInfoObj(obj);
   };
@@ -53,6 +70,17 @@ export default function BasicInformation() {
   };
 
   const handleInputChange = (e, selectField) => {
+    const name = selectField ? selectField.name : e.target.name;
+    
+    // Clear error when field is changed
+    if (errors[name]) {
+      setErrors(prev => {
+        const newErrors = {...prev};
+        delete newErrors[name];
+        return newErrors;
+      });
+    }
+
     if (!e && selectField) {
       setBasicInfoObj({
         ...basicInfoObj,
@@ -61,11 +89,10 @@ export default function BasicInformation() {
       return;
     }
 
-    const name = selectField ? selectField.name : e.target.name;
     const value = selectField
       ? Array.isArray(e)
         ? filterSelectedSkills(e)
-        : e.value
+        : e?.value || ""
       : e.target.value;
 
     setBasicInfoObj({
@@ -78,7 +105,29 @@ export default function BasicInformation() {
     return skills.map((item) => item.value);
   };
 
+  // Helper function to get the current value for react-select components
+  const getSelectValue = (name, options) => {
+    if (Array.isArray(basicInfoObj[name])) {
+      return options.filter(option => 
+        basicInfoObj[name].includes(option.value)
+      );
+    }
+    return options.find(option => option.value === basicInfoObj[name]);
+  };
+
   const onSubmitForm = async () => {
+    if (!validateForm()) {
+      // Scroll to the first error
+      const firstError = Object.keys(errors)[0];
+      if (firstError) {
+        document.querySelector(`[name="${firstError}"]`)?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center'
+        });
+      }
+      return;
+    }
+
     setLoader(true);
     const result = await saveService(basicInfoObj);
     setLoader(false);
@@ -115,11 +164,12 @@ export default function BasicInformation() {
                   </label>
                   <input
                     type="text"
-                    className="form-control"
+                    className={`form-control ${errors.title ? 'is-invalid' : ''}`}
                     value={basicInfoObj.title}
                     name="title"
                     onChange={handleInputChange}
                   />
+                  {errors.title && <div className="invalid-feedback">{errors.title}</div>}
                 </div>
               </div>
               <div className="col-sm-6">
@@ -128,13 +178,14 @@ export default function BasicInformation() {
                     Price
                   </label>
                   <CurrencyInput
-                    className="form-control"
+                    className={`form-control ${errors.price ? 'is-invalid' : ''}`}
                     prefix="$"
                     name="price"
                     placeholder="Please enter a number"
                     value={basicInfoObj.price}
                     onValueChange={handleCurrencyInputChange}
                   />
+                  {errors.price && <div className="invalid-feedback">{errors.price}</div>}
                 </div>
               </div>
               <div className="col-sm-6">
@@ -143,15 +194,15 @@ export default function BasicInformation() {
                     Country
                   </label>
                   <Select
-                    classNamePrefix="custom"
+                    classNamePrefix={`custom-select ${errors.country ? 'is-invalid' : ''}`}
+                    className={`${errors.country ? 'is-invalid' : ''}`}
                     isClearable
                     name="country"
-                    value={meta.countries.find(
-                      (option) => option.value === basicInfoObj.country
-                    )}
+                    value={getSelectValue('country', meta.countries)}
                     options={meta.countries}
-                    onChange={handleInputChange}
+                    onChange={(e) => handleInputChange(e, { name: 'country' })}
                   />
+                  {errors.country && <div className="invalid-feedback">{errors.country}</div>}
                 </div>
               </div>
               <div className="col-sm-6">
@@ -160,11 +211,12 @@ export default function BasicInformation() {
                     City
                   </label>
                   <input
-                    className="form-control"
+                    className={`form-control ${errors.city ? 'is-invalid' : ''}`}
                     name="city"
                     value={basicInfoObj.city}
                     onChange={handleInputChange}
                   />
+                  {errors.city && <div className="invalid-feedback">{errors.city}</div>}
                 </div>
               </div>
               <div className="col-sm-6">
@@ -173,15 +225,15 @@ export default function BasicInformation() {
                     Category
                   </label>
                   <Select
-                    classNamePrefix="custom"
+                    classNamePrefix={`custom-select ${errors.serviceCategory ? 'is-invalid' : ''}`}
+                    className={`${errors.serviceCategory ? 'is-invalid' : ''}`}
                     isClearable
                     name="serviceCategory"
-                    value={meta.services.find(
-                      (option) => option.value === basicInfoObj.serviceCategory
-                    )}
+                    value={getSelectValue('serviceCategory', meta.services)}
                     options={meta.services}
-                    onChange={handleInputChange}
+                    onChange={(e) => handleInputChange(e, { name: 'serviceCategory' })}
                   />
+                  {errors.serviceCategory && <div className="invalid-feedback">{errors.serviceCategory}</div>}
                 </div>
               </div>
               <div className="col-sm-6">
@@ -190,15 +242,15 @@ export default function BasicInformation() {
                     English Level
                   </label>
                   <Select
-                    classNamePrefix="custom"
+                    classNamePrefix={`custom-select ${errors.languageLevel ? 'is-invalid' : ''}`}
+                    className={`${errors.languageLevel ? 'is-invalid' : ''}`}
                     isClearable
                     name="languageLevel"
-                    value={localMetaData.languageLevels.find(
-                      (option) => option.value === basicInfoObj.languageLevel
-                    )}
+                    value={getSelectValue('languageLevel', localMetaData.languageLevels)}
                     options={localMetaData.languageLevels}
-                    onChange={handleInputChange}
+                    onChange={(e) => handleInputChange(e, { name: 'languageLevel' })}
                   />
+                  {errors.languageLevel && <div className="invalid-feedback">{errors.languageLevel}</div>}
                 </div>
               </div>
               <div className="col-sm-6">
@@ -207,13 +259,16 @@ export default function BasicInformation() {
                     Skills
                   </label>
                   <Select
-                    classNamePrefix="custom"
+                    classNamePrefix={`custom-select ${errors.serviceSkills ? 'is-invalid' : ''}`}
+                    className={`${errors.serviceSkills ? 'is-invalid' : ''}`}
                     isClearable
                     isMulti
                     name="serviceSkills"
+                    value={getSelectValue('serviceSkills', meta.skills)}
                     options={meta.skills}
-                    onChange={handleInputChange}
+                    onChange={(e) => handleInputChange(e, { name: 'serviceSkills' })}
                   />
+                  {errors.serviceSkills && <div className="invalid-feedback">{errors.serviceSkills}</div>}
                 </div>
               </div>
               <div className="col-sm-6">
@@ -222,13 +277,14 @@ export default function BasicInformation() {
                     Delivery Time (Days)
                   </label>
                   <CurrencyInput
-                    className="form-control"
+                    className={`form-control ${errors.deliveryTime ? 'is-invalid' : ''}`}
                     name="deliveryTime"
                     placeholder="Please enter a number"
                     value={basicInfoObj.deliveryTime}
                     maxLength={3}
                     onValueChange={handleCurrencyInputChange}
                   />
+                  {errors.deliveryTime && <div className="invalid-feedback">{errors.deliveryTime}</div>}
                 </div>
               </div>
               <div className="col-md-12">
@@ -240,10 +296,12 @@ export default function BasicInformation() {
                     cols={30}
                     rows={6}
                     placeholder="Description"
+                    className={`form-control ${errors.description ? 'is-invalid' : ''}`}
                     name="description"
                     value={basicInfoObj.description}
                     onChange={handleInputChange}
                   />
+                  {errors.description && <div className="invalid-feedback">{errors.description}</div>}
                 </div>
               </div>
               <div className="col-md-12">
@@ -251,7 +309,7 @@ export default function BasicInformation() {
                   <button
                     type="button"
                     className="ud-btn btn-thm"
-                    onClick={() => onSubmitForm()}
+                    onClick={onSubmitForm}
                   >
                     Save
                     <i className="fal fa-arrow-right-long" />

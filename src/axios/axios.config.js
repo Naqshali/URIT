@@ -3,7 +3,7 @@ import signUpStore from "@/store/signUp";
 import Router from "next/router";
 
 const axiosInstance = axios.create({
-  baseURL: "https://wpjt75jel4.execute-api.me-south-1.amazonaws.com/Prod/", // Your API base URL
+  baseURL: "https://wpjt75jel4.execute-api.me-south-1.amazonaws.com/Prod", // Your API base URL
 });
 
 // Request interceptor

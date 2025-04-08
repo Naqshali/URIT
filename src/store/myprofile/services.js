@@ -10,8 +10,18 @@ const servicesStore = create((set) => ({
   },
   getServices: async (params) => {
     try {
+      // Get filter from URL if it exists
+      const urlParams = new URLSearchParams(window.location.search);
+      const filter = urlParams.get('filter');
+      
+      // Combine params with filter from URL
+      const finalParams = {
+        ...params,
+        ...(filter && { filter }) // Only add filter if it exists
+      };
+
       const res = await axiosInstance.get(
-        "/api/v1/services?" + queryString(params)
+        "/api/v1/services?" + queryString(finalParams)
       );
       if (res.data) {
         set({ allServices: res.data });

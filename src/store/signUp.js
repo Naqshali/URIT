@@ -14,11 +14,17 @@ const signUpStore = create((set) => ({
           "loggedInUser",
           JSON.stringify({ ...res.data, ...decodedToken })
         );
-        return res.data;
+        return { success: true, data: res.data };
+      } else {
+        console.log(res);
+        return { success: false, error: "Email already exist." };
       }
-      return null;
     } catch (error) {
-      return null;
+      console.log("in catch:", error)
+      if (error.response && error.response.data) {
+        return { success: false, error: error.response.data.description };
+      }
+      return { success: false, error: "Network error occurred" };
     }
   },
   login: async (data) => {

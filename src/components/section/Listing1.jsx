@@ -32,7 +32,7 @@ export default function Listing1() {
     };
 
     if (filter) {
-      params.name = filter;
+      params.title = filter;
     }
 
     setLoader(true);

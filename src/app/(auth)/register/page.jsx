@@ -19,7 +19,7 @@ export default function Page() {
   });
 
   const [showPassword, setShowPassword] = useState(false);
-
+  const [errorMessage, setErrorMessage] = useState(""); // Add state for error message
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -40,11 +40,15 @@ export default function Page() {
   };
 
   const createAccount = async () => {
+    setErrorMessage(""); // Clear previous errors
     const result = await signUp(userObj);
-    if (result) {
+    if (result.success) {
       router.push("/");
+      await getMetaData();
+    } else {
+      console.log("error ", result.error);
+      setErrorMessage(result.error); // Set the error message
     }
-    await getMetaData();
   };
 
   return (
@@ -180,6 +184,11 @@ export default function Page() {
                         </span>
                       </span>
                     </div>
+                    {errorMessage && (
+                      <div className="alert alert-danger mb20" role="alert">
+                        {errorMessage}
+                      </div>
+                    )}
                     <div className="d-grid mb20">
                       <button
                         className="ud-btn btn-thm default-box-shadow2"

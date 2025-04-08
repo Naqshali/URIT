@@ -19,9 +19,10 @@ export default function BasicInformation2() {
   const { meta } = globalStore();
   const { saveProject, uploadAttachments } = projectsStore();
   const [loader, setLoader] = useState(false);
-
+  const [errors, setErrors] = useState({});
   const [showToastr, setShowToastr] = useState(false);
   const [attachments, setAttachments] = useState([]);
+  
   const [basicInfoObj, setBasicInfoObj] = useState({
     title: "",
     projectCategory: "",
@@ -29,8 +30,6 @@ export default function BasicInformation2() {
     priceType: "",
     cost: "",
     description: "",
-    // projectDuration: "",
-    // projectDurationType: "",
     expectedCompletionDate: "",
     level: "",
     language: "",
@@ -38,6 +37,25 @@ export default function BasicInformation2() {
     projectSkills: [],
     description: "",
   });
+
+  const validateForm = () => {
+    const newErrors = {};
+    
+    if (!basicInfoObj.title) newErrors.title = "Project title is required";
+    if (!basicInfoObj.projectCategory) newErrors.projectCategory = "Category is required";
+    if (!basicInfoObj.freelancerType) newErrors.freelancerType = "Freelancer type is required";
+    if (!basicInfoObj.priceType) newErrors.priceType = "Price type is required";
+    if (!basicInfoObj.cost) newErrors.cost = "Cost is required";
+    if (!basicInfoObj.expectedCompletionDate) newErrors.expectedCompletionDate = "Expected completion date is required";
+    if (!basicInfoObj.level) newErrors.level = "Level is required";
+    if (!basicInfoObj.language) newErrors.language = "Language is required";
+    if (!basicInfoObj.languageLevel) newErrors.languageLevel = "Language level is required";
+    if (!basicInfoObj.projectSkills || basicInfoObj.projectSkills.length === 0) newErrors.projectSkills = "At least one skill is required";
+    if (!basicInfoObj.description) newErrors.description = "Project description is required";
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const resetBasicInfoObj = () => {
     const obj = {
@@ -47,8 +65,6 @@ export default function BasicInformation2() {
       priceType: "",
       cost: "",
       description: "",
-      // projectDuration: "",
-      // projectDurationType: "",
       expectedCompletionDate: "",
       level: "",
       language: "",
@@ -67,6 +83,17 @@ export default function BasicInformation2() {
   };
 
   const handleInputChange = (e, selectField) => {
+    const name = selectField ? selectField.name : e.target.name;
+    
+    // Clear error when field is changed
+    if (errors[name]) {
+      setErrors(prev => {
+        const newErrors = {...prev};
+        delete newErrors[name];
+        return newErrors;
+      });
+    }
+
     if (!e && selectField) {
       setBasicInfoObj({
         ...basicInfoObj,
@@ -75,11 +102,10 @@ export default function BasicInformation2() {
       return;
     }
 
-    const name = selectField ? selectField.name : e.target.name;
     const value = selectField
       ? Array.isArray(e)
         ? filterSelectedSkills(e)
-        : e.value
+        : e?.value || ""
       : e.target.value;
 
     setBasicInfoObj({
@@ -87,7 +113,17 @@ export default function BasicInformation2() {
       [name]: value,
     });
   };
+
   const handleInputChangeDate = (date, name) => {
+    // Clear error when date is selected
+    if (errors[name]) {
+      setErrors(prev => {
+        const newErrors = {...prev};
+        delete newErrors[name];
+        return newErrors;
+      });
+    }
+
     setBasicInfoObj({
       ...basicInfoObj,
       [name]: date,
@@ -103,6 +139,18 @@ export default function BasicInformation2() {
   };
 
   const onSubmitForm = async () => {
+    if (!validateForm()) {
+      // Scroll to the first error
+      const firstError = Object.keys(errors)[0];
+      if (firstError) {
+        document.querySelector(`[name="${firstError}"]`)?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center'
+        });
+      }
+      return;
+    }
+    
     setLoader(true);
     const data = { ...basicInfoObj };
     data.expectedCompletionDate = moment(data.expectedCompletionDate).format(
@@ -127,6 +175,16 @@ export default function BasicInformation2() {
         router.push("/manage-projects");
       }
     }
+  };
+
+  // Helper function to get the current value for react-select components
+  const getSelectValue = (name, options) => {
+    if (Array.isArray(basicInfoObj[name])) {
+      return options.filter(option => 
+        basicInfoObj[name].includes(option.value)
+      );
+    }
+    return options.find(option => option.value === basicInfoObj[name]);
   };
 
   return (
@@ -155,11 +213,12 @@ export default function BasicInformation2() {
                   </label>
                   <input
                     type="text"
-                    className="form-control"
+                    className={`form-control ${errors.title ? 'is-invalid' : ''}`}
                     name="title"
                     value={basicInfoObj.title}
                     onChange={handleInputChange}
                   />
+                  {errors.title && <div className="invalid-feedback">{errors.title}</div>}
                 </div>
               </div>
               <div className="col-sm-6">
@@ -168,15 +227,15 @@ export default function BasicInformation2() {
                     Category
                   </label>
                   <Select
-                    classNamePrefix="custom"
+                    classNamePrefix={`custom-select ${errors.projectCategory ? 'is-invalid' : ''}`}
+                    className={`${errors.projectCategory ? 'is-invalid' : ''}`}
                     isClearable
                     name="projectCategory"
-                    value={meta.services.find(
-                      (option) => option.value === basicInfoObj.projectCategory
-                    )}
+                    value={getSelectValue('projectCategory', meta.services)}
                     options={meta.services}
-                    onChange={handleInputChange}
+                    onChange={(e) => handleInputChange(e, { name: 'projectCategory' })}
                   />
+                  {errors.projectCategory && <div className="invalid-feedback">{errors.projectCategory}</div>}
                 </div>
               </div>
               <div className="col-sm-6">
@@ -185,15 +244,15 @@ export default function BasicInformation2() {
                     Freelancer Type
                   </label>
                   <Select
-                    classNamePrefix="custom"
+                    classNamePrefix={`custom-select ${errors.freelancerType ? 'is-invalid' : ''}`}
+                    className={`${errors.freelancerType ? 'is-invalid' : ''}`}
                     isClearable
                     name="freelancerType"
-                    value={localMetaData.freeLancerType.find(
-                      (option) => option.value === basicInfoObj.freelancerType
-                    )}
+                    value={getSelectValue('freelancerType', localMetaData.freeLancerType)}
                     options={localMetaData.freeLancerType}
-                    onChange={handleInputChange}
+                    onChange={(e) => handleInputChange(e, { name: 'freelancerType' })}
                   />
+                  {errors.freelancerType && <div className="invalid-feedback">{errors.freelancerType}</div>}
                 </div>
               </div>
               <div className="col-sm-6">
@@ -202,15 +261,15 @@ export default function BasicInformation2() {
                     Price type
                   </label>
                   <Select
-                    classNamePrefix="custom"
+                    classNamePrefix={`custom-select ${errors.priceType ? 'is-invalid' : ''}`}
+                    className={`${errors.priceType ? 'is-invalid' : ''}`}
                     isClearable
                     name="priceType"
-                    value={localMetaData.priceTypes.find(
-                      (option) => option.value === basicInfoObj.priceType
-                    )}
+                    value={getSelectValue('priceType', localMetaData.priceTypes)}
                     options={localMetaData.priceTypes}
-                    onChange={handleInputChange}
+                    onChange={(e) => handleInputChange(e, { name: 'priceType' })}
                   />
+                  {errors.priceType && <div className="invalid-feedback">{errors.priceType}</div>}
                 </div>
               </div>
               <div className="col-sm-6">
@@ -219,13 +278,14 @@ export default function BasicInformation2() {
                     Cost
                   </label>
                   <CurrencyInput
-                    className="form-control"
+                    className={`form-control ${errors.cost ? 'is-invalid' : ''}`}
                     prefix="$"
                     name="cost"
                     placeholder="Please enter a number"
                     value={basicInfoObj.cost}
                     onValueChange={handleCurrencyInputChange}
                   />
+                  {errors.cost && <div className="invalid-feedback">{errors.cost}</div>}
                 </div>
               </div>
               <div className="col-sm-6">
@@ -235,7 +295,7 @@ export default function BasicInformation2() {
                   </label>
                   <div>
                     <DatePicker
-                      className="form-control w-100"
+                      className={`form-control w-100 ${errors.expectedCompletionDate ? 'is-invalid' : ''}`}
                       selected={basicInfoObj.expectedCompletionDate}
                       dateFormat="MM-dd-yyyy"
                       placeholderText="MM-DD-YYYY"
@@ -243,56 +303,25 @@ export default function BasicInformation2() {
                         handleInputChangeDate(date, "expectedCompletionDate")
                       }
                     />
+                    {errors.expectedCompletionDate && <div className="invalid-feedback">{errors.expectedCompletionDate}</div>}
                   </div>
                 </div>
               </div>
-              {/* <div className="col-sm-3">
-                <div className="mb20">
-                  <label className="heading-color ff-heading fw500 mb10">
-                    Project Duration
-                  </label>
-                  <CurrencyInput
-                    className="form-control"
-                    maxLength={3}
-                    name="projectDuration"
-                    value={basicInfoObj.projectDuration}
-                    onValueChange={handleCurrencyInputChange}
-                  />
-                </div>
-              </div>
-              <div className="col-sm-3">
-                <div className="mb20">
-                  <label className="heading-color ff-heading fw500 mb10">
-                    Project Duration
-                  </label>
-                  <Select
-                    classNamePrefix="custom"
-                    isClearable
-                    name="projectDurationType"
-                    value={localMetaData.projectDurationTypes.find(
-                      (option) =>
-                        option.value === basicInfoObj.projectDurationType
-                    )}
-                    options={localMetaData.projectDurationTypes}
-                    onChange={handleInputChange}
-                  />
-                </div>
-              </div> */}
               <div className="col-sm-6">
                 <div className="mb20">
                   <label className="heading-color ff-heading fw500 mb10">
                     Level
                   </label>
                   <Select
-                    classNamePrefix="custom"
+                    classNamePrefix={`custom-select ${errors.level ? 'is-invalid' : ''}`}
+                    className={`${errors.level ? 'is-invalid' : ''}`}
                     isClearable
                     name="level"
-                    value={localMetaData.levels.find(
-                      (option) => option.value === basicInfoObj.level
-                    )}
+                    value={getSelectValue('level', localMetaData.levels)}
                     options={localMetaData.levels}
-                    onChange={handleInputChange}
+                    onChange={(e) => handleInputChange(e, { name: 'level' })}
                   />
+                  {errors.level && <div className="invalid-feedback">{errors.level}</div>}
                 </div>
               </div>
               <div className="col-sm-6">
@@ -301,15 +330,15 @@ export default function BasicInformation2() {
                     Language
                   </label>
                   <Select
-                    classNamePrefix="custom"
+                    classNamePrefix={`custom-select ${errors.language ? 'is-invalid' : ''}`}
+                    className={`${errors.language ? 'is-invalid' : ''}`}
                     isClearable
                     name="language"
-                    value={meta.languages.find(
-                      (option) => option.value === basicInfoObj.language
-                    )}
+                    value={getSelectValue('language', meta.languages)}
                     options={meta.languages}
-                    onChange={handleInputChange}
+                    onChange={(e) => handleInputChange(e, { name: 'language' })}
                   />
+                  {errors.language && <div className="invalid-feedback">{errors.language}</div>}
                 </div>
               </div>
               <div className="col-sm-6">
@@ -318,15 +347,15 @@ export default function BasicInformation2() {
                     Language Level
                   </label>
                   <Select
-                    classNamePrefix="custom"
+                    classNamePrefix={`custom-select ${errors.languageLevel ? 'is-invalid' : ''}`}
+                    className={`${errors.languageLevel ? 'is-invalid' : ''}`}
                     isClearable
                     name="languageLevel"
-                    value={localMetaData.languageLevels.find(
-                      (option) => option.value === basicInfoObj.languageLevel
-                    )}
+                    value={getSelectValue('languageLevel', localMetaData.languageLevels)}
                     options={localMetaData.languageLevels}
-                    onChange={handleInputChange}
+                    onChange={(e) => handleInputChange(e, { name: 'languageLevel' })}
                   />
+                  {errors.languageLevel && <div className="invalid-feedback">{errors.languageLevel}</div>}
                 </div>
               </div>
               <div className="col-sm-12">
@@ -335,13 +364,16 @@ export default function BasicInformation2() {
                     Required Skills on Project
                   </label>
                   <Select
-                    classNamePrefix="custom"
+                    classNamePrefix={`custom-select ${errors.projectSkills ? 'is-invalid' : ''}`}
+                    className={`${errors.projectSkills ? 'is-invalid' : ''}`}
                     isClearable
                     isMulti
                     name="projectSkills"
+                    value={getSelectValue('projectSkills', meta.skills)}
                     options={meta.skills}
-                    onChange={handleInputChange}
+                    onChange={(e) => handleInputChange(e, { name: 'projectSkills' })}
                   />
+                  {errors.projectSkills && <div className="invalid-feedback">{errors.projectSkills}</div>}
                 </div>
               </div>
               <div className="col-md-12">
@@ -353,10 +385,12 @@ export default function BasicInformation2() {
                     cols={30}
                     rows={6}
                     placeholder="Description"
+                    className={`form-control ${errors.description ? 'is-invalid' : ''}`}
                     name="description"
                     value={basicInfoObj.description}
                     onChange={handleInputChange}
                   />
+                  {errors.description && <div className="invalid-feedback">{errors.description}</div>}
                 </div>
               </div>
               <div className="col-md-12">
@@ -370,9 +404,7 @@ export default function BasicInformation2() {
                   <button
                     type="button"
                     className="ud-btn btn-thm"
-                    onClick={() => {
-                      onSubmitForm();
-                    }}
+                    onClick={onSubmitForm}
                   >
                     Save
                     <i className="fal fa-arrow-right-long" />
