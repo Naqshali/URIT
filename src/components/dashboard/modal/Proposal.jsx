@@ -51,7 +51,7 @@ export default function ProposalModal({
     setSelectedProposal(proposal);
   };
 
-  const onChat = () => {
+  const onChat = (proposal) => {
     closeModalButtonRef.current.click();
     sendMessage({
       msg: "Proposal Accepted",
@@ -59,7 +59,7 @@ export default function ProposalModal({
       proposalId: proposal.id,
       chatType: "Project Chat",
     });
-    router.push("/chats");
+    // router.push("/chats");
   };
 
   const onCloseModal = (e) => {
